@@ -7,12 +7,12 @@ using UnityEngine.SceneManagement;
 
 public class LevelController : MonoBehaviour
 {
-    public static LevelController Instance;//µ÷ÓÃ
+    public static LevelController Instance;//ï¿½ï¿½ï¿½ï¿½
 
-    public float waveTimer;//¹Ø¿¨Ê±¼ä
+    public float waveTimer;//ï¿½Ø¿ï¿½Ê±ï¿½ï¿½
 
-    public GameObject _failPanel;//Ê§°ÜÃæ°å
-    public GameObject _successPanel;//³É¹¦Ãæ°å
+    public GameObject _failPanel;//Ê§ï¿½ï¿½ï¿½ï¿½ï¿½
+    public GameObject _successPanel;//ï¿½É¹ï¿½ï¿½ï¿½ï¿½
 
     public GameObject enemy1_prefab;
     public List<EnemyBase> enemy_list;
@@ -24,65 +24,65 @@ public class LevelController : MonoBehaviour
 
         _failPanel = GameObject.Find("FailPanel");
         _successPanel = GameObject.Find("SuccessPanel");
-        enemy1_prefab = Resources.Load<GameObject>("Prefabs/Enemy1");
+        enemy1_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemy1");
 
         _map = GameObject.Find("Map").transform;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //¹Ø¿¨Ê±¼ä
+        //ï¿½Ø¿ï¿½Ê±ï¿½ï¿½
         waveTimer = 15 + 5 * GameManager.Instance.currentWave;
 
         GenerateEnemy();
     }
 
-    // ¿ªÊ¼Éú³ÉµĞÈËµÄÈë¿Ú·½·¨
+    // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Éµï¿½ï¿½Ëµï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½
     private void GenerateEnemy()
     {
-        // Æô¶¯µĞÈËÉú³ÉµÄĞ­³Ì
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Éµï¿½Ğ­ï¿½ï¿½
         StartCoroutine(SwawnEnemies());
     }
 
-    // µĞÈËÉú³ÉµÄĞ­³Ì
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Éµï¿½Ğ­ï¿½ï¿½
     IEnumerator SwawnEnemies()
     {
-        // Ñ­»·Ìõ¼ş£º²¨´Î¼ÆÊ±Æ÷´óÓÚ0 ²¢ÇÒ Íæ¼ÒÃ»ÓĞËÀÍö
+        // Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¼ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½0 ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         while (waveTimer > 0 && !Player.Instance.isDead)
         {
-            // µÈ´ı0.5ÃëÔÙÉú³ÉÏÂÒ»¸öµĞÈË£¨¿ØÖÆÉú³ÉÆµÂÊ£©
+            // ï¿½È´ï¿½0.5ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ë£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½Ê£ï¿½
             yield return new WaitForSeconds(0.5f);
 
-            // ÔÚµØÍ¼·¶Î§ÄÚ»ñÈ¡Ò»¸öËæ»úÉú³ÉÎ»ÖÃ
+            // ï¿½Úµï¿½Í¼ï¿½ï¿½Î§ï¿½Ú»ï¿½È¡Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
             var spawnPoint = GetRandomPosition(_map.GetComponent<SpriteRenderer>().bounds);
 
-            // ÔÚÉú³ÉµãÊµÀı»¯µĞÈËÔ¤ÖÆÌå£¬²¢»ñÈ¡µĞÈË×é¼ş
+            // ï¿½ï¿½ï¿½ï¿½ï¿½Éµï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½å£¬ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             EnemyBase go = Instantiate(enemy1_prefab, spawnPoint, Quaternion.identity).GetComponent<EnemyBase>();
 
-            //±£Ö¤¼¤»î×´Ì¬
+            //ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½×´Ì¬
             go.gameObject.SetActive(true);
 
-            // ½«ĞÂÉú³ÉµÄµĞÈËÌí¼Óµ½µĞÈËÁĞ±íÖĞ£¬±ãÓÚºóĞø¹ÜÀí
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÉµÄµï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ±ï¿½ï¿½Ğ£ï¿½ï¿½ï¿½ï¿½Úºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             enemy_list.Add(go);
         }
     }
 
-    // ÔÚµØÍ¼±ß½çÄÚ»ñÈ¡Ëæ»úÎ»ÖÃ
+    // ï¿½Úµï¿½Í¼ï¿½ß½ï¿½ï¿½Ú»ï¿½È¡ï¿½ï¿½ï¿½Î»ï¿½ï¿½
     private Vector3 GetRandomPosition(Bounds bounds)
     {
-        // °²È«¾àÀë£ºÈ·±£µĞÈË²»»áÉú³ÉÔÚÌ«¿¿½üµØÍ¼±ßÔµµÄÎ»ÖÃ
+        // ï¿½ï¿½È«ï¿½ï¿½ï¿½ë£ºÈ·ï¿½ï¿½ï¿½ï¿½ï¿½Ë²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½Ôµï¿½ï¿½Î»ï¿½ï¿½
         float safeDistance = 3.5f;
 
-        // ÔÚµØÍ¼±ß½çÄÚËæ»úÉú³ÉX×ø±ê£¨¿¼ÂÇ°²È«¾àÀë£©
+        // ï¿½Úµï¿½Í¼ï¿½ß½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ê£¨ï¿½ï¿½ï¿½Ç°ï¿½È«ï¿½ï¿½ï¿½ë£©
         float randomX = UnityEngine.Random.Range(bounds.min.x + safeDistance, bounds.max.x - safeDistance);
 
-        // ÔÚµØÍ¼±ß½çÄÚËæ»úÉú³ÉY×ø±ê£¨¿¼ÂÇ°²È«¾àÀë£©
+        // ï¿½Úµï¿½Í¼ï¿½ß½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Yï¿½ï¿½ï¿½ê£¨ï¿½ï¿½ï¿½Ç°ï¿½È«ï¿½ï¿½ï¿½ë£©
         float randomY = UnityEngine.Random.Range(bounds.min.y + safeDistance, bounds.max.y - safeDistance);
 
-        // Z×ø±ê¹Ì¶¨Îª0£¨2DÓÎÏ·£©
+        // Zï¿½ï¿½ï¿½ï¿½Ì¶ï¿½Îª0ï¿½ï¿½2Dï¿½ï¿½Ï·ï¿½ï¿½
         float randomZ = 0f;
 
-        // ·µ»ØËæ»úÉú³ÉµÄÎ»ÖÃÏòÁ¿
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Éµï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         return new Vector3(randomX, randomY, randomZ);
     }
 
@@ -106,13 +106,13 @@ public class LevelController : MonoBehaviour
     
 
 
-    //ÓÎÏ·Ê¤Àû
+    //ï¿½ï¿½Ï·Ê¤ï¿½ï¿½
    public void GoodGame() 
     {
         _successPanel.GetComponent<CanvasGroup>().alpha = 1;
         StartCoroutine(GoMenu());
 
-        //todo ËùÓĞµĞÈËÏûÊ§
+        //todo ï¿½ï¿½ï¿½Ğµï¿½ï¿½ï¿½ï¿½ï¿½Ê§
         for (int i = 0; i < enemy_list.Count; i++)
         {
             if (enemy_list[i])
@@ -123,17 +123,17 @@ public class LevelController : MonoBehaviour
         }
     }
 
-    //todo ²¨´ÎÍê³É
+    //todo ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 
 
-    //ÓÎÏ·Ê§°Ü
+    //ï¿½ï¿½Ï·Ê§ï¿½ï¿½
     public void BadGame() 
     {
         _failPanel.GetComponent<CanvasGroup>().alpha = 1;
         StartCoroutine(GoMenu());
 
-        //todo ËùÓĞµĞÈËÏûÊ§
+        //todo ï¿½ï¿½ï¿½Ğµï¿½ï¿½ï¿½ï¿½ï¿½Ê§
         for (int i = 0; i < enemy_list.Count; i++)
         {
             if (enemy_list[i])
@@ -144,7 +144,7 @@ public class LevelController : MonoBehaviour
         }
     }
 
-    //·µ»ØÖ÷²Ëµ¥
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½
     IEnumerator GoMenu()
     {
         yield return new WaitForSeconds(3);

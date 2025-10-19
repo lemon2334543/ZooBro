@@ -2,21 +2,22 @@ using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
-    public float hp; //ÑªÁ¿
-    public float damage; //¹¥»÷Á¦
-    public float speed; //ÒÆ¶¯ËÙ¶È
-    public float attackTime; //¹¥»÷¶¨Ê±
-    public float attackTimer = 0; //¹¥»÷¶¨Ê±Æ÷
-    public bool isContact = false; //ÊÇ·ñ½Ó´¥Íæ¼Ò
-    public bool isCooling = false; //¹¥»÷ÀäÈ´
-    public int provideExp = 1; //¾­ÑéÖµ
+    public float hp; //Ñªï¿½ï¿½
+    public float damage; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    public float speed; //ï¿½Æ¶ï¿½ï¿½Ù¶ï¿½
+    public float attackTime; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±
+    public float attackTimer = 0; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+    public bool isContact = false; //ï¿½Ç·ï¿½Ó´ï¿½ï¿½ï¿½ï¿½
+    public bool isCooling = false; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È´
+    public int provideExp = 1; //ï¿½ï¿½ï¿½ï¿½Öµ
 
-    public GameObject money_prefab;//½ğ±ÒÔ¤ÖÆÌå
+    public GameObject money_prefab;//ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½
  
 
     private void Awake()
     {
-        money_prefab = Resources.Load<GameObject>("Prefabs/Money");
+        money_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Money");//ä¿®æ”¹å
+        // money_prefab = Resources.Load<GameObject>("Prefabs/Money");  //ä¿®æ”¹å‰
     }
 
     private void Start()
@@ -33,15 +34,15 @@ public class EnemyBase : MonoBehaviour
         }
 
 
-        Move();//ÒÆ¶¯
+        Move();//ï¿½Æ¶ï¿½
 
-        //¹¥»÷ÅĞ¶Ï
+        //ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¶ï¿½
         if (isContact && !isCooling)
         {
             Attack();
         }
 
-        //¸üĞÂ¼ÆÊ±Æ÷
+        //ï¿½ï¿½ï¿½Â¼ï¿½Ê±ï¿½ï¿½
         if (isCooling)
         {
             attackTimer -= Time.deltaTime;
@@ -68,10 +69,10 @@ public class EnemyBase : MonoBehaviour
         isContact = false;
     }
 
-    //×Ô¶¯ÒÆ¶¯
+    //ï¿½Ô¶ï¿½ï¿½Æ¶ï¿½
     public void Move() 
     {
-        //µÃµ½¹éÒ»»¯µÄÖ±Ïß¾àÀë£¬È»ºóµ÷ÓÃ ¾àÀë * ËÙ¶È * ¹Ì¶¨ÔËĞĞËÙ¶È
+        //ï¿½Ãµï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ß¾ï¿½ï¿½ë£¬È»ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ * ï¿½Ù¶ï¿½ * ï¿½Ì¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
         Vector2 direction = (Player.Instance.transform.position - transform.position).normalized;
         transform.Translate(direction * speed * Time.deltaTime);
 
@@ -79,13 +80,13 @@ public class EnemyBase : MonoBehaviour
     }
 
 
-    //×Ô¶¯×ªÏò
+    //ï¿½Ô¶ï¿½×ªï¿½ï¿½
     public void TurnAround() 
     {
-        //¼ì²â¾àÀëÏà¼õÖªµÀ·½Ïò
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (Player.Instance.transform.position.x - transform.position.x >= 0.1)
         {
-            //È¡localScale.x¾ø¶ÔÖµÕâÑù×Ó²»»áµ¼ÖÂºóËõ·ÅÎÊÌâ
+            //È¡localScale.xï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½Ó²ï¿½ï¿½áµ¼ï¿½Âºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
         else if (Player.Instance.transform.position.x - transform.position.x < 0.1)
@@ -95,10 +96,10 @@ public class EnemyBase : MonoBehaviour
     }
 
 
-    //¹¥»÷
+    //ï¿½ï¿½ï¿½ï¿½
     public void Attack() 
     {
-        //Èç¹û¹¥»÷ÀäÈ´£¬Ôò·µ»Ø
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½ò·µ»ï¿½
         if (isCooling)
         {
             return;
@@ -106,12 +107,12 @@ public class EnemyBase : MonoBehaviour
 
         Player.Instance.Injured(damage);
 
-        //¹¥»÷½øÈëÀäÈ´
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È´
         isCooling = true;
         attackTimer = attackTime;
     }
 
-    //ÊÜÉË
+    //ï¿½ï¿½ï¿½ï¿½
     public void Injured(float attack)
     {
         //if (isDead)
@@ -119,7 +120,7 @@ public class EnemyBase : MonoBehaviour
         //    return;
         //}
 
-        //ÅĞ¶Ï±¾´Î¹¥»÷ÊÇ·ñËÀÍö
+        //ï¿½Ğ¶Ï±ï¿½ï¿½Î¹ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½
         if (hp - attack <= 0)
         {
             hp = 0;
@@ -136,17 +137,17 @@ public class EnemyBase : MonoBehaviour
 
 
 
-    //ËÀÍö
+    //ï¿½ï¿½ï¿½ï¿½
     public void Dead()
     {
-        //Ôö¼ÓÍæ¼Ò¾­ÑéÖµ
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½Öµ
         Player.Instance.exp += provideExp;
         GamePanel.Instance.RenewExp();
 
-        //µôÂä½ğ±Ò
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         Instantiate(money_prefab, transform.position, Quaternion.identity);
 
-        //Ïú»Ù×Ô¼º
+        //ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½
         Destroy(gameObject);
     }
 
