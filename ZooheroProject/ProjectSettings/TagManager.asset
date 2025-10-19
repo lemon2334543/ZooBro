@@ -2,8 +2,10 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
-  tags: []
+  serializedVersion: 3
+  tags:
+  - Enemy
+  - Money
   layers:
   - Default
   - TransparentFX
@@ -11,7 +13,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Enemy
   - 
   - 
   - 
@@ -41,3 +43,26 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Map
+    uniqueID: 3373667473
+    locked: 0
+  - name: Player
+    uniqueID: 2073956501
+    locked: 0
+  - name: Enemy
+    uniqueID: 3079797061
+    locked: 0
+  - name: Effect
+    uniqueID: 2428551045
+    locked: 0
+  - name: Items
+    uniqueID: 3805252265
+    locked: 0
+  - name: UI
+    uniqueID: 3981536559
+    locked: 0
+  - name: 
+    uniqueID: 380457817
+    locked: 0
+  m_RenderingLayers:
+  - Default
