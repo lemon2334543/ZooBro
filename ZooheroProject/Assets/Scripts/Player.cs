@@ -4,40 +4,44 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    public static Player Instance; // µ¥ÀýÊµÀý£¬·½±ãÆäËû½Å±¾·ÃÎÊÍæ¼Ò
+    public static Player Instance; // ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     [SerializeField] 
-    private float speed = 5f; // Íæ¼ÒÒÆ¶¯ËÙ¶È
-    public bool isDead = false ; //ÊÇ·ñËÀÍö
-    internal int money = 30; //µ±Ç°½ð±Ò
-    public float hp = 15f; //Íæ¼ÒÑªÁ¿
-    internal float maxHp = 15f;//×î´óÉúÃü
-    internal float exp = 0;//¾­ÑéÖµ
+    private float speed = 5f; // ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½Ù¶ï¿½
+    public bool isDead = false ; //ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½
+    internal int money = 30; //ï¿½ï¿½Ç°ï¿½ï¿½ï¿½
+    public float hp = 15f; //ï¿½ï¿½ï¿½Ñªï¿½ï¿½
+    internal float maxHp = 15f;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    internal float exp = 0;//ï¿½ï¿½ï¿½ï¿½Öµ
 
-    private Keyboard keyboard; // ¼üÅÌÊäÈëÒýÓÃ
-    private Vector2 input; // µ±Ç°ÊäÈëÏòÁ¿
-    private Transform playerVisual; // Íæ¼ÒÊÓ¾õ±íÏÖ²¿·ÖµÄTransform
-    private Animator animator; // Íæ¼Ò¶¯»­¿ØÖÆÆ÷
-    private SpriteRenderer spriteRenderer; // Íæ¼ÒäÖÈ¾Æ÷£¬ÓÃÓÚ·­×ª½ÇÉ«
-    private bool isFacingRight = true; // ±ê¼ÇÍæ¼Òµ±Ç°ÊÇ·ñÃæÏòÓÒ²à
+    private Keyboard keyboard; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    private Vector2 input; // ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    private Transform playerVisual; // ï¿½ï¿½ï¿½ï¿½Ó¾ï¿½ï¿½ï¿½ï¿½Ö²ï¿½ï¿½Öµï¿½Transform
+    private Animator animator; // ï¿½ï¿½Ò¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    private SpriteRenderer spriteRenderer; // ï¿½ï¿½ï¿½ï¿½ï¿½È¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú·ï¿½×ªï¿½ï¿½É«
+    private bool isFacingRight = true; // ï¿½ï¿½ï¿½ï¿½ï¿½Òµï¿½Ç°ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò²ï¿½
 
-    // ¼üÅÌ°´¼ü×´Ì¬¸ú×Ù
-    private bool leftKeyPressed = false; // ×ó¼üÊÇ·ñ°´ÏÂ
-    private bool rightKeyPressed = false; // ÓÒ¼üÊÇ·ñ°´ÏÂ
-    private float leftKeyPressTime = 0f; // ×ó¼ü°´ÏÂÊ±¼ä´Á
-    private float rightKeyPressTime = 0f; // ÓÒ¼ü°´ÏÂÊ±¼ä´Á
+    // ï¿½ï¿½ï¿½Ì°ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½
+    private bool leftKeyPressed = false; // ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½
+    private bool rightKeyPressed = false; // ï¿½Ò¼ï¿½ï¿½Ç·ï¿½ï¿½ï¿½
+    private float leftKeyPressTime = 0f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½
+    private float rightKeyPressTime = 0f; // ï¿½Ò¼ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½
 
     private void Awake()
     {
-        Instance = this; // ÉèÖÃµ¥ÀýÊµÀý
-        // ²éÕÒÍæ¼ÒÊÓ¾õ±íÏÖ²¿·Ö
+        Instance = this; // ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½Êµï¿½ï¿½
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¾ï¿½ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½
         playerVisual = GameObject.Find("PlayerVisual").transform;
-        // »ñÈ¡¶¯»­¿ØÖÆÆ÷×é¼þ
+        // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         animator = playerVisual.GetComponent<Animator>();
-        // »ñÈ¡äÖÈ¾Æ÷×é¼þ
+        // ï¿½ï¿½È¡ï¿½ï¿½È¾ï¿½ï¿½ï¿½ï¿½ï¿½
         spriteRenderer = playerVisual.GetComponent<SpriteRenderer>();
-        // »ñÈ¡µ±Ç°¼üÅÌÊäÈëÉè±¸
+        // ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½è±¸
         keyboard = Keyboard.current;
+
+        
+        playerVisual.GetComponent<SpriteRenderer>().sprite =
+            UnityEngine.Resources.Load<Sprite>(GameManager.Instance.RoleDate.avatar);
 
     }
 
@@ -48,68 +52,68 @@ public class Player : MonoBehaviour
             return;
         }
 
-        ProcessInput(); // ´¦Àí¼üÅÌÊäÈë
-        Move(); // ÒÆ¶¯Íæ¼Ò
-        TurnAround(); // ´¦Àí×ªÏòÂß¼­
-        UpdateAnimation(); // ¸üÐÂ¶¯»­×´Ì¬
+        ProcessInput(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        Move(); // ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½
+        TurnAround(); // ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ß¼ï¿½
+        UpdateAnimation(); // ï¿½ï¿½ï¿½Â¶ï¿½ï¿½ï¿½×´Ì¬
     }
 
-    #region ¼üÅÌ³åÍ»¼ì²â
+    #region ï¿½ï¿½ï¿½Ì³ï¿½Í»ï¿½ï¿½ï¿½
     /// <summary>
-    /// ´¦Àí¼üÅÌÊäÈë£¬½â¾ö×óÓÒ¼ü³åÍ»ÎÊÌâ
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½ï¿½ï¿½Í»ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     private void ProcessInput()
     {
-        // ¼ì²â×ó¼ü×´Ì¬£¨A¼ü»ò×ó¼ýÍ·£©
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½
         bool leftKeyDown = keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed;
-        // ¼ì²âÓÒ¼ü×´Ì¬£¨D¼ü»òÓÒ¼ýÍ·£©
+        // ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½×´Ì¬ï¿½ï¿½Dï¿½ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½Í·ï¿½ï¿½
         bool rightKeyDown = keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed;
 
-        // »ñÈ¡´¹Ö±ÊäÈë£¨W/S¼ü»òÉÏÏÂ¼ýÍ·£©
+        // ï¿½ï¿½È¡ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ë£¨W/Sï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½Í·ï¿½ï¿½
         float verticalInput = GetVerticalInput();
 
-        // ¸üÐÂ×ó¼ü×´Ì¬ºÍÊ±¼ä´Á
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½Ê±ï¿½ï¿½ï¿½
         UpdateKeyState(ref leftKeyPressed, leftKeyDown, ref leftKeyPressTime);
-        // ¸üÐÂÓÒ¼ü×´Ì¬ºÍÊ±¼ä´Á
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½×´Ì¬ï¿½ï¿½Ê±ï¿½ï¿½ï¿½
         UpdateKeyState(ref rightKeyPressed, rightKeyDown, ref rightKeyPressTime);
 
-        // ¸ù¾Ý°´¼ü×´Ì¬È·¶¨Ë®Æ½ÊäÈë·½Ïò
+        // ï¿½ï¿½ï¿½Ý°ï¿½ï¿½ï¿½×´Ì¬È·ï¿½ï¿½Ë®Æ½ï¿½ï¿½ï¿½ë·½ï¿½ï¿½
         float horizontalInput = GetHorizontalInput();
 
-        // ×éºÏÊäÈëÏòÁ¿²¢¹éÒ»»¯£¨·ÀÖ¹¶Ô½ÇÏßÒÆ¶¯¹ý¿ì£©
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¹ï¿½Ô½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ì£©
         input = new Vector2(horizontalInput, verticalInput);
         if (input.magnitude > 1f) input.Normalize();
     }
 
     /// <summary>
-    /// »ñÈ¡´¹Ö±·½ÏòÊäÈë
+    /// ï¿½ï¿½È¡ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
-    /// <returns>´¹Ö±ÊäÈëÖµ£¨-1, 0, 1£©</returns>
+    /// <returns>ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½-1, 0, 1ï¿½ï¿½</returns>
     private float GetVerticalInput()
     {
-        // ÉÏ¼ü£¨W»òÉÏ¼ýÍ·£©
+        // ï¿½Ï¼ï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½Ï¼ï¿½Í·ï¿½ï¿½
         if (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed) return 1f;
-        // ÏÂ¼ü£¨S»òÏÂ¼ýÍ·£©
+        // ï¿½Â¼ï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½Â¼ï¿½Í·ï¿½ï¿½
         if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) return -1f;
-        // ÎÞ´¹Ö±ÊäÈë
+        // ï¿½Þ´ï¿½Ö±ï¿½ï¿½ï¿½ï¿½
         return 0f;
     }
 
     /// <summary>
-    /// ¸üÐÂ°´¼ü×´Ì¬ºÍ°´ÏÂÊ±¼ä
+    /// ï¿½ï¿½ï¿½Â°ï¿½ï¿½ï¿½×´Ì¬ï¿½Í°ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
     /// </summary>
-    /// <param name="keyPressed">°´¼üÊÇ·ñ°´ÏÂµÄÒýÓÃ</param>
-    /// <param name="keyDown">µ±Ç°°´¼ü×´Ì¬</param>
-    /// <param name="pressTime">°´¼ü°´ÏÂÊ±¼äµÄÒýÓÃ</param>
+    /// <param name="keyPressed">ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½</param>
+    /// <param name="keyDown">ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½×´Ì¬</param>
+    /// <param name="pressTime">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</param>
     private void UpdateKeyState(ref bool keyPressed, bool keyDown, ref float pressTime)
     {
-        // °´¼ü¸Õ¸Õ°´ÏÂ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Õ¸Õ°ï¿½ï¿½ï¿½
         if (keyDown && !keyPressed)
         {
             keyPressed = true;
-            pressTime = Time.time; // ¼ÇÂ¼°´ÏÂÊ±¼ä
+            pressTime = Time.time; // ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
         }
-        // °´¼üÊÍ·Å
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½
         else if (!keyDown)
         {
             keyPressed = false;
@@ -117,68 +121,68 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// È·¶¨Ë®Æ½ÊäÈë·½Ïò£¬½â¾ö×óÓÒ¼üÍ¬Ê±°´ÏÂµÄ³åÍ»
+    /// È·ï¿½ï¿½Ë®Æ½ï¿½ï¿½ï¿½ë·½ï¿½ò£¬½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½Í¬Ê±ï¿½ï¿½ï¿½ÂµÄ³ï¿½Í»
     /// </summary>
-    /// <returns>Ë®Æ½ÊäÈëÖµ£¨-1, 0, 1£©</returns>
+    /// <returns>Ë®Æ½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½-1, 0, 1ï¿½ï¿½</returns>
     private float GetHorizontalInput()
     {
-        // ×óÓÒ¼üÍ¬Ê±°´ÏÂÊ±£¬±È½Ï°´ÏÂÊ±¼ä¾ö¶¨·½Ïò£¨ºó°´ÏÂµÄ·½Ïò¸²¸ÇÏÈ°´ÏÂµÄ·½Ïò£©
+        // ï¿½ï¿½ï¿½Ò¼ï¿½Í¬Ê±ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½È½Ï°ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ò£¨ºï¿½ï¿½ÂµÄ·ï¿½ï¿½ò¸²¸ï¿½ï¿½È°ï¿½ï¿½ÂµÄ·ï¿½ï¿½ï¿½
         if (leftKeyPressed && rightKeyPressed)
             return rightKeyPressTime > leftKeyPressTime ? 1f : -1f;
 
-        // µ¥¼ü°´ÏÂÊ±·µ»ØÏàÓ¦·½Ïò
-        if (leftKeyPressed) return -1f; // ×ó¼ü°´ÏÂ
-        if (rightKeyPressed) return 1f; // ÓÒ¼ü°´ÏÂ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½
+        if (leftKeyPressed) return -1f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        if (rightKeyPressed) return 1f; // ï¿½Ò¼ï¿½ï¿½ï¿½ï¿½ï¿½
 
-        // ÎÞË®Æ½ÊäÈë
+        // ï¿½ï¿½Ë®Æ½ï¿½ï¿½ï¿½ï¿½
         return 0f;
     }
     #endregion
 
     /// <summary>
-    /// ÒÆ¶¯Íæ¼Ò½ÇÉ«
+    /// ï¿½Æ¶ï¿½ï¿½ï¿½Ò½ï¿½É«
     /// </summary>
     public void Move() => transform.Translate(input * speed * Time.deltaTime);
 
     /// <summary>
-    /// ´¦ÀíÍæ¼Ò×ªÏòÂß¼­
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ß¼ï¿½
     /// </summary>
     public void TurnAround()
     {
-        // ÓÐË®Æ½ÊäÈëÊ±²Å´¦Àí×ªÏò
+        // ï¿½ï¿½Ë®Æ½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Å´ï¿½ï¿½ï¿½×ªï¿½ï¿½
         if (input.x != 0)
         {
-            // ¼ì²â·½ÏòÊÇ·ñ¸Ä±ä£¨´ÓÓÒ×ª×ó»ò´Ó×ó×ªÓÒ£©
+            // ï¿½ï¿½â·½ï¿½ï¿½ï¿½Ç·ï¿½Ä±ä£¨ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½Ò£ï¿½
             bool directionChanged = (input.x > 0 && !isFacingRight) || (input.x < 0 && isFacingRight);
 
-            // ·½Ïò¸Ä±äÇÒÍæ¼ÒÕýÔÚÒÆ¶¯Ê±´¥·¢duang¶¯»­
+            // ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½Ê±ï¿½ï¿½ï¿½ï¿½duangï¿½ï¿½ï¿½ï¿½
             if (directionChanged && input.magnitude > 0.1f)
             {
                 animator.SetTrigger("duang");
             }
 
-            // ¸üÐÂ³¯Ïò×´Ì¬
+            // ï¿½ï¿½ï¿½Â³ï¿½ï¿½ï¿½×´Ì¬
             isFacingRight = input.x > 0;
-            // ¸üÐÂ¾«ÁéäÖÈ¾·½Ïò£¨·­×ªXÖá£©
+            // ï¿½ï¿½ï¿½Â¾ï¿½ï¿½ï¿½ï¿½ï¿½È¾ï¿½ï¿½ï¿½ò£¨·ï¿½×ªXï¿½á£©
             spriteRenderer.flipX = !isFacingRight;
         }
     }
 
     /// <summary>
-    /// ¸üÐÂÍæ¼Ò¶¯»­×´Ì¬
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¶ï¿½ï¿½ï¿½×´Ì¬
     /// </summary>
     private void UpdateAnimation()
     {
 
-        // ¼ì²âÍæ¼ÒÊÇ·ñÔÚÒÆ¶¯£¨ÊäÈëÏòÁ¿³¤¶È´óÓÚãÐÖµ£©
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½
         bool isMoving = input.magnitude > 0.1f;
 
         if (animator != null)
         {
-            // ¸üÐÂÒÆ¶¯×´Ì¬£¨¿ØÖÆRun/Idle¶¯»­£©
+            // ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Run/Idleï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             animator.SetBool("isMove", isMoving);
 
-            // µ±Í£Ö¹ÒÆ¶¯Ê±Á¢¼´´¥·¢duang¶¯»­
+            // ï¿½ï¿½Í£Ö¹ï¿½Æ¶ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½duangï¿½ï¿½ï¿½ï¿½
             if (!isMoving && input.magnitude <= 0.1f)
             {
                 animator.SetTrigger("duang");
@@ -187,7 +191,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Íæ¼ÒÊÜÉËÂß¼­
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
     /// </summary>
     public void Injured(float attack) 
     {
@@ -196,7 +200,7 @@ public class Player : MonoBehaviour
             return;
         }
 
-        //ÅÐ¶Ï±¾´Î¹¥»÷ÊÇ·ñËÀÍö
+        //ï¿½Ð¶Ï±ï¿½ï¿½Î¹ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½
         if (hp - attack <= 0 )
         {
             hp = 0;
@@ -206,14 +210,14 @@ public class Player : MonoBehaviour
             hp -= attack;
         }
 
-        //¸üÐÂÑªÌõ
+        //ï¿½ï¿½ï¿½ï¿½Ñªï¿½ï¿½
         GamePanel.Instance.RenewHp();
     }
 
 
 
     /// <summary>
-    /// Íæ¼Ò¹¥»÷Âß¼­
+    /// ï¿½ï¿½Ò¹ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
     /// </summary>
     public void Attack() 
     {
@@ -222,7 +226,7 @@ public class Player : MonoBehaviour
 
 
     /// <summary>
-    /// Íæ¼ÒËÀÍöÂß¼­
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
     /// </summary>
     public void Dead()
     {
@@ -230,7 +234,7 @@ public class Player : MonoBehaviour
 
         animator.speed = 0;
 
-        //todo µ÷ÓÃÓÎÏ·Ê§°Üº¯Êý
+        //todo ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·Ê§ï¿½Üºï¿½ï¿½ï¿½
         LevelController.Instance.BadGame();
     }
 
