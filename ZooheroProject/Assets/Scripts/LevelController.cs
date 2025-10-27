@@ -1,4 +1,4 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,6 +17,7 @@ public class LevelController : MonoBehaviour
     public GameObject enemy1_prefab;
     public List<EnemyBase> enemy_list;
     public Transform _map;
+    private TextAsset levelTextAsset;
 
     private void Awake()
     {
@@ -31,17 +32,157 @@ public class LevelController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+<<<<<<< Updated upstream
         //�ؿ�ʱ��
         waveTimer = 15 + 5 * GameManager.Instance.currentWave;
+=======
+        waveTimer = 15 + 5 * GameManager.Instance.currentWave; //保存关卡信息
+>>>>>>> Stashed changes
 
+
+
+        //生成敌人
         GenerateEnemy();
+
+        //生成武器
+        GenerateWeapon();
+
+
+
+
     }
 
+<<<<<<< Updated upstream
     // ��ʼ���ɵ��˵���ڷ���
+=======
+    #region 原版调用
+    //private void GenerateWeapon()
+    //{
+    //    // 开始生成武器（调试信息）
+    //    Debug.Log("生成武器开始");
+
+    //    // 计数器，用于记录当前是第几把武器
+    //    int i = 0;
+
+    //    // 遍历玩家当前拥有的所有武器数据
+    //    foreach (WeaponData weaponData in GameManager.Instance.currentWeapons)
+    //    {
+    //        // 根据武器名称加载对应的预制体
+    //        // 路径格式：Resources/Prefabs/武器名称
+    //        GameObject go = UnityEngine.Resources.Load<GameObject>("Prefabs/" + weaponData.name);
+
+    //        // 在玩家武器挂点上创建武器实例
+    //        // 挂点位置：Player.Instance.weaponsPos的第i个子节点
+    //        WeaponBase wb = Instantiate(go, Player.Instance.weaponsPos.GetChild(i)).GetComponent<WeaponBase>();
+
+    //        // 将武器数据绑定到新创建的武器实例上
+    //        wb.data = weaponData;
+
+
+    //        i++;
+    //    }
+
+    //    // 结束生成武器（调试信息）
+    //    Debug.Log("生成武器结束");
+
+    //}
+    #endregion
+
+    private void GenerateWeapon()
+    {
+        Debug.Log("生成武器开始");
+        //初始化武器系统
+        GameManager.Instance.currentWeaponNames = new List<string>();
+
+        //手动添加 武器名称
+        GameManager.Instance.currentWeaponNames.AddRange(new List<string> {
+            "拳","十字弓"});
+
+        // 防御性检查 1：确保Player实例存在
+        if (Player.Instance == null)
+        {
+            Debug.LogError("Player.Instance 未初始化！");
+            return;
+        }
+
+        // 防御性检查 2：确保武器挂点存在
+        if (Player.Instance.weaponsPos == null)
+        {
+            Debug.LogError("武器挂点 weaponsPos 未初始化！");
+            return;
+        }
+
+        int i = 0;
+        int slotCount = Player.Instance.weaponsPos.childCount;
+        int weaponCount = GameManager.Instance.currentWeaponNames.Count;
+
+        Debug.Log($"准备生成武器：数量={weaponCount}, 可用槽位={slotCount}");
+
+        foreach (string weaponName in GameManager.Instance.currentWeaponNames)
+        {
+            // 防御性检查 3：确保槽位足够
+            if (i >= slotCount)
+            {
+                Debug.LogError($"武器槽位不足！需要：{i + 1}个，实际：{slotCount}个");
+                break;
+            }
+
+            // 1. 获取武器数据
+            WeaponData weaponData = GameManager.Instance.GetWeaponByName(weaponName);
+
+            // 防御性检查 4：武器数据是否存在
+            if (weaponData == null)
+            {
+                Debug.LogError($"武器数据不存在：{weaponName}");
+                i++;
+                continue;
+            }
+
+            // 2. 加载武器预制体
+            GameObject weaponPrefab = UnityEngine.Resources.Load<GameObject>($"Prefabs/{weaponData.name}");
+
+            // 防御性检查 5：预制体是否存在
+            if (weaponPrefab == null)
+            {
+                Debug.LogError($"预制体未找到：{weaponData.name}");
+                i++;
+                continue;
+            }
+
+            // 3. 获取武器槽位
+            Transform weaponSlot = Player.Instance.weaponsPos.GetChild(i);
+
+            // 4. 实例化武器
+            GameObject weaponObj = Instantiate(weaponPrefab, weaponSlot);
+
+            // 5. 获取武器组件并绑定数据
+            WeaponBase weaponComponent = weaponObj.GetComponent<WeaponBase>();
+
+            // 防御性检查 6：武器组件是否存在
+            if (weaponComponent == null)
+            {
+                Debug.LogError($"预制体缺少WeaponBase组件：{weaponData.name}");
+                i++;
+                continue;
+            }
+
+            weaponComponent.data = weaponData;
+            Debug.Log($"成功生成武器：{weaponData.name} 在槽位 {i}");
+
+            i++;
+        }
+
+        Debug.Log($"生成武器结束，计划生成：{weaponCount}，实际生成：{i} 把武器");
+    }
+
+
+    // ��ʼ���ɵ��˵���ڷ���
+>>>>>>> Stashed changes
     private void GenerateEnemy()
     {
         // �����������ɵ�Э��
         StartCoroutine(SwawnEnemies());
+
     }
 
     // �������ɵ�Э��

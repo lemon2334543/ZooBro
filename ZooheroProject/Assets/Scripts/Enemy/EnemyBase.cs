@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
@@ -139,8 +139,13 @@ public class EnemyBase : MonoBehaviour
     //ËÀÍö
     public void Dead()
     {
+<<<<<<< Updated upstream
         //Ôö¼ÓÍæ¼Ò¾­ÑéÖµ
         Player.Instance.exp += provideExp;
+=======
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½Öµ
+        GameManager.Instance.exp += provideExp;
+>>>>>>> Stashed changes
         GamePanel.Instance.RenewExp();
 
         //µôÂä½ğ±Ò
