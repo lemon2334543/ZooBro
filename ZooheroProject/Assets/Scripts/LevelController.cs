@@ -1,4 +1,4 @@
-using NUnit.Framework;
+ï»¿using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,12 +10,12 @@ using UnityEngine.SceneManagement;
 
 public class LevelController : MonoBehaviour
 {
-    public static LevelController Instance;//µ÷ÓÃ
+    public static LevelController Instance;//ï¿½ï¿½ï¿½ï¿½
 
-    public float waveTimer;//¹Ø¿¨Ê±¼ä
+    public float waveTimer;//ï¿½Ø¿ï¿½Ê±ï¿½ï¿½
 
-    public GameObject _failPanel;//Ê§°ÜÃæ°å
-    public GameObject _successPanel;//³É¹¦Ãæ°å
+    public GameObject _failPanel;//Ê§ï¿½ï¿½ï¿½ï¿½ï¿½
+    public GameObject _successPanel;//ï¿½É¹ï¿½ï¿½ï¿½ï¿½
 
     public GameObject enemy1_prefab;
     public GameObject enemy2_prefab;
@@ -43,9 +43,7 @@ public class LevelController : MonoBehaviour
 
         _failPanel = GameObject.Find("FailPanel");
         _successPanel = GameObject.Find("SuccessPanel");
-<<<<<<< Updated upstream
-        enemy1_prefab = Resources.Load<GameObject>("Prefabs/Enemy1");
-=======
+        
         enemy1_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemy1");
         enemy2_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemy2");
         enemy3_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemy3");
@@ -53,7 +51,6 @@ public class LevelController : MonoBehaviour
         enemy5_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemy5");
         
         redfork_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/RedFork");
->>>>>>> Stashed changes
 
         _map = GameObject.Find("Map").transform;
         
@@ -77,48 +74,16 @@ public class LevelController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-<<<<<<< Updated upstream
-        //¹Ø¿¨Ê±¼ä
-        waveTimer = 15 + 5 * GameManager.Instance.currentWave;
-
-=======
         Debug.Log((int)GameManager.Instance.currentWave);
         CurrentLevelDate = LevelDates[(int)GameManager.Instance.currentWave];//ä¿å­˜å½“å‰å…³å¡å­¦ä¿¡æ¯xz
         waveTimer = CurrentLevelDate.waveTimer;        
         
->>>>>>> Stashed changes
         GenerateEnemy();
     }
 
-    // ¿ªÊ¼Éú³ÉµÐÈËµÄÈë¿Ú·½·¨
+    // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Éµï¿½ï¿½Ëµï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½
     private void GenerateEnemy()
     {
-<<<<<<< Updated upstream
-        // Æô¶¯µÐÈËÉú³ÉµÄÐ­³Ì
-        StartCoroutine(SwawnEnemies());
-    }
-
-    // µÐÈËÉú³ÉµÄÐ­³Ì
-    IEnumerator SwawnEnemies()
-    {
-        // Ñ­»·Ìõ¼þ£º²¨´Î¼ÆÊ±Æ÷´óÓÚ0 ²¢ÇÒ Íæ¼ÒÃ»ÓÐËÀÍö
-        while (waveTimer > 0 && !Player.Instance.isDead)
-        {
-            // µÈ´ý0.5ÃëÔÙÉú³ÉÏÂÒ»¸öµÐÈË£¨¿ØÖÆÉú³ÉÆµÂÊ£©
-            yield return new WaitForSeconds(0.5f);
-
-            // ÔÚµØÍ¼·¶Î§ÄÚ»ñÈ¡Ò»¸öËæ»úÉú³ÉÎ»ÖÃ
-            var spawnPoint = GetRandomPosition(_map.GetComponent<SpriteRenderer>().bounds);
-
-            // ÔÚÉú³ÉµãÊµÀý»¯µÐÈËÔ¤ÖÆÌå£¬²¢»ñÈ¡µÐÈË×é¼þ
-            EnemyBase go = Instantiate(enemy1_prefab, spawnPoint, Quaternion.identity).GetComponent<EnemyBase>();
-
-            //±£Ö¤¼¤»î×´Ì¬
-            go.gameObject.SetActive(true);
-
-            // ½«ÐÂÉú³ÉµÄµÐÈËÌí¼Óµ½µÐÈËÁÐ±íÖÐ£¬±ãÓÚºóÐø¹ÜÀí
-            enemy_list.Add(go);
-=======
         ////////////////////////////å¯ä»¥åœ¨è¿™é‡ŒæŽ§åˆ¶éš¾åº¦(å¢žåŠ æ•°é‡)//////////////////////////
         foreach (WaveDate waveDate in CurrentLevelDate.enemys)
         {
@@ -128,7 +93,6 @@ public class LevelController : MonoBehaviour
                 StartCoroutine(SwawnEnemies(waveDate));
             }
             
->>>>>>> Stashed changes
         }
         
         
@@ -141,7 +105,10 @@ public class LevelController : MonoBehaviour
         yield return new WaitForSeconds(waveDate.timeAxis);
         if (waveTimer>0 && !Player.Instance.isDead)
         {
-            
+            // ï¿½È´ï¿½0.5ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ë£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½Ê£ï¿½
+            yield return new WaitForSeconds(0.5f);
+
+            // ï¿½Úµï¿½Í¼ï¿½ï¿½Î§ï¿½Ú»ï¿½È¡Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
             var spawnPoint = GetRandomPosition(_map.GetComponent<SpriteRenderer>().bounds);
             GameObject go = Instantiate(redfork_prefab, spawnPoint, Quaternion.identity);
             yield return new WaitForSeconds(1);
@@ -174,25 +141,24 @@ public class LevelController : MonoBehaviour
             }
             
         }
-        
     }
 
-    // ÔÚµØÍ¼±ß½çÄÚ»ñÈ¡Ëæ»úÎ»ÖÃ
+    // ï¿½Úµï¿½Í¼ï¿½ß½ï¿½ï¿½Ú»ï¿½È¡ï¿½ï¿½ï¿½Î»ï¿½ï¿½
     private Vector3 GetRandomPosition(Bounds bounds)
     {
-        // °²È«¾àÀë£ºÈ·±£µÐÈË²»»áÉú³ÉÔÚÌ«¿¿½üµØÍ¼±ßÔµµÄÎ»ÖÃ
+        // ï¿½ï¿½È«ï¿½ï¿½ï¿½ë£ºÈ·ï¿½ï¿½ï¿½ï¿½ï¿½Ë²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½Ôµï¿½ï¿½Î»ï¿½ï¿½
         float safeDistance = 3.5f;
 
-        // ÔÚµØÍ¼±ß½çÄÚËæ»úÉú³ÉX×ø±ê£¨¿¼ÂÇ°²È«¾àÀë£©
+        // ï¿½Úµï¿½Í¼ï¿½ß½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ê£¨ï¿½ï¿½ï¿½Ç°ï¿½È«ï¿½ï¿½ï¿½ë£©
         float randomX = UnityEngine.Random.Range(bounds.min.x + safeDistance, bounds.max.x - safeDistance);
 
-        // ÔÚµØÍ¼±ß½çÄÚËæ»úÉú³ÉY×ø±ê£¨¿¼ÂÇ°²È«¾àÀë£©
+        // ï¿½Úµï¿½Í¼ï¿½ß½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Yï¿½ï¿½ï¿½ê£¨ï¿½ï¿½ï¿½Ç°ï¿½È«ï¿½ï¿½ï¿½ë£©
         float randomY = UnityEngine.Random.Range(bounds.min.y + safeDistance, bounds.max.y - safeDistance);
 
-        // Z×ø±ê¹Ì¶¨Îª0£¨2DÓÎÏ·£©
+        // Zï¿½ï¿½ï¿½ï¿½Ì¶ï¿½Îª0ï¿½ï¿½2Dï¿½ï¿½Ï·ï¿½ï¿½
         float randomZ = 0f;
 
-        // ·µ»ØËæ»úÉú³ÉµÄÎ»ÖÃÏòÁ¿
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Éµï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         return new Vector3(randomX, randomY, randomZ);
     }
 
@@ -216,13 +182,13 @@ public class LevelController : MonoBehaviour
     
 
 
-    //ÓÎÏ·Ê¤Àû
+    //ï¿½ï¿½Ï·Ê¤ï¿½ï¿½
    public void GoodGame() 
     {
         _successPanel.GetComponent<CanvasGroup>().alpha = 1;
         StartCoroutine(GoMenu());
 
-        //todo ËùÓÐµÐÈËÏûÊ§
+        //todo ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½Ê§
         for (int i = 0; i < enemy_list.Count; i++)
         {
             if (enemy_list[i])
@@ -233,17 +199,17 @@ public class LevelController : MonoBehaviour
         }
     }
 
-    //todo ²¨´ÎÍê³É
+    //todo ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 
 
-    //ÓÎÏ·Ê§°Ü
+    //ï¿½ï¿½Ï·Ê§ï¿½ï¿½
     public void BadGame() 
     {
         _failPanel.GetComponent<CanvasGroup>().alpha = 1;
         StartCoroutine(GoMenu());
 
-        //todo ËùÓÐµÐÈËÏûÊ§
+        //todo ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½Ê§
         for (int i = 0; i < enemy_list.Count; i++)
         {
             if (enemy_list[i])
@@ -254,7 +220,7 @@ public class LevelController : MonoBehaviour
         }
     }
 
-    //·µ»ØÖ÷²Ëµ¥
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½
     IEnumerator GoMenu()
     {
         yield return new WaitForSeconds(3);

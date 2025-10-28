@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
-<<<<<<< Updated upstream
+
     public float hp; //ÑªÁ¿
     public float damage; //¹¥»÷Á¦
     public float speed; //ÒÆ¶¯ËÙ¶È
@@ -13,36 +13,20 @@ public class EnemyBase : MonoBehaviour
     public bool isCooling = false; //¹¥»÷ÀäÈ´
     public int provideExp = 1; //¾­ÑéÖµ
 
-    public GameObject money_prefab;//½ğ±ÒÔ¤ÖÆÌå
- 
-=======
-    // public float hp; //Ñªï¿½ï¿½
-    // public float damage; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-    // public float speed; //ï¿½Æ¶ï¿½ï¿½Ù¶ï¿½
-    // public float attackTime; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-    // public int provideExp = 1; //ï¿½ï¿½ï¿½ï¿½
-    //
+    public GameObject money_prefab;//????????
     
-    public float attackTimer = 0; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
-    public bool isContact = false; //ï¿½Ç·ï¿½Ó´ï¿½ï¿½ï¿½ï¿½
-    public bool isCooling = false; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È´
-    
-
-    public GameObject money_prefab;//ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½
-    
-    [SerializeField]//ç¬¬å…«é›†
+    [SerializeField]//µÚ°Ë¼¯
     public   EnemyDate EnemyDate;
->>>>>>> Stashed changes
-
     
-    //æŠ€èƒ½è®¡ç®—å™¨
+    //¼¼ÄÜ¼ÆËãÆ÷
     public float skillTimer = 0;
-    public bool skilling = false;//æŠ€èƒ½æŒç»­
+    public bool skilling = false;//¼¼ÄÜ³ÖĞø
 
     
     private void Awake()
     {
-        money_prefab = Resources.Load<GameObject>("Prefabs/Money");
+        money_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Money");//ĞŞ¸Äºó
+        // money_prefab = Resources.Load<GameObject>("Prefabs/Money");  //ĞŞ¸ÄÇ°
     }
 
     private void Start()
@@ -102,7 +86,7 @@ public class EnemyBase : MonoBehaviour
             float dis = Vector2.Distance(transform.position, Player.Instance.transform.position);
             if (dis <= EnemyDate.range)
             {
-                //è·ç¦»åˆ¤å®šï¼Œå‘åŠ¨æŠ€èƒ½ï¼›
+                //¾àÀëÅĞ¶¨£¬·¢¶¯¼¼ÄÜ£»
                 Vector2 dir = (Player.Instance.transform.position - transform.position).normalized;
                 LaunchSkill(dir);
                 skillTimer = EnemyDate.SkillTime;
@@ -118,7 +102,7 @@ public class EnemyBase : MonoBehaviour
             }
         }
     }
-    //å­ç±»å®ç°
+    //×ÓÀàÊµÏÖ
     public virtual void LaunchSkill(Vector2 dir)
     {
         
@@ -140,15 +124,12 @@ public class EnemyBase : MonoBehaviour
     //×Ô¶¯ÒÆ¶¯
     public void Move() 
     {
-<<<<<<< Updated upstream
         //µÃµ½¹éÒ»»¯µÄÖ±Ïß¾àÀë£¬È»ºóµ÷ÓÃ ¾àÀë * ËÙ¶È * ¹Ì¶¨ÔËĞĞËÙ¶È
-=======
-        //ï¿½Ãµï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ß¾ï¿½ï¿½ë£¬È»ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ * ï¿½Ù¶ï¿½ * ï¿½Ì¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
+        //ï¿½Ãµï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ß¾ï¿½ï¿½ë£¬È»ï¿½ï¿½ï¿½ï¿½ï¿? ï¿½ï¿½ï¿½ï¿½ * ï¿½Ù¶ï¿½ * ï¿½Ì¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
         if (skilling)
         {
             return;
         }
->>>>>>> Stashed changes
         Vector2 direction = (Player.Instance.transform.position - transform.position).normalized;
         transform.Translate(direction * EnemyDate.speed * Time.deltaTime);
 
@@ -195,14 +176,11 @@ public class EnemyBase : MonoBehaviour
         //{
         //    return;
         //}
-
-<<<<<<< Updated upstream
+        
         //ÅĞ¶Ï±¾´Î¹¥»÷ÊÇ·ñËÀÍö
         if (hp - attack <= 0)
-=======
         //ï¿½Ğ¶Ï±ï¿½ï¿½Î¹ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½
         if (EnemyDate.hp - attack <= 0)
->>>>>>> Stashed changes
         {
             EnemyDate.hp = 0;
             Dead();
@@ -221,13 +199,10 @@ public class EnemyBase : MonoBehaviour
     //ËÀÍö
     public void Dead()
     {
-<<<<<<< Updated upstream
         //Ôö¼ÓÍæ¼Ò¾­ÑéÖµ
         Player.Instance.exp += provideExp;
-=======
-        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½Öµ
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½Ö?
         Player.Instance.exp += EnemyDate.provideExp;
->>>>>>> Stashed changes
         GamePanel.Instance.RenewExp();
 
         //µôÂä½ğ±Ò
