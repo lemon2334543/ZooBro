@@ -57,8 +57,8 @@ namespace TMPro.Examples
                 m_floatingText_Transform = m_floatingText.transform;
                 m_floatingText_Transform.position = m_transform.position + new Vector3(0, 15f, 0);
 
-                //m_textMeshPro.fontAsset = Resources.Load("Fonts & Materials/JOKERMAN SDF", typeof(TextMeshProFont)) as TextMeshProFont; // User should only provide a string to the resource.
-                //m_textMeshPro.fontSharedMaterial = Resources.Load("Fonts & Materials/LiberationSans SDF", typeof(Material)) as Material;
+                //m_textMeshPro.fontAsset = UnityEngine.Resources.Load("Fonts & Materials/JOKERMAN SDF", typeof(TextMeshProFont)) as TextMeshProFont; // User should only provide a string to the resource.
+                //m_textMeshPro.fontSharedMaterial = UnityEngine.Resources.Load("Fonts & Materials/LiberationSans SDF", typeof(Material)) as Material;
 
                 m_textMeshPro.alignment = TextAlignmentOptions.Center;
                 m_textMeshPro.color = new Color32((byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(0, 255), 255);
@@ -79,7 +79,7 @@ namespace TMPro.Examples
                 m_floatingText_Transform.position = m_transform.position + new Vector3(0, 15f, 0);
 
                 m_textMesh = m_floatingText.AddComponent<TextMesh>();
-                m_textMesh.font = Resources.Load<Font>("Fonts/ARIAL");
+                m_textMesh.font = UnityEngine.Resources.Load<Font>("Fonts/ARIAL");
                 m_textMesh.GetComponent<Renderer>().sharedMaterial = m_textMesh.font.material;
                 m_textMesh.color = new Color32((byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(0, 255), 255);
                 m_textMesh.anchor = TextAnchor.LowerCenter;

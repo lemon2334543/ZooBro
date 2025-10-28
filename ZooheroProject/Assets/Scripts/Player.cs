@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+<<<<<<< HEAD
     public static Player Instance; // 单例实例，方便其他脚本访问玩家
 
     [SerializeField] 
@@ -48,6 +49,46 @@ public class Player : MonoBehaviour
         {
             GameManager.Instance.InitProp();//初始化角色
         }
+=======
+    public static Player Instance; // ����ʵ�������������ű��������
+
+    [SerializeField] 
+    private float speed = 5f; // ����ƶ��ٶ�
+    public bool isDead = false ; //�Ƿ�����
+    internal int money = 30; //��ǰ���
+    public float hp = 15f; //���Ѫ��
+    internal float maxHp = 15f;//�������
+    internal float exp = 0;//����ֵ
+
+    private Keyboard keyboard; // ������������
+    private Vector2 input; // ��ǰ��������
+    private Transform playerVisual; // ����Ӿ����ֲ��ֵ�Transform
+    private Animator animator; // ��Ҷ���������
+    private SpriteRenderer spriteRenderer; // �����Ⱦ�������ڷ�ת��ɫ
+    private bool isFacingRight = true; // �����ҵ�ǰ�Ƿ������Ҳ�
+
+    // ���̰���״̬����
+    private bool leftKeyPressed = false; // ����Ƿ���
+    private bool rightKeyPressed = false; // �Ҽ��Ƿ���
+    private float leftKeyPressTime = 0f; // �������ʱ���
+    private float rightKeyPressTime = 0f; // �Ҽ�����ʱ���
+
+    private void Awake()
+    {
+        Instance = this; // ���õ���ʵ��
+        // ��������Ӿ����ֲ���
+        playerVisual = GameObject.Find("PlayerVisual").transform;
+        // ��ȡ�������������
+        animator = playerVisual.GetComponent<Animator>();
+        // ��ȡ��Ⱦ�����
+        spriteRenderer = playerVisual.GetComponent<SpriteRenderer>();
+        // ��ȡ��ǰ���������豸
+        keyboard = Keyboard.current;
+
+        
+        playerVisual.GetComponent<SpriteRenderer>().sprite =
+            UnityEngine.Resources.Load<Sprite>(GameManager.Instance.RoleDate.avatar);
+>>>>>>> Bidoofa2
 
     }
 
@@ -58,6 +99,7 @@ public class Player : MonoBehaviour
             return;
         }
 
+<<<<<<< HEAD
         ProcessInput(); // 处理键盘输入
         Move(); // 移动玩家
         TurnAround(); // 处理转向逻辑
@@ -87,11 +129,43 @@ public class Player : MonoBehaviour
         float horizontalInput = GetHorizontalInput();
 
         // 组合输入向量并归一化（防止对角线移动过快）
+=======
+        ProcessInput(); // �����������
+        Move(); // �ƶ����
+        TurnAround(); // ����ת���߼�
+        UpdateAnimation(); // ���¶���״̬
+    }
+
+    #region ���̳�ͻ���
+    /// <summary>
+    /// ����������룬������Ҽ���ͻ����
+    /// </summary>
+    private void ProcessInput()
+    {
+        // ������״̬��A�������ͷ��
+        bool leftKeyDown = keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed;
+        // ����Ҽ�״̬��D�����Ҽ�ͷ��
+        bool rightKeyDown = keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed;
+
+        // ��ȡ��ֱ���루W/S�������¼�ͷ��
+        float verticalInput = GetVerticalInput();
+
+        // �������״̬��ʱ���
+        UpdateKeyState(ref leftKeyPressed, leftKeyDown, ref leftKeyPressTime);
+        // �����Ҽ�״̬��ʱ���
+        UpdateKeyState(ref rightKeyPressed, rightKeyDown, ref rightKeyPressTime);
+
+        // ���ݰ���״̬ȷ��ˮƽ���뷽��
+        float horizontalInput = GetHorizontalInput();
+
+        // ���������������һ������ֹ�Խ����ƶ����죩
+>>>>>>> Bidoofa2
         input = new Vector2(horizontalInput, verticalInput);
         if (input.magnitude > 1f) input.Normalize();
     }
 
     /// <summary>
+<<<<<<< HEAD
     /// 获取垂直方向输入
     /// </summary>
     /// <returns>垂直输入值（-1, 0, 1）</returns>
@@ -102,10 +176,23 @@ public class Player : MonoBehaviour
         // 下键（S或下箭头）
         if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) return -1f;
         // 无垂直输入
+=======
+    /// ��ȡ��ֱ��������
+    /// </summary>
+    /// <returns>��ֱ����ֵ��-1, 0, 1��</returns>
+    private float GetVerticalInput()
+    {
+        // �ϼ���W���ϼ�ͷ��
+        if (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed) return 1f;
+        // �¼���S���¼�ͷ��
+        if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) return -1f;
+        // �޴�ֱ����
+>>>>>>> Bidoofa2
         return 0f;
     }
 
     /// <summary>
+<<<<<<< HEAD
     /// 更新按键状态和按下时间
     /// </summary>
     /// <param name="keyPressed">按键是否按下的引用</param>
@@ -120,6 +207,22 @@ public class Player : MonoBehaviour
             pressTime = Time.time; // 记录按下时间
         }
         // 按键释放
+=======
+    /// ���°���״̬�Ͱ���ʱ��
+    /// </summary>
+    /// <param name="keyPressed">�����Ƿ��µ�����</param>
+    /// <param name="keyDown">��ǰ����״̬</param>
+    /// <param name="pressTime">��������ʱ�������</param>
+    private void UpdateKeyState(ref bool keyPressed, bool keyDown, ref float pressTime)
+    {
+        // �����ոհ���
+        if (keyDown && !keyPressed)
+        {
+            keyPressed = true;
+            pressTime = Time.time; // ��¼����ʱ��
+        }
+        // �����ͷ�
+>>>>>>> Bidoofa2
         else if (!keyDown)
         {
             keyPressed = false;
@@ -127,6 +230,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< HEAD
     /// 确定水平输入方向，解决左右键同时按下的冲突
     /// </summary>
     /// <returns>水平输入值（-1, 0, 1）</returns>
@@ -141,17 +245,38 @@ public class Player : MonoBehaviour
         if (rightKeyPressed) return 1f; // 右键按下
 
         // 无水平输入
+=======
+    /// ȷ��ˮƽ���뷽�򣬽�����Ҽ�ͬʱ���µĳ�ͻ
+    /// </summary>
+    /// <returns>ˮƽ����ֵ��-1, 0, 1��</returns>
+    private float GetHorizontalInput()
+    {
+        // ���Ҽ�ͬʱ����ʱ���Ƚϰ���ʱ��������򣨺��µķ��򸲸��Ȱ��µķ���
+        if (leftKeyPressed && rightKeyPressed)
+            return rightKeyPressTime > leftKeyPressTime ? 1f : -1f;
+
+        // ��������ʱ������Ӧ����
+        if (leftKeyPressed) return -1f; // �������
+        if (rightKeyPressed) return 1f; // �Ҽ�����
+
+        // ��ˮƽ����
+>>>>>>> Bidoofa2
         return 0f;
     }
     #endregion
 
     /// <summary>
+<<<<<<< HEAD
     /// 移动玩家角色
+=======
+    /// �ƶ���ҽ�ɫ
+>>>>>>> Bidoofa2
     /// </summary>
     public void Move() => transform.Translate(input * GameManager.Instance.propData.speed 
        * GameManager.Instance.propData.speedPer * Time.deltaTime);
 
     /// <summary>
+<<<<<<< HEAD
     /// 处理玩家转向逻辑
     /// </summary>
     public void TurnAround()
@@ -163,33 +288,67 @@ public class Player : MonoBehaviour
             bool directionChanged = (input.x > 0 && !isFacingRight) || (input.x < 0 && isFacingRight);
 
             // 方向改变且玩家正在移动时触发duang动画
+=======
+    /// �������ת���߼�
+    /// </summary>
+    public void TurnAround()
+    {
+        // ��ˮƽ����ʱ�Ŵ���ת��
+        if (input.x != 0)
+        {
+            // ��ⷽ���Ƿ�ı䣨����ת������ת�ң�
+            bool directionChanged = (input.x > 0 && !isFacingRight) || (input.x < 0 && isFacingRight);
+
+            // ����ı�����������ƶ�ʱ����duang����
+>>>>>>> Bidoofa2
             if (directionChanged && input.magnitude > 0.1f)
             {
                 animator.SetTrigger("duang");
             }
 
+<<<<<<< HEAD
             // 更新朝向状态
             isFacingRight = input.x > 0;
             // 更新精灵渲染方向（翻转X轴）
+=======
+            // ���³���״̬
+            isFacingRight = input.x > 0;
+            // ���¾�����Ⱦ���򣨷�תX�ᣩ
+>>>>>>> Bidoofa2
             spriteRenderer.flipX = !isFacingRight;
         }
     }
 
     /// <summary>
+<<<<<<< HEAD
     /// 更新玩家动画状态
+=======
+    /// ������Ҷ���״̬
+>>>>>>> Bidoofa2
     /// </summary>
     private void UpdateAnimation()
     {
 
+<<<<<<< HEAD
         // 检测玩家是否在移动（输入向量长度大于阈值）
+=======
+        // �������Ƿ����ƶ��������������ȴ�����ֵ��
+>>>>>>> Bidoofa2
         bool isMoving = input.magnitude > 0.1f;
 
         if (animator != null)
         {
+<<<<<<< HEAD
             // 更新移动状态（控制Run/Idle动画）
             animator.SetBool("isMove", isMoving);
 
             // 当停止移动时立即触发duang动画
+=======
+            // �����ƶ�״̬������Run/Idle������
+            animator.SetBool("isMove", isMoving);
+
+            // ��ֹͣ�ƶ�ʱ��������duang����
+>>>>>>> Bidoofa2
             if (!isMoving && input.magnitude <= 0.1f)
             {
                 animator.SetTrigger("duang");
@@ -198,7 +357,11 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< HEAD
     /// 玩家受伤逻辑
+=======
+    /// ��������߼�
+>>>>>>> Bidoofa2
     /// </summary>
     public void Injured(float attack) 
     {
@@ -207,8 +370,13 @@ public class Player : MonoBehaviour
             return;
         }
 
+<<<<<<< HEAD
         //判断本次攻击是否死亡
         if (GameManager.Instance.hp - attack <= 0 )
+=======
+        //�жϱ��ι����Ƿ�����
+        if (hp - attack <= 0 )
+>>>>>>> Bidoofa2
         {
             GameManager.Instance.hp = 0;
             Dead();
@@ -217,14 +385,22 @@ public class Player : MonoBehaviour
             GameManager.Instance.hp -= attack;
         }
 
+<<<<<<< HEAD
         //更新血条
+=======
+        //����Ѫ��
+>>>>>>> Bidoofa2
         GamePanel.Instance.RenewHp();
     }
 
 
 
     /// <summary>
+<<<<<<< HEAD
     /// 玩家攻击逻辑
+=======
+    /// ��ҹ����߼�
+>>>>>>> Bidoofa2
     /// </summary>
     public void Attack() 
     {
@@ -233,7 +409,11 @@ public class Player : MonoBehaviour
 
 
     /// <summary>
+<<<<<<< HEAD
     /// 玩家死亡逻辑
+=======
+    /// ��������߼�
+>>>>>>> Bidoofa2
     /// </summary>
     public void Dead()
     {
@@ -241,7 +421,11 @@ public class Player : MonoBehaviour
 
         animator.speed = 0;
 
+<<<<<<< HEAD
         //todo 调用游戏失败函数
+=======
+        //todo ������Ϸʧ�ܺ���
+>>>>>>> Bidoofa2
         LevelController.Instance.BadGame();
     }
 
