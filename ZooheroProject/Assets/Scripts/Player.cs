@@ -49,6 +49,7 @@ public class Player : MonoBehaviour
             GameManager.Instance.InitProp();//初始化角色
         }
 
+
     }
 
     void Update()
@@ -168,6 +169,7 @@ public class Player : MonoBehaviour
                 animator.SetTrigger("duang");
             }
 
+
             // 更新朝向状态
             isFacingRight = input.x > 0;
             // 更新精灵渲染方向（翻转X轴）
@@ -240,6 +242,7 @@ public class Player : MonoBehaviour
         isDead = true;
 
         animator.speed = 0;
+
 
         //todo 调用游戏失败函数
         LevelController.Instance.BadGame();
