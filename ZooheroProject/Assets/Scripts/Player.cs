@@ -1,43 +1,94 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    public static Player Instance; // µ¥ÀıÊµÀı£¬·½±ãÆäËû½Å±¾·ÃÎÊÍæ¼Ò
+<<<<<<< HEAD
+    public static Player Instance; // å•ä¾‹å®ä¾‹ï¼Œæ–¹ä¾¿å…¶ä»–è„šæœ¬è®¿é—®ç©å®¶
 
     [SerializeField] 
-    private float speed = 5f; // Íæ¼ÒÒÆ¶¯ËÙ¶È
-    public bool isDead = false ; //ÊÇ·ñËÀÍö
-    internal int money = 30; //µ±Ç°½ğ±Ò
-    public float hp = 15f; //Íæ¼ÒÑªÁ¿
-    internal float maxHp = 15f;//×î´óÉúÃü
-    internal float exp = 0;//¾­ÑéÖµ
+    public bool isDead = false ; //æ˜¯å¦æ­»äº¡
 
-    private Keyboard keyboard; // ¼üÅÌÊäÈëÒıÓÃ
-    private Vector2 input; // µ±Ç°ÊäÈëÏòÁ¿
-    private Transform playerVisual; // Íæ¼ÒÊÓ¾õ±íÏÖ²¿·ÖµÄTransform
-    private Animator animator; // Íæ¼Ò¶¯»­¿ØÖÆÆ÷
-    private SpriteRenderer spriteRenderer; // Íæ¼ÒäÖÈ¾Æ÷£¬ÓÃÓÚ·­×ª½ÇÉ«
-    private bool isFacingRight = true; // ±ê¼ÇÍæ¼Òµ±Ç°ÊÇ·ñÃæÏòÓÒ²à
 
-    // ¼üÅÌ°´¼ü×´Ì¬¸ú×Ù
-    private bool leftKeyPressed = false; // ×ó¼üÊÇ·ñ°´ÏÂ
-    private bool rightKeyPressed = false; // ÓÒ¼üÊÇ·ñ°´ÏÂ
-    private float leftKeyPressTime = 0f; // ×ó¼ü°´ÏÂÊ±¼ä´Á
-    private float rightKeyPressTime = 0f; // ÓÒ¼ü°´ÏÂÊ±¼ä´Á
+
+
+    public Transform weaponsPos;//æ­¦å™¨ä½ç½®
+
+    private Keyboard keyboard; // é”®ç›˜è¾“å…¥å¼•ç”¨
+    private Vector2 input; // å½“å‰è¾“å…¥å‘é‡
+    private Transform playerVisual; // ç©å®¶è§†è§‰è¡¨ç°éƒ¨åˆ†çš„Transform
+    private Animator animator; // ç©å®¶åŠ¨ç”»æ§åˆ¶å™¨
+    private SpriteRenderer spriteRenderer; // ç©å®¶æ¸²æŸ“å™¨ï¼Œç”¨äºç¿»è½¬è§’è‰²
+    private bool isFacingRight = true; // æ ‡è®°ç©å®¶å½“å‰æ˜¯å¦é¢å‘å³ä¾§
+
+    // é”®ç›˜æŒ‰é”®çŠ¶æ€è·Ÿè¸ª
+    private bool leftKeyPressed = false; // å·¦é”®æ˜¯å¦æŒ‰ä¸‹
+    private bool rightKeyPressed = false; // å³é”®æ˜¯å¦æŒ‰ä¸‹
+    private float leftKeyPressTime = 0f; // å·¦é”®æŒ‰ä¸‹æ—¶é—´æˆ³
+    private float rightKeyPressTime = 0f; // å³é”®æŒ‰ä¸‹æ—¶é—´æˆ³
 
     private void Awake()
     {
-        Instance = this; // ÉèÖÃµ¥ÀıÊµÀı
-        // ²éÕÒÍæ¼ÒÊÓ¾õ±íÏÖ²¿·Ö
+        Instance = this; // è®¾ç½®å•ä¾‹å®ä¾‹
+
         playerVisual = GameObject.Find("PlayerVisual").transform;
-        // »ñÈ¡¶¯»­¿ØÖÆÆ÷×é¼ş
+        weaponsPos = GameObject.Find("WeaponsPos").transform;//æ£€æµ‹æ­¦å™¨ä½ç½®æ§½ä½
+
+        // æŸ¥æ‰¾ç©å®¶è§†è§‰è¡¨ç°éƒ¨åˆ†
+        playerVisual = GameObject.Find("PlayerVisual").transform;
+        // è·å–åŠ¨ç”»æ§åˆ¶å™¨ç»„ä»¶
         animator = playerVisual.GetComponent<Animator>();
-        // »ñÈ¡äÖÈ¾Æ÷×é¼ş
+        // è·å–æ¸²æŸ“å™¨ç»„ä»¶
         spriteRenderer = playerVisual.GetComponent<SpriteRenderer>();
-        // »ñÈ¡µ±Ç°¼üÅÌÊäÈëÉè±¸
+        // è·å–å½“å‰é”®ç›˜è¾“å…¥è®¾å¤‡
         keyboard = Keyboard.current;
+
+        //åˆå§‹åŒ–è§’è‰²å±æ€§
+        if (GameManager.Instance.currentWave == 1)
+        {
+            GameManager.Instance.InitProp();//åˆå§‹åŒ–è§’è‰²
+        }
+=======
+    public static Player Instance; // ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+
+    [SerializeField] 
+    private float speed = 5f; // ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½Ù¶ï¿½
+    public bool isDead = false ; //ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½
+    internal int money = 30; //ï¿½ï¿½Ç°ï¿½ï¿½ï¿½
+    public float hp = 15f; //ï¿½ï¿½ï¿½Ñªï¿½ï¿½
+    internal float maxHp = 15f;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    internal float exp = 0;//ï¿½ï¿½ï¿½ï¿½Öµ
+
+    private Keyboard keyboard; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    private Vector2 input; // ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    private Transform playerVisual; // ï¿½ï¿½ï¿½ï¿½Ó¾ï¿½ï¿½ï¿½ï¿½Ö²ï¿½ï¿½Öµï¿½Transform
+    private Animator animator; // ï¿½ï¿½Ò¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    private SpriteRenderer spriteRenderer; // ï¿½ï¿½ï¿½ï¿½ï¿½È¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú·ï¿½×ªï¿½ï¿½É«
+    private bool isFacingRight = true; // ï¿½ï¿½ï¿½ï¿½ï¿½Òµï¿½Ç°ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò²ï¿½
+
+    // ï¿½ï¿½ï¿½Ì°ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½
+    private bool leftKeyPressed = false; // ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½
+    private bool rightKeyPressed = false; // ï¿½Ò¼ï¿½ï¿½Ç·ï¿½ï¿½ï¿½
+    private float leftKeyPressTime = 0f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½
+    private float rightKeyPressTime = 0f; // ï¿½Ò¼ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½
+
+    private void Awake()
+    {
+        Instance = this; // ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½Êµï¿½ï¿½
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¾ï¿½ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½
+        playerVisual = GameObject.Find("PlayerVisual").transform;
+        // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        animator = playerVisual.GetComponent<Animator>();
+        // ï¿½ï¿½È¡ï¿½ï¿½È¾ï¿½ï¿½ï¿½ï¿½ï¿½
+        spriteRenderer = playerVisual.GetComponent<SpriteRenderer>();
+        // ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½è±¸
+        keyboard = Keyboard.current;
+
+        
+        playerVisual.GetComponent<SpriteRenderer>().sprite =
+            UnityEngine.Resources.Load<Sprite>(GameManager.Instance.RoleDate.avatar);
+>>>>>>> Bidoofa2
 
     }
 
@@ -48,68 +99,130 @@ public class Player : MonoBehaviour
             return;
         }
 
-        ProcessInput(); // ´¦Àí¼üÅÌÊäÈë
-        Move(); // ÒÆ¶¯Íæ¼Ò
-        TurnAround(); // ´¦Àí×ªÏòÂß¼­
-        UpdateAnimation(); // ¸üĞÂ¶¯»­×´Ì¬
+<<<<<<< HEAD
+        ProcessInput(); // å¤„ç†é”®ç›˜è¾“å…¥
+        Move(); // ç§»åŠ¨ç©å®¶
+        TurnAround(); // å¤„ç†è½¬å‘é€»è¾‘
+        UpdateAnimation(); // æ›´æ–°åŠ¨ç”»çŠ¶æ€
     }
 
-    #region ¼üÅÌ³åÍ»¼ì²â
+    #region é”®ç›˜å†²çªæ£€æµ‹
     /// <summary>
-    /// ´¦Àí¼üÅÌÊäÈë£¬½â¾ö×óÓÒ¼ü³åÍ»ÎÊÌâ
+    /// å¤„ç†é”®ç›˜è¾“å…¥ï¼Œè§£å†³å·¦å³é”®å†²çªé—®é¢˜
     /// </summary>
     private void ProcessInput()
     {
-        // ¼ì²â×ó¼ü×´Ì¬£¨A¼ü»ò×ó¼ıÍ·£©
+        // æ£€æµ‹å·¦é”®çŠ¶æ€ï¼ˆAé”®æˆ–å·¦ç®­å¤´ï¼‰
         bool leftKeyDown = keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed;
-        // ¼ì²âÓÒ¼ü×´Ì¬£¨D¼ü»òÓÒ¼ıÍ·£©
+        // æ£€æµ‹å³é”®çŠ¶æ€ï¼ˆDé”®æˆ–å³ç®­å¤´ï¼‰
         bool rightKeyDown = keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed;
 
-        // »ñÈ¡´¹Ö±ÊäÈë£¨W/S¼ü»òÉÏÏÂ¼ıÍ·£©
+        // è·å–å‚ç›´è¾“å…¥ï¼ˆW/Sé”®æˆ–ä¸Šä¸‹ç®­å¤´ï¼‰
         float verticalInput = GetVerticalInput();
 
-        // ¸üĞÂ×ó¼ü×´Ì¬ºÍÊ±¼ä´Á
+        // æ›´æ–°å·¦é”®çŠ¶æ€å’Œæ—¶é—´æˆ³
         UpdateKeyState(ref leftKeyPressed, leftKeyDown, ref leftKeyPressTime);
-        // ¸üĞÂÓÒ¼ü×´Ì¬ºÍÊ±¼ä´Á
+        // æ›´æ–°å³é”®çŠ¶æ€å’Œæ—¶é—´æˆ³
         UpdateKeyState(ref rightKeyPressed, rightKeyDown, ref rightKeyPressTime);
 
-        // ¸ù¾İ°´¼ü×´Ì¬È·¶¨Ë®Æ½ÊäÈë·½Ïò
+        // æ ¹æ®æŒ‰é”®çŠ¶æ€ç¡®å®šæ°´å¹³è¾“å…¥æ–¹å‘
         float horizontalInput = GetHorizontalInput();
 
-        // ×éºÏÊäÈëÏòÁ¿²¢¹éÒ»»¯£¨·ÀÖ¹¶Ô½ÇÏßÒÆ¶¯¹ı¿ì£©
+        // ç»„åˆè¾“å…¥å‘é‡å¹¶å½’ä¸€åŒ–ï¼ˆé˜²æ­¢å¯¹è§’çº¿ç§»åŠ¨è¿‡å¿«ï¼‰
+=======
+        ProcessInput(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        Move(); // ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½
+        TurnAround(); // ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ß¼ï¿½
+        UpdateAnimation(); // ï¿½ï¿½ï¿½Â¶ï¿½ï¿½ï¿½×´Ì¬
+    }
+
+    #region ï¿½ï¿½ï¿½Ì³ï¿½Í»ï¿½ï¿½ï¿½
+    /// <summary>
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½ï¿½ï¿½Í»ï¿½ï¿½ï¿½ï¿½
+    /// </summary>
+    private void ProcessInput()
+    {
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½
+        bool leftKeyDown = keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed;
+        // ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½×´Ì¬ï¿½ï¿½Dï¿½ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½Í·ï¿½ï¿½
+        bool rightKeyDown = keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed;
+
+        // ï¿½ï¿½È¡ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ë£¨W/Sï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½Í·ï¿½ï¿½
+        float verticalInput = GetVerticalInput();
+
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½Ê±ï¿½ï¿½ï¿½
+        UpdateKeyState(ref leftKeyPressed, leftKeyDown, ref leftKeyPressTime);
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½×´Ì¬ï¿½ï¿½Ê±ï¿½ï¿½ï¿½
+        UpdateKeyState(ref rightKeyPressed, rightKeyDown, ref rightKeyPressTime);
+
+        // ï¿½ï¿½ï¿½İ°ï¿½ï¿½ï¿½×´Ì¬È·ï¿½ï¿½Ë®Æ½ï¿½ï¿½ï¿½ë·½ï¿½ï¿½
+        float horizontalInput = GetHorizontalInput();
+
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¹ï¿½Ô½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ì£©
+>>>>>>> Bidoofa2
         input = new Vector2(horizontalInput, verticalInput);
         if (input.magnitude > 1f) input.Normalize();
     }
 
     /// <summary>
-    /// »ñÈ¡´¹Ö±·½ÏòÊäÈë
+<<<<<<< HEAD
+    /// è·å–å‚ç›´æ–¹å‘è¾“å…¥
     /// </summary>
-    /// <returns>´¹Ö±ÊäÈëÖµ£¨-1, 0, 1£©</returns>
+    /// <returns>å‚ç›´è¾“å…¥å€¼ï¼ˆ-1, 0, 1ï¼‰</returns>
     private float GetVerticalInput()
     {
-        // ÉÏ¼ü£¨W»òÉÏ¼ıÍ·£©
+        // ä¸Šé”®ï¼ˆWæˆ–ä¸Šç®­å¤´ï¼‰
         if (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed) return 1f;
-        // ÏÂ¼ü£¨S»òÏÂ¼ıÍ·£©
+        // ä¸‹é”®ï¼ˆSæˆ–ä¸‹ç®­å¤´ï¼‰
         if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) return -1f;
-        // ÎŞ´¹Ö±ÊäÈë
+        // æ— å‚ç›´è¾“å…¥
+=======
+    /// ï¿½ï¿½È¡ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    /// </summary>
+    /// <returns>ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½-1, 0, 1ï¿½ï¿½</returns>
+    private float GetVerticalInput()
+    {
+        // ï¿½Ï¼ï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½Ï¼ï¿½Í·ï¿½ï¿½
+        if (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed) return 1f;
+        // ï¿½Â¼ï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½Â¼ï¿½Í·ï¿½ï¿½
+        if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) return -1f;
+        // ï¿½Ş´ï¿½Ö±ï¿½ï¿½ï¿½ï¿½
+>>>>>>> Bidoofa2
         return 0f;
     }
 
     /// <summary>
-    /// ¸üĞÂ°´¼ü×´Ì¬ºÍ°´ÏÂÊ±¼ä
+<<<<<<< HEAD
+    /// æ›´æ–°æŒ‰é”®çŠ¶æ€å’ŒæŒ‰ä¸‹æ—¶é—´
     /// </summary>
-    /// <param name="keyPressed">°´¼üÊÇ·ñ°´ÏÂµÄÒıÓÃ</param>
-    /// <param name="keyDown">µ±Ç°°´¼ü×´Ì¬</param>
-    /// <param name="pressTime">°´¼ü°´ÏÂÊ±¼äµÄÒıÓÃ</param>
+    /// <param name="keyPressed">æŒ‰é”®æ˜¯å¦æŒ‰ä¸‹çš„å¼•ç”¨</param>
+    /// <param name="keyDown">å½“å‰æŒ‰é”®çŠ¶æ€</param>
+    /// <param name="pressTime">æŒ‰é”®æŒ‰ä¸‹æ—¶é—´çš„å¼•ç”¨</param>
     private void UpdateKeyState(ref bool keyPressed, bool keyDown, ref float pressTime)
     {
-        // °´¼ü¸Õ¸Õ°´ÏÂ
+        // æŒ‰é”®åˆšåˆšæŒ‰ä¸‹
         if (keyDown && !keyPressed)
         {
             keyPressed = true;
-            pressTime = Time.time; // ¼ÇÂ¼°´ÏÂÊ±¼ä
+            pressTime = Time.time; // è®°å½•æŒ‰ä¸‹æ—¶é—´
         }
-        // °´¼üÊÍ·Å
+        // æŒ‰é”®é‡Šæ”¾
+=======
+    /// ï¿½ï¿½ï¿½Â°ï¿½ï¿½ï¿½×´Ì¬ï¿½Í°ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+    /// </summary>
+    /// <param name="keyPressed">ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½</param>
+    /// <param name="keyDown">ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½×´Ì¬</param>
+    /// <param name="pressTime">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</param>
+    private void UpdateKeyState(ref bool keyPressed, bool keyDown, ref float pressTime)
+    {
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Õ¸Õ°ï¿½ï¿½ï¿½
+        if (keyDown && !keyPressed)
+        {
+            keyPressed = true;
+            pressTime = Time.time; // ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+        }
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½
+>>>>>>> Bidoofa2
         else if (!keyDown)
         {
             keyPressed = false;
@@ -117,68 +230,125 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// È·¶¨Ë®Æ½ÊäÈë·½Ïò£¬½â¾ö×óÓÒ¼üÍ¬Ê±°´ÏÂµÄ³åÍ»
+<<<<<<< HEAD
+    /// ç¡®å®šæ°´å¹³è¾“å…¥æ–¹å‘ï¼Œè§£å†³å·¦å³é”®åŒæ—¶æŒ‰ä¸‹çš„å†²çª
     /// </summary>
-    /// <returns>Ë®Æ½ÊäÈëÖµ£¨-1, 0, 1£©</returns>
+    /// <returns>æ°´å¹³è¾“å…¥å€¼ï¼ˆ-1, 0, 1ï¼‰</returns>
     private float GetHorizontalInput()
     {
-        // ×óÓÒ¼üÍ¬Ê±°´ÏÂÊ±£¬±È½Ï°´ÏÂÊ±¼ä¾ö¶¨·½Ïò£¨ºó°´ÏÂµÄ·½Ïò¸²¸ÇÏÈ°´ÏÂµÄ·½Ïò£©
+        // å·¦å³é”®åŒæ—¶æŒ‰ä¸‹æ—¶ï¼Œæ¯”è¾ƒæŒ‰ä¸‹æ—¶é—´å†³å®šæ–¹å‘ï¼ˆåæŒ‰ä¸‹çš„æ–¹å‘è¦†ç›–å…ˆæŒ‰ä¸‹çš„æ–¹å‘ï¼‰
         if (leftKeyPressed && rightKeyPressed)
             return rightKeyPressTime > leftKeyPressTime ? 1f : -1f;
 
-        // µ¥¼ü°´ÏÂÊ±·µ»ØÏàÓ¦·½Ïò
-        if (leftKeyPressed) return -1f; // ×ó¼ü°´ÏÂ
-        if (rightKeyPressed) return 1f; // ÓÒ¼ü°´ÏÂ
+        // å•é”®æŒ‰ä¸‹æ—¶è¿”å›ç›¸åº”æ–¹å‘
+        if (leftKeyPressed) return -1f; // å·¦é”®æŒ‰ä¸‹
+        if (rightKeyPressed) return 1f; // å³é”®æŒ‰ä¸‹
 
-        // ÎŞË®Æ½ÊäÈë
+        // æ— æ°´å¹³è¾“å…¥
+=======
+    /// È·ï¿½ï¿½Ë®Æ½ï¿½ï¿½ï¿½ë·½ï¿½ò£¬½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½Í¬Ê±ï¿½ï¿½ï¿½ÂµÄ³ï¿½Í»
+    /// </summary>
+    /// <returns>Ë®Æ½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½-1, 0, 1ï¿½ï¿½</returns>
+    private float GetHorizontalInput()
+    {
+        // ï¿½ï¿½ï¿½Ò¼ï¿½Í¬Ê±ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½È½Ï°ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ò£¨ºï¿½ï¿½ÂµÄ·ï¿½ï¿½ò¸²¸ï¿½ï¿½È°ï¿½ï¿½ÂµÄ·ï¿½ï¿½ï¿½
+        if (leftKeyPressed && rightKeyPressed)
+            return rightKeyPressTime > leftKeyPressTime ? 1f : -1f;
+
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½
+        if (leftKeyPressed) return -1f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        if (rightKeyPressed) return 1f; // ï¿½Ò¼ï¿½ï¿½ï¿½ï¿½ï¿½
+
+        // ï¿½ï¿½Ë®Æ½ï¿½ï¿½ï¿½ï¿½
+>>>>>>> Bidoofa2
         return 0f;
     }
     #endregion
 
     /// <summary>
-    /// ÒÆ¶¯Íæ¼Ò½ÇÉ«
+<<<<<<< HEAD
+    /// ç§»åŠ¨ç©å®¶è§’è‰²
+=======
+    /// ï¿½Æ¶ï¿½ï¿½ï¿½Ò½ï¿½É«
+>>>>>>> Bidoofa2
     /// </summary>
-    public void Move() => transform.Translate(input * speed * Time.deltaTime);
+    public void Move() => transform.Translate(input * GameManager.Instance.propData.speed 
+       * GameManager.Instance.propData.speedPer * Time.deltaTime);
 
     /// <summary>
-    /// ´¦ÀíÍæ¼Ò×ªÏòÂß¼­
+<<<<<<< HEAD
+    /// å¤„ç†ç©å®¶è½¬å‘é€»è¾‘
     /// </summary>
     public void TurnAround()
     {
-        // ÓĞË®Æ½ÊäÈëÊ±²Å´¦Àí×ªÏò
+        // æœ‰æ°´å¹³è¾“å…¥æ—¶æ‰å¤„ç†è½¬å‘
         if (input.x != 0)
         {
-            // ¼ì²â·½ÏòÊÇ·ñ¸Ä±ä£¨´ÓÓÒ×ª×ó»ò´Ó×ó×ªÓÒ£©
+            // æ£€æµ‹æ–¹å‘æ˜¯å¦æ”¹å˜ï¼ˆä»å³è½¬å·¦æˆ–ä»å·¦è½¬å³ï¼‰
             bool directionChanged = (input.x > 0 && !isFacingRight) || (input.x < 0 && isFacingRight);
 
-            // ·½Ïò¸Ä±äÇÒÍæ¼ÒÕıÔÚÒÆ¶¯Ê±´¥·¢duang¶¯»­
+            // æ–¹å‘æ”¹å˜ä¸”ç©å®¶æ­£åœ¨ç§»åŠ¨æ—¶è§¦å‘duangåŠ¨ç”»
+=======
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ß¼ï¿½
+    /// </summary>
+    public void TurnAround()
+    {
+        // ï¿½ï¿½Ë®Æ½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Å´ï¿½ï¿½ï¿½×ªï¿½ï¿½
+        if (input.x != 0)
+        {
+            // ï¿½ï¿½â·½ï¿½ï¿½ï¿½Ç·ï¿½Ä±ä£¨ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½Ò£ï¿½
+            bool directionChanged = (input.x > 0 && !isFacingRight) || (input.x < 0 && isFacingRight);
+
+            // ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½Ê±ï¿½ï¿½ï¿½ï¿½duangï¿½ï¿½ï¿½ï¿½
+>>>>>>> Bidoofa2
             if (directionChanged && input.magnitude > 0.1f)
             {
                 animator.SetTrigger("duang");
             }
 
-            // ¸üĞÂ³¯Ïò×´Ì¬
+<<<<<<< HEAD
+            // æ›´æ–°æœå‘çŠ¶æ€
             isFacingRight = input.x > 0;
-            // ¸üĞÂ¾«ÁéäÖÈ¾·½Ïò£¨·­×ªXÖá£©
+            // æ›´æ–°ç²¾çµæ¸²æŸ“æ–¹å‘ï¼ˆç¿»è½¬Xè½´ï¼‰
+=======
+            // ï¿½ï¿½ï¿½Â³ï¿½ï¿½ï¿½×´Ì¬
+            isFacingRight = input.x > 0;
+            // ï¿½ï¿½ï¿½Â¾ï¿½ï¿½ï¿½ï¿½ï¿½È¾ï¿½ï¿½ï¿½ò£¨·ï¿½×ªXï¿½á£©
+>>>>>>> Bidoofa2
             spriteRenderer.flipX = !isFacingRight;
         }
     }
 
     /// <summary>
-    /// ¸üĞÂÍæ¼Ò¶¯»­×´Ì¬
+<<<<<<< HEAD
+    /// æ›´æ–°ç©å®¶åŠ¨ç”»çŠ¶æ€
+=======
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¶ï¿½ï¿½ï¿½×´Ì¬
+>>>>>>> Bidoofa2
     /// </summary>
     private void UpdateAnimation()
     {
 
-        // ¼ì²âÍæ¼ÒÊÇ·ñÔÚÒÆ¶¯£¨ÊäÈëÏòÁ¿³¤¶È´óÓÚãĞÖµ£©
+<<<<<<< HEAD
+        // æ£€æµ‹ç©å®¶æ˜¯å¦åœ¨ç§»åŠ¨ï¼ˆè¾“å…¥å‘é‡é•¿åº¦å¤§äºé˜ˆå€¼ï¼‰
+=======
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½
+>>>>>>> Bidoofa2
         bool isMoving = input.magnitude > 0.1f;
 
         if (animator != null)
         {
-            // ¸üĞÂÒÆ¶¯×´Ì¬£¨¿ØÖÆRun/Idle¶¯»­£©
+<<<<<<< HEAD
+            // æ›´æ–°ç§»åŠ¨çŠ¶æ€ï¼ˆæ§åˆ¶Run/IdleåŠ¨ç”»ï¼‰
             animator.SetBool("isMove", isMoving);
 
-            // µ±Í£Ö¹ÒÆ¶¯Ê±Á¢¼´´¥·¢duang¶¯»­
+            // å½“åœæ­¢ç§»åŠ¨æ—¶ç«‹å³è§¦å‘duangåŠ¨ç”»
+=======
+            // ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Run/Idleï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            animator.SetBool("isMove", isMoving);
+
+            // ï¿½ï¿½Í£Ö¹ï¿½Æ¶ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½duangï¿½ï¿½ï¿½ï¿½
+>>>>>>> Bidoofa2
             if (!isMoving && input.magnitude <= 0.1f)
             {
                 animator.SetTrigger("duang");
@@ -187,7 +357,11 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Íæ¼ÒÊÜÉËÂß¼­
+<<<<<<< HEAD
+    /// ç©å®¶å—ä¼¤é€»è¾‘
+=======
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
+>>>>>>> Bidoofa2
     /// </summary>
     public void Injured(float attack) 
     {
@@ -196,24 +370,37 @@ public class Player : MonoBehaviour
             return;
         }
 
-        //ÅĞ¶Ï±¾´Î¹¥»÷ÊÇ·ñËÀÍö
+<<<<<<< HEAD
+        //åˆ¤æ–­æœ¬æ¬¡æ”»å‡»æ˜¯å¦æ­»äº¡
+        if (GameManager.Instance.hp - attack <= 0 )
+=======
+        //ï¿½Ğ¶Ï±ï¿½ï¿½Î¹ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½
         if (hp - attack <= 0 )
+>>>>>>> Bidoofa2
         {
-            hp = 0;
+            GameManager.Instance.hp = 0;
             Dead();
         }else
         {
-            hp -= attack;
+            GameManager.Instance.hp -= attack;
         }
 
-        //¸üĞÂÑªÌõ
+<<<<<<< HEAD
+        //æ›´æ–°è¡€æ¡
+=======
+        //ï¿½ï¿½ï¿½ï¿½Ñªï¿½ï¿½
+>>>>>>> Bidoofa2
         GamePanel.Instance.RenewHp();
     }
 
 
 
     /// <summary>
-    /// Íæ¼Ò¹¥»÷Âß¼­
+<<<<<<< HEAD
+    /// ç©å®¶æ”»å‡»é€»è¾‘
+=======
+    /// ï¿½ï¿½Ò¹ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
+>>>>>>> Bidoofa2
     /// </summary>
     public void Attack() 
     {
@@ -222,7 +409,11 @@ public class Player : MonoBehaviour
 
 
     /// <summary>
-    /// Íæ¼ÒËÀÍöÂß¼­
+<<<<<<< HEAD
+    /// ç©å®¶æ­»äº¡é€»è¾‘
+=======
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
+>>>>>>> Bidoofa2
     /// </summary>
     public void Dead()
     {
@@ -230,7 +421,11 @@ public class Player : MonoBehaviour
 
         animator.speed = 0;
 
-        //todo µ÷ÓÃÓÎÏ·Ê§°Üº¯Êı
+<<<<<<< HEAD
+        //todo è°ƒç”¨æ¸¸æˆå¤±è´¥å‡½æ•°
+=======
+        //todo ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·Ê§ï¿½Üºï¿½ï¿½ï¿½
+>>>>>>> Bidoofa2
         LevelController.Instance.BadGame();
     }
 
@@ -241,7 +436,7 @@ public class Player : MonoBehaviour
         {
             Destroy(col.gameObject);
 
-            money += 1;
+            GameManager.Instance.money += 1;
             GamePanel.Instance.RenewMoney();
         }
     }

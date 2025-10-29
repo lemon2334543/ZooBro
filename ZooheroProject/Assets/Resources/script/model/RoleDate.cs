@@ -7,10 +7,10 @@ namespace Resources.script.model
     public class RoleDate
     {
         
-        public int id;
-        public string name;
-        public string avatar;
-        public string describe;
+        public int id; 
+        public string name; //名字
+        public string avatar; //价格
+        public string describe; //描述
         public int slot;
         public int record;
         public int unlock;
