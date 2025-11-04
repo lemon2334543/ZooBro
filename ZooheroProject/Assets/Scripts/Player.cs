@@ -1,5 +1,9 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 using System;
+=======
+ï»¿ï»¿using System;
+>>>>>>> Stashed changes
 =======
 ï»¿ï»¿using System;
 >>>>>>> Stashed changes
@@ -10,12 +14,16 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public static Player Instance; // µ¥ÀıÊµÀı£¬·½±ãÆäËû½Å±¾·ÃÎÊÍæ¼Ò
 =======
+=======
+>>>>>>> Stashed changes
     public static Player Instance; // å•ä¾‹å®ä¾‹ï¼Œæ–¹ä¾¿å…¶ä»–è„šæœ¬è®¿é—®ç©å®¶
 >>>>>>> Stashed changes
 
     [SerializeField] 
+<<<<<<< Updated upstream
     private float speed = 5f; // Íæ¼ÒÒÆ¶¯ËÙ¶È
     public bool isDead = false ; //ÊÇ·ñËÀÍö
     internal int money = 30; //µ±Ç°½ğ±Ò
@@ -37,6 +45,10 @@ public class Player : MonoBehaviour
     private float leftKeyPressTime = 0f; // ×ó¼ü°´ÏÂÊ±¼ä´Á
     private float rightKeyPressTime = 0f; // ÓÒ¼ü°´ÏÂÊ±¼ä´Á
 =======
+=======
+    public bool isDead = false ; //æ˜¯å¦æ­»äº¡
+
+>>>>>>> Stashed changes
     // public float currenthp = 15f;
     // public int money = 30;
     // public float currentexp = 15f;
@@ -66,8 +78,11 @@ public class Player : MonoBehaviour
         // ²éÕÒÍæ¼ÒÊÓ¾õ±íÏÖ²¿·Ö
         playerVisual = GameObject.Find("PlayerVisual").transform;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // »ñÈ¡¶¯»­¿ØÖÆÆ÷×é¼ş
 =======
+=======
+>>>>>>> Stashed changes
         
         weaponsPos = GameObject.Find("WeaponPos").transform;//æ£€æµ‹æ­¦å™¨ä½ç½®æ§½ä½
 
@@ -82,7 +97,10 @@ public class Player : MonoBehaviour
         keyboard = Keyboard.current;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
         //ç¬¬ä¸€å…³æ—¶åˆå§‹åŒ–è§’è‰²å±æ€§
         // Debug.Log(GameManager.Instance.currentWave);
         if (GameManager.Instance.currentWave == 0)
@@ -104,17 +122,43 @@ public class Player : MonoBehaviour
         }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         ProcessInput(); // ´¦Àí¼üÅÌÊäÈë
         Move(); // ÒÆ¶¯Íæ¼Ò
         TurnAround(); // ´¦Àí×ªÏòÂß¼­
         UpdateAnimation(); // ¸üĞÂ¶¯»­×´Ì¬
 =======
+=======
+>>>>>>> Stashed changes
         ProcessInput(); // å¤„ç†é”®ç›˜è¾“å…¥
         Move(); // ç§»åŠ¨ç©å®¶
         TurnAround(); // å¤„ç†è½¬å‘é€»è¾‘
         UpdateAnimation(); // æ›´æ–°åŠ¨ç”»çŠ¶æ€
         Revive();//ç”Ÿå‘½å†ç”Ÿ
         earmoney();//è·å–é‡‘å¸
+<<<<<<< Updated upstream
+=======
+    }
+
+    
+    //ç”Ÿå‘½å†ç”Ÿ
+    //todo ç”Ÿå‘½å†ç”Ÿæœºåˆ¶å¯èƒ½éœ€è¦ä¿®æ”¹    è´´è¿‘åŸæ¿é€»è¾‘
+    private void Revive()
+    {
+        reviveTimer += Time.deltaTime;
+        if (reviveTimer>=1f)
+        {
+            //æ£€æŸ¥åŠ è¡€ä¸è¶…è¿‡æœ€å¤§ç”Ÿå‘½å€¼
+            GameManager.Instance.hp += Mathf.Clamp(GameManager.Instance.propData.revive,0,GameManager.Instance.propData.maxHp);
+        }
+        
+
+
+
+
+
+        reviveTimer = 0;
+>>>>>>> Stashed changes
     }
 
     
@@ -161,7 +205,11 @@ public class Player : MonoBehaviour
         float horizontalInput = GetHorizontalInput();
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // ×éºÏÊäÈëÏòÁ¿²¢¹éÒ»»¯£¨·ÀÖ¹¶Ô½ÇÏßÒÆ¶¯¹ı¿ì£©
+=======
+        // ç»„åˆè¾“å…¥å‘é‡å¹¶å½’ä¸€åŒ–ï¼ˆé˜²æ­¢å¯¹è§’çº¿ç§»åŠ¨è¿‡å¿«ï¼‰
+>>>>>>> Stashed changes
 =======
         // ç»„åˆè¾“å…¥å‘é‡å¹¶å½’ä¸€åŒ–ï¼ˆé˜²æ­¢å¯¹è§’çº¿ç§»åŠ¨è¿‡å¿«ï¼‰
 >>>>>>> Stashed changes
@@ -170,6 +218,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     /// »ñÈ¡´¹Ö±·½ÏòÊäÈë
 =======
@@ -188,10 +237,23 @@ public class Player : MonoBehaviour
 =======
         // æ— å‚ç›´è¾“å…¥
 >>>>>>> Stashed changes
+=======
+    /// è·å–å‚ç›´æ–¹å‘è¾“å…¥
+    /// </summary>
+    /// <returns>å‚ç›´è¾“å…¥å€¼ï¼ˆ-1, 0, 1ï¼‰</returns>
+    private float GetVerticalInput()
+    {
+        // ä¸Šé”®ï¼ˆWæˆ–ä¸Šç®­å¤´ï¼‰
+        if (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed) return 1f;
+        // ä¸‹é”®ï¼ˆSæˆ–ä¸‹ç®­å¤´ï¼‰
+        if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) return -1f;
+        // æ— å‚ç›´è¾“å…¥
+>>>>>>> Stashed changes
         return 0f;
     }
 
     /// <summary>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     /// ¸üĞÂ°´¼ü×´Ì¬ºÍ°´ÏÂÊ±¼ä
 =======
@@ -214,6 +276,22 @@ public class Player : MonoBehaviour
 =======
         // æŒ‰é”®é‡Šæ”¾
 >>>>>>> Stashed changes
+=======
+    /// æ›´æ–°æŒ‰é”®çŠ¶æ€å’ŒæŒ‰ä¸‹æ—¶é—´
+    /// </summary>
+    /// <param name="keyPressed">æŒ‰é”®æ˜¯å¦æŒ‰ä¸‹çš„å¼•ç”¨</param>
+    /// <param name="keyDown">å½“å‰æŒ‰é”®çŠ¶æ€</param>
+    /// <param name="pressTime">æŒ‰é”®æŒ‰ä¸‹æ—¶é—´çš„å¼•ç”¨</param>
+    private void UpdateKeyState(ref bool keyPressed, bool keyDown, ref float pressTime)
+    {
+        // æŒ‰é”®åˆšåˆšæŒ‰ä¸‹
+        if (keyDown && !keyPressed)
+        {
+            keyPressed = true;
+            pressTime = Time.time; // è®°å½•æŒ‰ä¸‹æ—¶é—´
+        }
+        // æŒ‰é”®é‡Šæ”¾
+>>>>>>> Stashed changes
         else if (!keyDown)
         {
             keyPressed = false;
@@ -221,6 +299,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     /// È·¶¨Ë®Æ½ÊäÈë·½Ïò£¬½â¾ö×óÓÒ¼üÍ¬Ê±°´ÏÂµÄ³åÍ»
 =======
@@ -243,13 +322,33 @@ public class Player : MonoBehaviour
 =======
         // æ— æ°´å¹³è¾“å…¥
 >>>>>>> Stashed changes
+=======
+    /// ç¡®å®šæ°´å¹³è¾“å…¥æ–¹å‘ï¼Œè§£å†³å·¦å³é”®åŒæ—¶æŒ‰ä¸‹çš„å†²çª
+    /// </summary>
+    /// <returns>æ°´å¹³è¾“å…¥å€¼ï¼ˆ-1, 0, 1ï¼‰</returns>
+    private float GetHorizontalInput()
+    {
+        // å·¦å³é”®åŒæ—¶æŒ‰ä¸‹æ—¶ï¼Œæ¯”è¾ƒæŒ‰ä¸‹æ—¶é—´å†³å®šæ–¹å‘ï¼ˆåæŒ‰ä¸‹çš„æ–¹å‘è¦†ç›–å…ˆæŒ‰ä¸‹çš„æ–¹å‘ï¼‰
+        if (leftKeyPressed && rightKeyPressed)
+            return rightKeyPressTime > leftKeyPressTime ? 1f : -1f;
+
+        // å•é”®æŒ‰ä¸‹æ—¶è¿”å›ç›¸åº”æ–¹å‘
+        if (leftKeyPressed) return -1f; // å·¦é”®æŒ‰ä¸‹
+        if (rightKeyPressed) return 1f; // å³é”®æŒ‰ä¸‹
+
+        // æ— æ°´å¹³è¾“å…¥
+>>>>>>> Stashed changes
         return 0f;
     }
     #endregion
 
     /// <summary>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     /// ÒÆ¶¯Íæ¼Ò½ÇÉ«
+=======
+    /// ç§»åŠ¨ç©å®¶è§’è‰²
+>>>>>>> Stashed changes
 =======
     /// ç§»åŠ¨ç©å®¶è§’è‰²
 >>>>>>> Stashed changes
@@ -257,6 +356,7 @@ public class Player : MonoBehaviour
     public void Move() => transform.Translate(input * speed * Time.deltaTime);
 
     /// <summary>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     /// ´¦ÀíÍæ¼Ò×ªÏòÂß¼­
 =======
@@ -276,20 +376,39 @@ public class Player : MonoBehaviour
 =======
             // æ–¹å‘æ”¹å˜ä¸”ç©å®¶æ­£åœ¨ç§»åŠ¨æ—¶è§¦å‘duangåŠ¨ç”»
 >>>>>>> Stashed changes
+=======
+    /// å¤„ç†ç©å®¶è½¬å‘é€»è¾‘
+    /// </summary>
+    public void TurnAround()
+    {
+        // æœ‰æ°´å¹³è¾“å…¥æ—¶æ‰å¤„ç†è½¬å‘
+        if (input.x != 0)
+        {
+            // æ£€æµ‹æ–¹å‘æ˜¯å¦æ”¹å˜ï¼ˆä»å³è½¬å·¦æˆ–ä»å·¦è½¬å³ï¼‰
+            bool directionChanged = (input.x > 0 && !isFacingRight) || (input.x < 0 && isFacingRight);
+
+            // æ–¹å‘æ”¹å˜ä¸”ç©å®¶æ­£åœ¨ç§»åŠ¨æ—¶è§¦å‘duangåŠ¨ç”»
+>>>>>>> Stashed changes
             if (directionChanged && input.magnitude > 0.1f)
             {
                 animator.SetTrigger("duang");
             }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             // ¸üĞÂ³¯Ïò×´Ì¬
             isFacingRight = input.x > 0;
             // ¸üĞÂ¾«ÁéäÖÈ¾·½Ïò£¨·­×ªXÖá£©
 =======
+=======
+>>>>>>> Stashed changes
 
             // æ›´æ–°æœå‘çŠ¶æ€
             isFacingRight = input.x > 0;
             // æ›´æ–°ç²¾çµæ¸²æŸ“æ–¹å‘ï¼ˆç¿»è½¬Xè½´ï¼‰
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             spriteRenderer.flipX = !isFacingRight;
         }
@@ -297,7 +416,11 @@ public class Player : MonoBehaviour
 
     /// <summary>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     /// ¸üĞÂÍæ¼Ò¶¯»­×´Ì¬
+=======
+    /// æ›´æ–°ç©å®¶åŠ¨ç”»çŠ¶æ€
+>>>>>>> Stashed changes
 =======
     /// æ›´æ–°ç©å®¶åŠ¨ç”»çŠ¶æ€
 >>>>>>> Stashed changes
@@ -306,7 +429,11 @@ public class Player : MonoBehaviour
     {
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // ¼ì²âÍæ¼ÒÊÇ·ñÔÚÒÆ¶¯£¨ÊäÈëÏòÁ¿³¤¶È´óÓÚãĞÖµ£©
+=======
+        // æ£€æµ‹ç©å®¶æ˜¯å¦åœ¨ç§»åŠ¨ï¼ˆè¾“å…¥å‘é‡é•¿åº¦å¤§äºé˜ˆå€¼ï¼‰
+>>>>>>> Stashed changes
 =======
         // æ£€æµ‹ç©å®¶æ˜¯å¦åœ¨ç§»åŠ¨ï¼ˆè¾“å…¥å‘é‡é•¿åº¦å¤§äºé˜ˆå€¼ï¼‰
 >>>>>>> Stashed changes
@@ -315,15 +442,21 @@ public class Player : MonoBehaviour
         if (animator != null)
         {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             // ¸üĞÂÒÆ¶¯×´Ì¬£¨¿ØÖÆRun/Idle¶¯»­£©
             animator.SetBool("isMove", isMoving);
 
             // µ±Í£Ö¹ÒÆ¶¯Ê±Á¢¼´´¥·¢duang¶¯»­
 =======
+=======
+>>>>>>> Stashed changes
             // æ›´æ–°ç§»åŠ¨çŠ¶æ€ï¼ˆæ§åˆ¶Run/IdleåŠ¨ç”»ï¼‰
             animator.SetBool("isMove", isMoving);
 
             // å½“åœæ­¢ç§»åŠ¨æ—¶ç«‹å³è§¦å‘duangåŠ¨ç”»
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             if (!isMoving && input.magnitude <= 0.1f)
             {
@@ -334,7 +467,11 @@ public class Player : MonoBehaviour
 
     /// <summary>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     /// Íæ¼ÒÊÜÉËÂß¼­
+=======
+    /// ç©å®¶å—ä¼¤é€»è¾‘
+>>>>>>> Stashed changes
 =======
     /// ç©å®¶å—ä¼¤é€»è¾‘
 >>>>>>> Stashed changes
@@ -350,6 +487,7 @@ public class Player : MonoBehaviour
             return;
         }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
         //ÅĞ¶Ï±¾´Î¹¥»÷ÊÇ·ñËÀÍö
         if (hp - attack <= 0 )
@@ -401,13 +539,55 @@ public class Player : MonoBehaviour
 
         
 >>>>>>> Stashed changes
+=======
+        if (GameManager.Instance.Armor!=0)
+        {
+            if (GameManager.Instance.Armor>attack)
+            {
+                GameManager.Instance.Armor -= attack;
+            }else if (GameManager.Instance.Armor<attack)
+            {
+                GameManager.Instance.Armor = 0;
+                attack -= GameManager.Instance.Armor;
+                GameManager.Instance.hp -= attack;
+                GamePanel.Instance.RenewHp();
+                
+            }else if (GameManager.Instance.Armor==attack)
+            {
+                GameManager.Instance.Armor = 0;
+            }
+
+            GamePanel.Instance.RenewArmor();
+
+        }else if(GameManager.Instance.Armor==0)
+        {
+            //åˆ¤æ–­æœ¬æ¬¡æ”»å‡»æ˜¯å¦æ­»äº¡
+            if (GameManager.Instance.hp - attack <= 0 )
+            {
+                GameManager.Instance.hp = 0;
+                Dead();
+            }else
+            {
+                GameManager.Instance.hp -= attack;
+            }
+
+            //æ›´æ–°è¡€æ¡
+            GamePanel.Instance.RenewHp();
+        }
+
+        
+>>>>>>> Stashed changes
     }
 
 
 
     /// <summary>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     /// Íæ¼Ò¹¥»÷Âß¼­
+=======
+    /// ç©å®¶æ”»å‡»é€»è¾‘
+>>>>>>> Stashed changes
 =======
     /// ç©å®¶æ”»å‡»é€»è¾‘
 >>>>>>> Stashed changes
@@ -420,7 +600,11 @@ public class Player : MonoBehaviour
 
     /// <summary>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     /// Íæ¼ÒËÀÍöÂß¼­
+=======
+    /// ç©å®¶æ­»äº¡é€»è¾‘
+>>>>>>> Stashed changes
 =======
     /// ç©å®¶æ­»äº¡é€»è¾‘
 >>>>>>> Stashed changes
@@ -432,7 +616,12 @@ public class Player : MonoBehaviour
         animator.speed = 0;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         //todo µ÷ÓÃÓÎÏ·Ê§°Üº¯Êı
+=======
+
+       
+>>>>>>> Stashed changes
 =======
 
        
@@ -448,9 +637,12 @@ public class Player : MonoBehaviour
             transform.position, 0.5f*GameManager.Instance.propData.pickRange, LayerMask.GetMask("Item"));
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             money += 1;
             GamePanel.Instance.RenewMoney();
 =======
+=======
+>>>>>>> Stashed changes
         //è·å–åˆ°èŒƒå›´å‘¢æ‰€æœ‰çš„Itemï¼ˆé‡‘å¸ï¼‰GameOBject ç„¶åéå†é”€æ¯åŠ é’±
         if (moenyInRange.Length>=0)
         {
@@ -460,6 +652,9 @@ public class Player : MonoBehaviour
                 GameManager.Instance.money += 1;
                 GamePanel.Instance.RenewMoney();
             }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         }
         

@@ -1,5 +1,9 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 using NUnit.Framework;
+=======
+﻿﻿using NUnit.Framework;
+>>>>>>> Stashed changes
 =======
 ﻿﻿using NUnit.Framework;
 >>>>>>> Stashed changes
@@ -57,10 +61,13 @@ public class LevelController : MonoBehaviour
         _failPanel = GameObject.Find("FailPanel");
         _successPanel = GameObject.Find("SuccessPanel");
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         enemy1_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemy1");
 
         _map = GameObject.Find("Map").transform;
 =======
+=======
+>>>>>>> Stashed changes
         
         enemy1_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemys/Enemy1");
         enemy2_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemys/Enemy2");
@@ -96,6 +103,7 @@ public class LevelController : MonoBehaviour
     void Start()
     {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         //�ؿ�ʱ��
         waveTimer = 15 + 5 * GameManager.Instance.currentWave;
 
@@ -125,6 +133,17 @@ public class LevelController : MonoBehaviour
         GenerateWeapons();
     }
 
+=======
+        // Debug.Log((int)GameManager.Instance.currentWave);
+        CurrentLevelDate = LevelDates[(int)GameManager.Instance.currentWave-1];//保存当前关卡学信息xz
+        waveTimer = CurrentLevelDate.waveTimer;        
+        
+        GenerateEnemy();
+
+        GenerateWeapons();
+    }
+
+>>>>>>> Stashed changes
     private void GenerateWeapons()
     {
         Debug.Log("开始生成武器");
@@ -171,12 +190,16 @@ public class LevelController : MonoBehaviour
         yield return new WaitForSeconds(waveDate.timeAxis);
         if (waveTimer>0 && !Player.Instance.isDead)
         {
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             // �ȴ�0.5����������һ�����ˣ���������Ƶ�ʣ�
             yield return new WaitForSeconds(0.5f);
 
             // �ڵ�ͼ��Χ�ڻ�ȡһ���������λ��
             var spawnPoint = GetRandomPosition(_map.GetComponent<SpriteRenderer>().bounds);
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 
             // �����ɵ�ʵ��������Ԥ���壬����ȡ�������
@@ -188,6 +211,8 @@ public class LevelController : MonoBehaviour
             // �������ɵĵ�����ӵ������б��У����ں�������
             enemy_list.Add(go);
 =======
+=======
+>>>>>>> Stashed changes
             GameObject go = Instantiate(redfork_prefab, spawnPoint, Quaternion.identity);
             yield return new WaitForSeconds(1);
             Destroy(go);
@@ -218,6 +243,9 @@ public class LevelController : MonoBehaviour
                 
             }
             
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         }
     }

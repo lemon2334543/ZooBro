@@ -684,7 +684,10 @@ RectTransform:
   m_Children:
   - {fileID: 2018937677}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
   - {fileID: 1959041351}
   - {fileID: 1522472148}
   - {fileID: 1541267016}
@@ -1940,6 +1943,9 @@ MonoBehaviour:
   medlcalBullet_prefab: {fileID: 0}
   postolBullet_prefab: {fileID: 0}
   enemyBullet_prefab: {fileID: 0}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 --- !u!224 &1278003930 stripped
 RectTransform:
@@ -3647,6 +3653,9 @@ GameObject:
   - component: {fileID: 2018937679}
   - component: {fileID: 2018937681}
   - component: {fileID: 2018937680}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   m_Layer: 5
   m_Name: rolelist
@@ -3753,6 +3762,9 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2018937676}
   m_CullTransparentMesh: 1
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 --- !u!224 &580550256607788350 stripped
 RectTransform:
@@ -4085,7 +4097,10 @@ PrefabInstance:
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5019a47b7a53764498a71f98450ae40f, type: 3}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 --- !u!1 &2411383647443077568
 GameObject:
   m_ObjectHideFlags: 0
@@ -4224,6 +4239,9 @@ RectTransform:
   m_AnchoredPosition: {x: -17.9, y: -23.7}
   m_SizeDelta: {x: 118.6842, y: 124.4119}
   m_Pivot: {x: 0.5, y: 0.5}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 --- !u!1001 &5893572554703346016
 PrefabInstance:
@@ -4467,6 +4485,9 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2411383647443077568}
   m_CullTransparentMesh: 1
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

@@ -1,11 +1,15 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 using Enemy;
 >>>>>>> Stashed changes
 using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     public float hp; //Ñªï¿½ï¿½
     public float damage; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
@@ -24,6 +28,8 @@ public class EnemyBase : MonoBehaviour
         money_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Money");//ä¿®æ”¹å
         // money_prefab = Resources.Load<GameObject>("Prefabs/Money");  //ä¿®æ”¹å‰
 =======
+=======
+>>>>>>> Stashed changes
 
     public float hp; //ÑªÁ¿
     public float damage; //¹¥»÷Á¦
@@ -48,6 +54,9 @@ public class EnemyBase : MonoBehaviour
     {
         money_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Money");//ĞŞ¸Äºó
         // money_prefab = Resources.Load<GameObject>("Prefabs/Money");  //ĞŞ¸ÄÇ°
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     }
 
@@ -104,14 +113,20 @@ public class EnemyBase : MonoBehaviour
     public void Move() 
     {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         //ï¿½Ãµï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ß¾ï¿½ï¿½ë£¬È»ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ * ï¿½Ù¶ï¿½ * ï¿½Ì¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
 =======
+=======
+>>>>>>> Stashed changes
         //µÃµ½¹éÒ»»¯µÄÖ±Ïß¾àÀë£¬È»ºóµ÷ÓÃ ¾àÀë * ËÙ¶È * ¹Ì¶¨ÔËĞĞËÙ¶È
         //ï¿½Ãµï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ß¾ï¿½ï¿½ë£¬È»ï¿½ï¿½ï¿½ï¿½ï¿? ï¿½ï¿½ï¿½ï¿½ * ï¿½Ù¶ï¿½ * ï¿½Ì¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
         if (skilling)
         {
             return;
         }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         Vector2 direction = (Player.Instance.transform.position - transform.position).normalized;
         transform.Translate(direction * speed * Time.deltaTime);
@@ -160,8 +175,13 @@ public class EnemyBase : MonoBehaviour
         //    return;
         //}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
         //ï¿½Ğ¶Ï±ï¿½ï¿½Î¹ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½
+=======
+        
+        //ÅĞ¶Ï±¾´Î¹¥»÷ÊÇ·ñËÀÍö
+>>>>>>> Stashed changes
 =======
         
         //ÅĞ¶Ï±¾´Î¹¥»÷ÊÇ·ñËÀÍö
@@ -186,13 +206,19 @@ public class EnemyBase : MonoBehaviour
     public void Dead()
     {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½Öµ
         Player.Instance.exp += provideExp;
 =======
+=======
+>>>>>>> Stashed changes
         //Ôö¼ÓÍæ¼Ò¾­ÑéÖµ
         GameManager.Instance.exp += EnemyDate.provideExp;
         //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½Ö?
         Player.Instance.exp += EnemyDate.provideExp;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         GamePanel.Instance.RenewExp();
 

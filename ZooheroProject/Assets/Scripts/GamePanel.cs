@@ -11,12 +11,15 @@ public class GamePanel : MonoBehaviour
     public Slider _hpSlider;
     public Slider _expSlider;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public TMP_Text _moneyCount;//½ğ±Ò
     public TMP_Text _expCount;//µÈ¼¶
     public TMP_Text _hpCount;//ÉúÃüÖµ
     public TMP_Text _countDown;//¹Ø¿¨µ¹¼ÆÊ±
     public TMP_Text _waveCount;//²¨´Î
 =======
+=======
+>>>>>>> Stashed changes
     public Slider _armorpSlider;
     public TMP_Text _moneyCount;//é‡‘å¸
     // public TMP_Text _expCount;//ç­‰çº§
@@ -66,10 +69,13 @@ public class GamePanel : MonoBehaviour
     public void RenewHp()
     {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         //»ñÈ¡ÎÄ±¾
         _hpCount.text = Player.Instance.hp + "/" + Player.Instance.maxHp;
         _hpSlider.value = Player.Instance.hp  /  Player.Instance.maxHp;
 =======
+=======
+>>>>>>> Stashed changes
         RectTransform hpSliderRect = _hpSlider.GetComponent<RectTransform>();
 
 // å›ºå®šå·¦è¾¹ç•Œå¸ƒå±€
@@ -108,6 +114,9 @@ public class GamePanel : MonoBehaviour
         Debug.Log(maxHp);
         _hpCount.text = GameManager.Instance.hp + "/" + maxHp;
         _hpSlider.value = GameManager.Instance.hp  / maxHp;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
     }
@@ -122,6 +131,9 @@ public class GamePanel : MonoBehaviour
         // %é™¤ä½™ å‰©ä¸‹å¤šå°‘å† / 12
         _expSlider.value = GameManager.Instance.exp % 12 / 12;
         // _expCount.text = "LV." + GameManager.Instance.exp / 12;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     }
 

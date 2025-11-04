@@ -54,6 +54,7 @@ public class WeaponShort : WeaponBase
         if (col.CompareTag("Enemy"))
         {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             // ¶ÔµÐÈËÔì³ÉÉËº¦£º»ñÈ¡µÐÈË×é¼þ²¢µ÷ÓÃÊÜÉË·½·¨£¬´«ÈëÎäÆ÷ÉËº¦Öµ
             col.GetComponent<EnemyBase>().Injured(data.damage);
 
@@ -63,6 +64,11 @@ public class WeaponShort : WeaponBase
             // å¯¹æ•Œäººé€ æˆä¼¤å®³ï¼šèŽ·å–æ•Œäººç»„ä»¶å¹¶è°ƒç”¨å—ä¼¤æ–¹æ³•ï¼Œä¼ å…¥æ­¦å™¨ä¼¤å®³å€¼
            
 
+=======
+            // å¯¹æ•Œäººé€ æˆä¼¤å®³ï¼šèŽ·å–æ•Œäººç»„ä»¶å¹¶è°ƒç”¨å—ä¼¤æ–¹æ³•ï¼Œä¼ å…¥æ­¦å™¨ä¼¤å®³å€¼
+           
+
+>>>>>>> Stashed changes
             bool isCritcal = CriicalHits();
             if (isCritcal)  
             {

@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 public class WeaponBase : MonoBehaviour
 {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public WeaponData data;//武器基本数据
 
     public bool isAttack = false;//是否可以攻击，必须在攻击范围内
@@ -28,6 +29,17 @@ public class WeaponBase : MonoBehaviour
     public float moveSpeed;//??????????
     public Transform enemy;//?????????
     public float originZ;
+=======
+    public WeaponData data;//????????????
+    public float Attack; //伤害
+    public bool isAttack = false;//??????????????????????Χ??
+    public bool isCooling = false;//???????
+    public bool isAiming = true; //?????????
+    public float AttackTimer = 0;//?????????
+    public float moveSpeed;//??????????
+    public Transform enemy;//?????????
+    public float originZ;
+>>>>>>> Stashed changes
     // public int familyId;  //来源于什么家族
     // public int affection;  //珍惜度 即几级才能解锁
     // public int rank;   //职阶 3张能合成一张更高级的
@@ -124,9 +136,15 @@ public class WeaponBase : MonoBehaviour
                     enemy.transform.position         // ????λ??
                 ))
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 .First(); // 取第一个（即距离最近的敌人）
 
             // 4. 保存最近敌人的Transform引用，用于后续攻击
+=======
+                .First(); // ???????????????????????
+             
+            // 4. ????????????Transform????????????????
+>>>>>>> Stashed changes
 =======
                 .First(); // ???????????????????????
              
@@ -153,6 +171,7 @@ public class WeaponBase : MonoBehaviour
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public void Fire()
     {
         // 检查武器是否在冷却中，如果是则直接退出，不执行发射
@@ -175,6 +194,10 @@ public class WeaponBase : MonoBehaviour
 =======
     public virtual IEnumerator Fire()
     {
+=======
+    public virtual IEnumerator Fire()
+    {
+>>>>>>> Stashed changes
         return null;
     }
     //计算是否暴击
@@ -183,6 +206,9 @@ public class WeaponBase : MonoBehaviour
         float randomvalue = Random.Range(0,1f);
         return randomvalue < data.critical_strikes_probability;
         
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     }
 

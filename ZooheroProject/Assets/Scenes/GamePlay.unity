@@ -2075,7 +2075,11 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   m_LocalScale: {x: 1, y: 1, z: 1}
+=======
+  m_LocalScale: {x: 0.05, y: 0.05, z: 1}
+>>>>>>> Stashed changes
 =======
   m_LocalScale: {x: 0.05, y: 0.05, z: 1}
 >>>>>>> Stashed changes
@@ -3031,6 +3035,9 @@ MonoBehaviour:
   weaponsPos: {fileID: 0}
   reviveTimer: 0
   exp: 0
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 --- !u!114 &1087286820
 MonoBehaviour:
@@ -3253,7 +3260,11 @@ GameObject:
   - component: {fileID: 1232316988}
   m_Layer: 0
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   m_Name: Weapons
+=======
+  m_Name: WeaponPos
+>>>>>>> Stashed changes
 =======
   m_Name: WeaponPos
 >>>>>>> Stashed changes
@@ -3340,6 +3351,9 @@ MonoBehaviour:
   enemyfahter: {fileID: 0}
   WeaponDatas: []
   textAsset: {fileID: 0}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 --- !u!1 &1279791884
 GameObject:
@@ -5157,8 +5171,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   currentWave: 0
 =======
+=======
+>>>>>>> Stashed changes
   currentWave: 1
   RoleDate:
     id: 0
@@ -5227,6 +5244,9 @@ MonoBehaviour:
   medlcalBullet_prefab: {fileID: 0}
   postolBullet_prefab: {fileID: 0}
   enemyBullet_prefab: {fileID: 0}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 --- !u!4 &1926329769
 Transform:
@@ -5535,7 +5555,10 @@ Transform:
   m_Father: {fileID: 1232316988}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 --- !u!1 &2121821709
 GameObject:
   m_ObjectHideFlags: 0
@@ -5866,6 +5889,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3814258624931122770, guid: 1087b9e55fed063468c9df16c07047e4, type: 3}
   m_PrefabInstance: {fileID: 6273970408174437374}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 --- !u!1001 &5946331460315589842
 PrefabInstance:
@@ -5925,7 +5951,10 @@ PrefabInstance:
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68c04e797057fb64f9e0fc4dc70bdf5c, type: 3}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 --- !u!1001 &6273970408174437374
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6123,6 +6152,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed435fe598dc91d4a81ba2a495735e5c, type: 3}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -6138,6 +6170,11 @@ SceneRoots:
   - {fileID: 1326801278}
   - {fileID: 1926329769}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+  - {fileID: 3704384913827646125}
+  - {fileID: 5328314192993136079}
+>>>>>>> Stashed changes
 =======
   - {fileID: 3704384913827646125}
   - {fileID: 5328314192993136079}
