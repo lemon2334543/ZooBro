@@ -1,5 +1,9 @@
 using System;
 using Resources.script.model;
+<<<<<<< Updated upstream:ZooheroProject/Assets/Resources/script/Roleset.cs
+=======
+using TMPro;
+>>>>>>> Stashed changes:ZooheroProject/Assets/Scripts/UI/Roleset.cs
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -29,6 +33,7 @@ public class Roleset : MonoBehaviour ,IPointerEnterHandler, IPointerExitHandler
     public string roleinfoin = "roleinfoin";
 
     public GameObject _roleInfotPanal;
+<<<<<<< Updated upstream:ZooheroProject/Assets/Resources/script/Roleset.cs
 
 
 
@@ -37,6 +42,24 @@ public class Roleset : MonoBehaviour ,IPointerEnterHandler, IPointerExitHandler
         Instense = this;
         _backgroundimage = GetComponent<Image>();
         _avater = transform.GetChild(0).GetComponent<Image>();
+=======
+    
+    //用于判定是否重复点击
+    public bool isclick = false;
+
+    public GameObject _rombutton;
+
+    public GameObject _record;
+    public TextMeshProUGUI recordtext;
+
+    public GameObject _nextButton;
+    
+    private void Awake()
+    {
+        Instense = this;
+        _backgroundimage = transform.GetChild(0).GetComponent<Image>();
+        _avater = transform.GetChild(0).GetChild(0).GetComponent<Image>();
+>>>>>>> Stashed changes:ZooheroProject/Assets/Scripts/UI/Roleset.cs
         _button = GetComponent<Button>();
         _backring = GameObject.Find("backring");//选中绿色背景
         
@@ -50,8 +73,17 @@ public class Roleset : MonoBehaviour ,IPointerEnterHandler, IPointerExitHandler
         _roleshow = GameObject.Find("Ro-image");
 
         _roleInfotPanal = GameObject.Find("RO-Infooanel");
+<<<<<<< Updated upstream:ZooheroProject/Assets/Resources/script/Roleset.cs
 
 
+=======
+        
+        _rombutton = GameObject.Find("Ro-list-Ranrom"); 
+        _record = GameObject.Find("HighestRecord");
+        recordtext = _record.GetComponent<TextMeshProUGUI>();
+
+        _nextButton = GameObject.Find("next");
+>>>>>>> Stashed changes:ZooheroProject/Assets/Scripts/UI/Roleset.cs
 
     }
 
@@ -81,20 +113,80 @@ public class Roleset : MonoBehaviour ,IPointerEnterHandler, IPointerExitHandler
         else
         {
             _avater.sprite = UnityEngine.Resources.Load<Sprite>(roleDate.avatar);
+<<<<<<< Updated upstream:ZooheroProject/Assets/Resources/script/Roleset.cs
             
+=======
+            switch (this.roleDate.record)
+            {
+                case -1:  
+                    this._backgroundimage.color = GameManager.Instance.color_1;
+                    break;  
+                case 0:
+                    this._backgroundimage.color = GameManager.Instance.color0;
+                    break;
+                case 1:
+                    this._backgroundimage.color = GameManager.Instance.color1;
+                    break;
+                case 2:
+                    this._backgroundimage.color = GameManager.Instance.color2;
+                    break;
+                case 3:
+                    this._backgroundimage.color =  GameManager.Instance.color3;
+                    break;
+                case 4:
+                    this._backgroundimage.color = GameManager.Instance.color4;
+                    break;
+                case 5:
+                    this._backgroundimage.color = GameManager.Instance.color5;
+                    break;
+                default:  
+                    
+                    break;
+            }
+>>>>>>> Stashed changes:ZooheroProject/Assets/Scripts/UI/Roleset.cs
         }
         //点击监听
         _button.onClick.AddListener((() =>
         {
+<<<<<<< Updated upstream:ZooheroProject/Assets/Resources/script/Roleset.cs
             ButtonClick(roleDate);
+=======
+            
+            foreach (Roleset roleset in rolepanel.Instance._rolelist.GetComponentsInChildren<Roleset>())
+            {
+                if (roleset.roleDate.id!=Instense.roleDate.id)
+                {
+                    roleset.isclick = false;
+                }
+                
+            }
+
+            _rombutton.GetComponent<RomButton>().isclick = false;
+
+            if (isclick == false)
+            {
+                ButtonClick(roleDate);
+            }
+            
+                
+            
+            
+>>>>>>> Stashed changes:ZooheroProject/Assets/Scripts/UI/Roleset.cs
         }));
         
     }
 
     public void ButtonClick(RoleDate roleDate1)
     {
+<<<<<<< Updated upstream:ZooheroProject/Assets/Resources/script/Roleset.cs
         if (GameManger.Instance.RoleDate.id!=roleDate1.id)
         {
+=======
+        
+        isclick = true;
+        // if (GameManager.Instance.RoleDate.id!=roleDate1.id)
+        // {
+>>>>>>> Stashed changes:ZooheroProject/Assets/Scripts/UI/Roleset.cs
             if (_roleshow.GetComponent<CanvasGroup>().alpha==0)
             {
                 _roleshow.GetComponent<CanvasGroup>().alpha = 1;
@@ -103,6 +195,7 @@ public class Roleset : MonoBehaviour ,IPointerEnterHandler, IPointerExitHandler
             
             RenewUI(roleDate);
             setImage(roleDate1);
+<<<<<<< Updated upstream:ZooheroProject/Assets/Resources/script/Roleset.cs
             GameManger.Instance.RoleDate = roleDate1;
             roleInfotPanalshow();
             
@@ -115,6 +208,53 @@ public class Roleset : MonoBehaviour ,IPointerEnterHandler, IPointerExitHandler
             _backring.transform.position = new Vector3(Instense.transform.position.x, Instense.transform.position.y, 0);
             
         }
+=======
+            GameManager.Instance.RoleDate = roleDate1;
+            roleInfotPanalshow();
+
+
+            switch (roleDate1.record)
+            {
+                case -1:
+                    recordtext.text = "未通过";
+                    recordtext.color = GameManager.Instance.color_1;
+                    break;  
+                case 0:
+                    recordtext.text = "难度零";
+                    recordtext.color = GameManager.Instance.color0;
+                    break;  
+                case 1:
+                    recordtext.text = "难度一";
+                    recordtext.color = GameManager.Instance.color1;
+                    break;  
+                case 2:
+                    recordtext.text = "难度二";
+                    recordtext.color = GameManager.Instance.color2;
+                    break;  
+                case 3:
+                    recordtext.text = "难度三";
+                    recordtext.color = GameManager.Instance.color3;
+                    break;  
+                case 4:
+                    recordtext.text = "难度四";
+                    recordtext.color = GameManager.Instance.color4;
+                    break;  
+                case 5:
+                    recordtext.text = "难度五";
+                    recordtext.color = GameManager.Instance.color5;
+                    break;  
+                default:  
+                    
+                    break;
+            }
+            
+           
+            Instense = this;
+            
+            _backring.transform.localPosition = new Vector3(Instense.transform.localPosition.x, Instense.transform.localPosition.y, 0);
+            
+        // }
+>>>>>>> Stashed changes:ZooheroProject/Assets/Scripts/UI/Roleset.cs
           
         
 
@@ -137,6 +277,13 @@ public class Roleset : MonoBehaviour ,IPointerEnterHandler, IPointerExitHandler
             
             _Roimages.color = Color.black;
             _showlock.GetComponent<CanvasGroup>().alpha = 1;
+<<<<<<< Updated upstream:ZooheroProject/Assets/Resources/script/Roleset.cs
+=======
+            
+            _nextButton.GetComponent<CanvasGroup>().alpha=0;
+            _nextButton.GetComponent<CanvasGroup>().interactable=false;
+            _nextButton.GetComponent<CanvasGroup>().blocksRaycasts=false;
+>>>>>>> Stashed changes:ZooheroProject/Assets/Scripts/UI/Roleset.cs
         }
         else
         {
@@ -144,6 +291,13 @@ public class Roleset : MonoBehaviour ,IPointerEnterHandler, IPointerExitHandler
             _Animator.Play(jumpin, 0, 0f);
             _Roimages.color = Color.white;
             _showlock.GetComponent<CanvasGroup>().alpha = 0;
+<<<<<<< Updated upstream:ZooheroProject/Assets/Resources/script/Roleset.cs
+=======
+            
+            _nextButton.GetComponent<CanvasGroup>().alpha=1;
+            _nextButton.GetComponent<CanvasGroup>().interactable=true;
+            _nextButton.GetComponent<CanvasGroup>().blocksRaycasts=true;
+>>>>>>> Stashed changes:ZooheroProject/Assets/Scripts/UI/Roleset.cs
         }
       
             
@@ -151,9 +305,16 @@ public class Roleset : MonoBehaviour ,IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+<<<<<<< Updated upstream:ZooheroProject/Assets/Resources/script/Roleset.cs
         
         //背景颜色
         this._backgroundimage.color = new Color(207/255f, 207/255f, 207/255f);
+=======
+        // isclick = false;
+        //背景颜色
+        this._backgroundimage.color = Color.white;
+        
+>>>>>>> Stashed changes:ZooheroProject/Assets/Scripts/UI/Roleset.cs
         
 
         
@@ -180,6 +341,36 @@ public class Roleset : MonoBehaviour ,IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerExit(PointerEventData eventData)
     {
+<<<<<<< Updated upstream:ZooheroProject/Assets/Resources/script/Roleset.cs
         this._backgroundimage.color = new Color(34/255f, 34/255f, 34/255f);   
+=======
+        switch (this.roleDate.record)
+        {
+            case -1:  
+                this._backgroundimage.color = GameManager.Instance.color_1;
+                break;  
+            case 0:
+                this._backgroundimage.color = GameManager.Instance.color0;
+                break;
+            case 1:
+                this._backgroundimage.color = GameManager.Instance.color1;
+                break;
+            case 2:
+                this._backgroundimage.color = GameManager.Instance.color2;
+                break;
+            case 3:
+                this._backgroundimage.color =  GameManager.Instance.color3;
+                break;
+            case 4:
+                this._backgroundimage.color = GameManager.Instance.color4;
+                break;
+            case 5:
+                this._backgroundimage.color = GameManager.Instance.color5;
+                break;
+            default:  
+                    
+                break;
+        }  
+>>>>>>> Stashed changes:ZooheroProject/Assets/Scripts/UI/Roleset.cs
     }
 }

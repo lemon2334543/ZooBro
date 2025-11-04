@@ -1,10 +1,19 @@
+<<<<<<< Updated upstream
 using System;
+=======
+ï»¿ï»¿using System;
+>>>>>>> Stashed changes
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
+<<<<<<< Updated upstream
     public static Player Instance; // µ¥ÀıÊµÀı£¬·½±ãÆäËû½Å±¾·ÃÎÊÍæ¼Ò
+=======
+    public static Player Instance; // å•ä¾‹å®ä¾‹ï¼Œæ–¹ä¾¿å…¶ä»–è„šæœ¬è®¿é—®ç©å®¶
+>>>>>>> Stashed changes
 
     [SerializeField] 
     private float speed = 5f; // Íæ¼ÒÒÆ¶¯ËÙ¶È
@@ -14,6 +23,7 @@ public class Player : MonoBehaviour
     internal float maxHp = 15f;//×î´óÉúÃü
     internal float exp = 0;//¾­ÑéÖµ
 
+<<<<<<< Updated upstream
     private Keyboard keyboard; // ¼üÅÌÊäÈëÒıÓÃ
     private Vector2 input; // µ±Ç°ÊäÈëÏòÁ¿
     private Transform playerVisual; // Íæ¼ÒÊÓ¾õ±íÏÖ²¿·ÖµÄTransform
@@ -26,19 +36,64 @@ public class Player : MonoBehaviour
     private bool rightKeyPressed = false; // ÓÒ¼üÊÇ·ñ°´ÏÂ
     private float leftKeyPressTime = 0f; // ×ó¼ü°´ÏÂÊ±¼ä´Á
     private float rightKeyPressTime = 0f; // ÓÒ¼ü°´ÏÂÊ±¼ä´Á
+=======
+    // public float currenthp = 15f;
+    // public int money = 30;
+    // public float currentexp = 15f;
+    
+    public Transform weaponsPos;//æ­¦å™¨ä½ç½®
 
+    private Keyboard keyboard; // é”®ç›˜è¾“å…¥å¼•ç”¨
+    private Vector2 input; // å½“å‰è¾“å…¥å‘é‡
+    private Transform playerVisual; // ç©å®¶è§†è§‰è¡¨ç°éƒ¨åˆ†çš„Transform
+    private Animator animator; // ç©å®¶åŠ¨ç”»æ§åˆ¶å™¨
+    private SpriteRenderer spriteRenderer; // ç©å®¶æ¸²æŸ“å™¨ï¼Œç”¨äºç¿»è½¬è§’è‰²
+    private bool isFacingRight = true; // æ ‡è®°ç©å®¶å½“å‰æ˜¯å¦é¢å‘å³ä¾§
+    public float reviveTimer;
+    
+    // é”®ç›˜æŒ‰é”®çŠ¶æ€è·Ÿè¸ª
+    private bool leftKeyPressed = false; // å·¦é”®æ˜¯å¦æŒ‰ä¸‹
+    private bool rightKeyPressed = false; // å³é”®æ˜¯å¦æŒ‰ä¸‹
+    private float leftKeyPressTime = 0f; // å·¦é”®æŒ‰ä¸‹æ—¶é—´æˆ³
+    private float rightKeyPressTime = 0f; // å³é”®æŒ‰ä¸‹æ—¶é—´æˆ³
+>>>>>>> Stashed changes
+
+
+    public float exp;
     private void Awake()
     {
         Instance = this; // ÉèÖÃµ¥ÀıÊµÀı
         // ²éÕÒÍæ¼ÒÊÓ¾õ±íÏÖ²¿·Ö
         playerVisual = GameObject.Find("PlayerVisual").transform;
+<<<<<<< Updated upstream
         // »ñÈ¡¶¯»­¿ØÖÆÆ÷×é¼ş
+=======
+        
+        weaponsPos = GameObject.Find("WeaponPos").transform;//æ£€æµ‹æ­¦å™¨ä½ç½®æ§½ä½
+
+        // æŸ¥æ‰¾ç©å®¶è§†è§‰è¡¨ç°éƒ¨åˆ†
+        playerVisual = GameObject.Find("PlayerVisual").transform;
+        // è·å–åŠ¨ç”»æ§åˆ¶å™¨ç»„ä»¶
+>>>>>>> Stashed changes
         animator = playerVisual.GetComponent<Animator>();
         // »ñÈ¡äÖÈ¾Æ÷×é¼ş
         spriteRenderer = playerVisual.GetComponent<SpriteRenderer>();
         // »ñÈ¡µ±Ç°¼üÅÌÊäÈëÉè±¸
         keyboard = Keyboard.current;
 
+<<<<<<< Updated upstream
+=======
+        //ç¬¬ä¸€å…³æ—¶åˆå§‹åŒ–è§’è‰²å±æ€§
+        // Debug.Log(GameManager.Instance.currentWave);
+        if (GameManager.Instance.currentWave == 0)
+        {
+            GameManager.Instance.currentWave = 1;
+            GameManager.Instance.InitProp();//åˆåŒ–è§’è‰²
+            SceneManager.LoadScene("Shop");
+        }
+
+
+>>>>>>> Stashed changes
     }
 
     void Update()
@@ -48,10 +103,39 @@ public class Player : MonoBehaviour
             return;
         }
 
+<<<<<<< Updated upstream
         ProcessInput(); // ´¦Àí¼üÅÌÊäÈë
         Move(); // ÒÆ¶¯Íæ¼Ò
         TurnAround(); // ´¦Àí×ªÏòÂß¼­
         UpdateAnimation(); // ¸üĞÂ¶¯»­×´Ì¬
+=======
+        ProcessInput(); // å¤„ç†é”®ç›˜è¾“å…¥
+        Move(); // ç§»åŠ¨ç©å®¶
+        TurnAround(); // å¤„ç†è½¬å‘é€»è¾‘
+        UpdateAnimation(); // æ›´æ–°åŠ¨ç”»çŠ¶æ€
+        Revive();//ç”Ÿå‘½å†ç”Ÿ
+        earmoney();//è·å–é‡‘å¸
+    }
+
+    
+    //ç”Ÿå‘½å†ç”Ÿ
+    //todo ç”Ÿå‘½å†ç”Ÿæœºåˆ¶å¯èƒ½éœ€è¦ä¿®æ”¹    è´´è¿‘åŸæ¿é€»è¾‘
+    private void Revive()
+    {
+        reviveTimer += Time.deltaTime;
+        if (reviveTimer>=1f)
+        {
+            //æ£€æŸ¥åŠ è¡€ä¸è¶…è¿‡æœ€å¤§ç”Ÿå‘½å€¼
+            GameManager.Instance.hp += Mathf.Clamp(GameManager.Instance.propData.revive,0,GameManager.Instance.propData.maxHp);
+        }
+        
+
+
+
+
+
+        reviveTimer = 0;
+>>>>>>> Stashed changes
     }
 
     #region ¼üÅÌ³åÍ»¼ì²â
@@ -76,13 +160,21 @@ public class Player : MonoBehaviour
         // ¸ù¾İ°´¼ü×´Ì¬È·¶¨Ë®Æ½ÊäÈë·½Ïò
         float horizontalInput = GetHorizontalInput();
 
+<<<<<<< Updated upstream
         // ×éºÏÊäÈëÏòÁ¿²¢¹éÒ»»¯£¨·ÀÖ¹¶Ô½ÇÏßÒÆ¶¯¹ı¿ì£©
+=======
+        // ç»„åˆè¾“å…¥å‘é‡å¹¶å½’ä¸€åŒ–ï¼ˆé˜²æ­¢å¯¹è§’çº¿ç§»åŠ¨è¿‡å¿«ï¼‰
+>>>>>>> Stashed changes
         input = new Vector2(horizontalInput, verticalInput);
         if (input.magnitude > 1f) input.Normalize();
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// »ñÈ¡´¹Ö±·½ÏòÊäÈë
+=======
+    /// è·å–å‚ç›´æ–¹å‘è¾“å…¥
+>>>>>>> Stashed changes
     /// </summary>
     /// <returns>´¹Ö±ÊäÈëÖµ£¨-1, 0, 1£©</returns>
     private float GetVerticalInput()
@@ -91,12 +183,20 @@ public class Player : MonoBehaviour
         if (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed) return 1f;
         // ÏÂ¼ü£¨S»òÏÂ¼ıÍ·£©
         if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) return -1f;
+<<<<<<< Updated upstream
         // ÎŞ´¹Ö±ÊäÈë
+=======
+        // æ— å‚ç›´è¾“å…¥
+>>>>>>> Stashed changes
         return 0f;
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// ¸üĞÂ°´¼ü×´Ì¬ºÍ°´ÏÂÊ±¼ä
+=======
+    /// æ›´æ–°æŒ‰é”®çŠ¶æ€å’ŒæŒ‰ä¸‹æ—¶é—´
+>>>>>>> Stashed changes
     /// </summary>
     /// <param name="keyPressed">°´¼üÊÇ·ñ°´ÏÂµÄÒıÓÃ</param>
     /// <param name="keyDown">µ±Ç°°´¼ü×´Ì¬</param>
@@ -109,7 +209,11 @@ public class Player : MonoBehaviour
             keyPressed = true;
             pressTime = Time.time; // ¼ÇÂ¼°´ÏÂÊ±¼ä
         }
+<<<<<<< Updated upstream
         // °´¼üÊÍ·Å
+=======
+        // æŒ‰é”®é‡Šæ”¾
+>>>>>>> Stashed changes
         else if (!keyDown)
         {
             keyPressed = false;
@@ -117,7 +221,11 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// È·¶¨Ë®Æ½ÊäÈë·½Ïò£¬½â¾ö×óÓÒ¼üÍ¬Ê±°´ÏÂµÄ³åÍ»
+=======
+    /// ç¡®å®šæ°´å¹³è¾“å…¥æ–¹å‘ï¼Œè§£å†³å·¦å³é”®åŒæ—¶æŒ‰ä¸‹çš„å†²çª
+>>>>>>> Stashed changes
     /// </summary>
     /// <returns>Ë®Æ½ÊäÈëÖµ£¨-1, 0, 1£©</returns>
     private float GetHorizontalInput()
@@ -130,18 +238,30 @@ public class Player : MonoBehaviour
         if (leftKeyPressed) return -1f; // ×ó¼ü°´ÏÂ
         if (rightKeyPressed) return 1f; // ÓÒ¼ü°´ÏÂ
 
+<<<<<<< Updated upstream
         // ÎŞË®Æ½ÊäÈë
+=======
+        // æ— æ°´å¹³è¾“å…¥
+>>>>>>> Stashed changes
         return 0f;
     }
     #endregion
 
     /// <summary>
+<<<<<<< Updated upstream
     /// ÒÆ¶¯Íæ¼Ò½ÇÉ«
+=======
+    /// ç§»åŠ¨ç©å®¶è§’è‰²
+>>>>>>> Stashed changes
     /// </summary>
     public void Move() => transform.Translate(input * speed * Time.deltaTime);
 
     /// <summary>
+<<<<<<< Updated upstream
     /// ´¦ÀíÍæ¼Ò×ªÏòÂß¼­
+=======
+    /// å¤„ç†ç©å®¶è½¬å‘é€»è¾‘
+>>>>>>> Stashed changes
     /// </summary>
     public void TurnAround()
     {
@@ -151,34 +271,60 @@ public class Player : MonoBehaviour
             // ¼ì²â·½ÏòÊÇ·ñ¸Ä±ä£¨´ÓÓÒ×ª×ó»ò´Ó×ó×ªÓÒ£©
             bool directionChanged = (input.x > 0 && !isFacingRight) || (input.x < 0 && isFacingRight);
 
+<<<<<<< Updated upstream
             // ·½Ïò¸Ä±äÇÒÍæ¼ÒÕıÔÚÒÆ¶¯Ê±´¥·¢duang¶¯»­
+=======
+            // æ–¹å‘æ”¹å˜ä¸”ç©å®¶æ­£åœ¨ç§»åŠ¨æ—¶è§¦å‘duangåŠ¨ç”»
+>>>>>>> Stashed changes
             if (directionChanged && input.magnitude > 0.1f)
             {
                 animator.SetTrigger("duang");
             }
 
+<<<<<<< Updated upstream
             // ¸üĞÂ³¯Ïò×´Ì¬
             isFacingRight = input.x > 0;
             // ¸üĞÂ¾«ÁéäÖÈ¾·½Ïò£¨·­×ªXÖá£©
+=======
+
+            // æ›´æ–°æœå‘çŠ¶æ€
+            isFacingRight = input.x > 0;
+            // æ›´æ–°ç²¾çµæ¸²æŸ“æ–¹å‘ï¼ˆç¿»è½¬Xè½´ï¼‰
+>>>>>>> Stashed changes
             spriteRenderer.flipX = !isFacingRight;
         }
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// ¸üĞÂÍæ¼Ò¶¯»­×´Ì¬
+=======
+    /// æ›´æ–°ç©å®¶åŠ¨ç”»çŠ¶æ€
+>>>>>>> Stashed changes
     /// </summary>
     private void UpdateAnimation()
     {
 
+<<<<<<< Updated upstream
         // ¼ì²âÍæ¼ÒÊÇ·ñÔÚÒÆ¶¯£¨ÊäÈëÏòÁ¿³¤¶È´óÓÚãĞÖµ£©
+=======
+        // æ£€æµ‹ç©å®¶æ˜¯å¦åœ¨ç§»åŠ¨ï¼ˆè¾“å…¥å‘é‡é•¿åº¦å¤§äºé˜ˆå€¼ï¼‰
+>>>>>>> Stashed changes
         bool isMoving = input.magnitude > 0.1f;
 
         if (animator != null)
         {
+<<<<<<< Updated upstream
             // ¸üĞÂÒÆ¶¯×´Ì¬£¨¿ØÖÆRun/Idle¶¯»­£©
             animator.SetBool("isMove", isMoving);
 
             // µ±Í£Ö¹ÒÆ¶¯Ê±Á¢¼´´¥·¢duang¶¯»­
+=======
+            // æ›´æ–°ç§»åŠ¨çŠ¶æ€ï¼ˆæ§åˆ¶Run/IdleåŠ¨ç”»ï¼‰
+            animator.SetBool("isMove", isMoving);
+
+            // å½“åœæ­¢ç§»åŠ¨æ—¶ç«‹å³è§¦å‘duangåŠ¨ç”»
+>>>>>>> Stashed changes
             if (!isMoving && input.magnitude <= 0.1f)
             {
                 animator.SetTrigger("duang");
@@ -187,15 +333,24 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Íæ¼ÒÊÜÉËÂß¼­
+=======
+    /// ç©å®¶å—ä¼¤é€»è¾‘
+>>>>>>> Stashed changes
     /// </summary>
-    public void Injured(float attack) 
+    public void Injured(float attack)
     {
+        //è®¡ç®—é˜²å¾¡åŠ›
+        attack *= GameManager.Instance.propData.Defense;
+        
+        
         if (isDead)
         {
             return;
         }
 
+<<<<<<< Updated upstream
         //ÅĞ¶Ï±¾´Î¹¥»÷ÊÇ·ñËÀÍö
         if (hp - attack <= 0 )
         {
@@ -208,12 +363,54 @@ public class Player : MonoBehaviour
 
         //¸üĞÂÑªÌõ
         GamePanel.Instance.RenewHp();
+=======
+        if (GameManager.Instance.Armor!=0)
+        {
+            if (GameManager.Instance.Armor>attack)
+            {
+                GameManager.Instance.Armor -= attack;
+            }else if (GameManager.Instance.Armor<attack)
+            {
+                GameManager.Instance.Armor = 0;
+                attack -= GameManager.Instance.Armor;
+                GameManager.Instance.hp -= attack;
+                GamePanel.Instance.RenewHp();
+                
+            }else if (GameManager.Instance.Armor==attack)
+            {
+                GameManager.Instance.Armor = 0;
+            }
+
+            GamePanel.Instance.RenewArmor();
+
+        }else if(GameManager.Instance.Armor==0)
+        {
+            //åˆ¤æ–­æœ¬æ¬¡æ”»å‡»æ˜¯å¦æ­»äº¡
+            if (GameManager.Instance.hp - attack <= 0 )
+            {
+                GameManager.Instance.hp = 0;
+                Dead();
+            }else
+            {
+                GameManager.Instance.hp -= attack;
+            }
+
+            //æ›´æ–°è¡€æ¡
+            GamePanel.Instance.RenewHp();
+        }
+
+        
+>>>>>>> Stashed changes
     }
 
 
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Íæ¼Ò¹¥»÷Âß¼­
+=======
+    /// ç©å®¶æ”»å‡»é€»è¾‘
+>>>>>>> Stashed changes
     /// </summary>
     public void Attack() 
     {
@@ -222,7 +419,11 @@ public class Player : MonoBehaviour
 
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Íæ¼ÒËÀÍöÂß¼­
+=======
+    /// ç©å®¶æ­»äº¡é€»è¾‘
+>>>>>>> Stashed changes
     /// </summary>
     public void Dead()
     {
@@ -230,20 +431,39 @@ public class Player : MonoBehaviour
 
         animator.speed = 0;
 
+<<<<<<< Updated upstream
         //todo µ÷ÓÃÓÎÏ·Ê§°Üº¯Êı
+=======
+
+       
+>>>>>>> Stashed changes
         LevelController.Instance.BadGame();
     }
+    
 
-
-    private void OnTriggerEnter2D(Collider2D col)
+    private void earmoney()
     {
-        if (col.CompareTag("Money"))
-        {
-            Destroy(col.gameObject);
+        //Physics2D.OverlapCircleAll ä»¥ç©å®¶ä¸ºä¸­å¿ƒæ„å»ºåœ† å°„çº¿æ£€æŸ¥ä¸Itemmï¼ˆé‡‘å¸ï¼‰çš„è·ç¦»
+        Collider2D[] moenyInRange = Physics2D.OverlapCircleAll(
+            transform.position, 0.5f*GameManager.Instance.propData.pickRange, LayerMask.GetMask("Item"));
 
+<<<<<<< Updated upstream
             money += 1;
             GamePanel.Instance.RenewMoney();
+=======
+        //è·å–åˆ°èŒƒå›´å‘¢æ‰€æœ‰çš„Itemï¼ˆé‡‘å¸ï¼‰GameOBject ç„¶åéå†é”€æ¯åŠ é’±
+        if (moenyInRange.Length>=0)
+        {
+            for (int i = 0; i < moenyInRange.Length; i++)
+            {
+                Destroy(moenyInRange[i].gameObject);
+                GameManager.Instance.money += 1;
+                GamePanel.Instance.RenewMoney();
+            }
+>>>>>>> Stashed changes
         }
+        
+        
     }
 
 }

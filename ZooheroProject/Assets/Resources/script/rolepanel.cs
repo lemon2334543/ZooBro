@@ -10,8 +10,7 @@ using UnityEngine.UI;
 public class rolepanel : MonoBehaviour
 {
     public static rolepanel Instance;
-    public List<RoleDate> RoleDates = new List<RoleDate>();//获取json
-    public TextAsset textAsset;//json文本z
+
 
     public Transform _rolelist;//UI列表
     public GameObject role_Prefab;//预制件
@@ -28,8 +27,7 @@ public class rolepanel : MonoBehaviour
         _rolelist = GameObject.Find("rolelist").transform;
         role_Prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Ro-Profile-role");
         
-        textAsset = UnityEngine.Resources.Load<TextAsset>("Data/role");
-        RoleDates = JsonConvert.DeserializeObject<List<RoleDate>>(textAsset.text);
+        
 
         _rolename = GameObject.Find("Ro-name").GetComponent<TextMeshProUGUI>();
         _abater = GameObject.Find("Ro-info-image").GetComponent<Image>();
@@ -44,7 +42,7 @@ public class rolepanel : MonoBehaviour
     void Start()
     {
 
-        foreach (RoleDate roleDate in RoleDates)
+        foreach (RoleDate roleDate in GameManager.Instance.RoleDates)
         {
             //循环生成预制体
             Roleset r = GameObject.Instantiate(role_Prefab,_rolelist.transform).GetComponent<Roleset>();

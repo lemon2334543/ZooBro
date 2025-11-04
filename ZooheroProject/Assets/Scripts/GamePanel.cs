@@ -10,11 +10,21 @@ public class GamePanel : MonoBehaviour
 
     public Slider _hpSlider;
     public Slider _expSlider;
+<<<<<<< Updated upstream
     public TMP_Text _moneyCount;//���
     public TMP_Text _expCount;//�ȼ�
     public TMP_Text _hpCount;//����ֵ
     public TMP_Text _countDown;//�ؿ�����ʱ
     public TMP_Text _waveCount;//����
+=======
+    public Slider _armorpSlider;
+    public TMP_Text _moneyCount;//金币
+    // public TMP_Text _expCount;//等级
+    public TMP_Text _hpCount;//生命值
+    public TMP_Text _armorount;//生命值
+    public TMP_Text _countDown;//关卡倒计时
+    public TMP_Text _waveCount;//波次
+>>>>>>> Stashed changes
 
 
     private void Awake()
@@ -24,10 +34,13 @@ public class GamePanel : MonoBehaviour
         _hpSlider = GameObject.Find("HpSlider").GetComponent<Slider>();
         _expSlider = GameObject.Find("ExpSlider").GetComponent<Slider>();
         _moneyCount = GameObject.Find("MoneyCount").GetComponent<TMP_Text>();
-        _expCount = GameObject.Find("ExpCount").GetComponent<TMP_Text>();
+        // _expCount = GameObject.Find("ExpCount").GetComponent<TMP_Text>();
         _hpCount = GameObject.Find("HpCount").GetComponent<TMP_Text>();
         _countDown = GameObject.Find("CountDown").GetComponent<TMP_Text>();
         _waveCount = GameObject.Find("WaveCount").GetComponent<TMP_Text>();
+        
+        _armorpSlider = GameObject.Find("ArmorSlider").GetComponent<Slider>();
+        _armorount = GameObject.Find("ArmorCount").GetComponent<TMP_Text>();
 
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -42,6 +55,8 @@ public class GamePanel : MonoBehaviour
         //���²�����Ϣ
         RenewWaveCount();
     }
+    
+    
 
     public void RenewMoney()
     {
@@ -50,17 +65,64 @@ public class GamePanel : MonoBehaviour
 
     public void RenewHp()
     {
+<<<<<<< Updated upstream
         //��ȡ�ı�
         _hpCount.text = Player.Instance.hp + "/" + Player.Instance.maxHp;
         _hpSlider.value = Player.Instance.hp  /  Player.Instance.maxHp;
+=======
+        RectTransform hpSliderRect = _hpSlider.GetComponent<RectTransform>();
+
+// 固定左边界布局
+        hpSliderRect.anchorMin = new Vector2(0, 0.5f);
+        hpSliderRect.anchorMax = new Vector2(0, 0.5f);
+        hpSliderRect.pivot = new Vector2(0, 0.5f);
+        hpSliderRect.anchoredPosition = new Vector2(20, 0);
+
+// 获取最大血量
+        float maxHp = GameManager.Instance.propData.maxHp;
+        float b = 15f;
+        float targetWidth=0;
+        float q = 0.95f;
+// 分段计算宽度（自动适配任意x值）
+        if (maxHp<=20)
+        {
+            targetWidth = b * maxHp;
+        }
+        else
+        {
+            // 21    41
+            targetWidth += 20 * b;
+            for (int i = 2; i < Mathf.FloorToInt(maxHp / 20f); i++)
+            {
+                targetWidth += b * q;
+            }
+
+            targetWidth += Mathf.FloorToInt(maxHp % 20f) * b * q;
+        }
+        
+
+// 应用宽度
+        hpSliderRect.sizeDelta = new Vector2(targetWidth, hpSliderRect.sizeDelta.y);
+
+
+        Debug.Log(maxHp);
+        _hpCount.text = GameManager.Instance.hp + "/" + maxHp;
+        _hpSlider.value = GameManager.Instance.hp  / maxHp;
+>>>>>>> Stashed changes
 
     }
 
     public void RenewExp()
     {
+<<<<<<< Updated upstream
         // %���� ʣ�¶����� / 12
         _expSlider.value = Player.Instance.exp % 12 / 12;
         _expCount.text = "LV." + Player.Instance.exp / 12;
+=======
+        // %除余 剩下多少再 / 12
+        _expSlider.value = GameManager.Instance.exp % 12 / 12;
+        // _expCount.text = "LV." + GameManager.Instance.exp / 12;
+>>>>>>> Stashed changes
     }
 
     // Update is called once per frame
@@ -83,4 +145,60 @@ public class GamePanel : MonoBehaviour
     }
 
 
+    public void RenewArmor()
+    {
+        if (GameManager.Instance.Armor>GameManager.Instance.propData.maxHp)
+        {
+            GameManager.Instance.Armor = GameManager.Instance.propData.maxHp;
+        }
+        
+        RectTransform armorSliderRect = _armorpSlider.GetComponent<RectTransform>();
+
+// 固定左边界布局
+        armorSliderRect.anchorMin = new Vector2(0, 0.5f);
+        armorSliderRect.anchorMax = new Vector2(0, 0.5f);
+        armorSliderRect.pivot = new Vector2(0, 0.5f);
+        armorSliderRect.anchoredPosition = new Vector2(10, 0);
+
+// 获取最大血量
+        float maxHp = GameManager.Instance.propData.maxHp;
+        float b = 15f;
+        float targetWidth=0;
+        float q = 0.95f;
+// 分段计算宽度（自动适配任意x值）
+        if (maxHp<=20)
+        {
+            targetWidth = b * maxHp;
+        }
+        else
+        {
+            // 21    41
+            targetWidth += 20 * b;
+            for (int i = 2; i < Mathf.FloorToInt(maxHp / 20f); i++)
+            {
+                targetWidth += b * q;
+            }
+
+            targetWidth += Mathf.FloorToInt(maxHp % 20f) * b * q;
+        }
+        
+
+// 应用宽度
+        armorSliderRect.sizeDelta = new Vector2(targetWidth, armorSliderRect.sizeDelta.y);
+
+
+        
+        _armorount.text = GameManager.Instance.Armor.ToString();
+        _armorpSlider.value = GameManager.Instance.Armor  / maxHp;
+
+        if (GameManager.Instance.Armor==0)
+        {
+            GameObject.Find("Armor").GetComponent<CanvasGroup>().alpha = 0;
+        }
+        else if(GameManager.Instance.Armor>0)
+        {
+            GameObject.Find("Armor").GetComponent<CanvasGroup>().alpha = 1;
+        }
+
+    }
 }

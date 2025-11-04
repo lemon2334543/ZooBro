@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+<<<<<<< Updated upstream
   <component name="Encoding" addBOMForNewFiles="with BOM under Windows, with no BOM otherwise" />
+=======
+  <component name="Encoding" addBOMForNewFiles="with BOM under Windows, with no BOM otherwise">
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/Enemy/EnemyBase.cs" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/weapon/WeaponBase.cs" charset="GBK" />
+  </component>
+>>>>>>> Stashed changes
 </project>

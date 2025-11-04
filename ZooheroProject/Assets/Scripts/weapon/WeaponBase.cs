@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class WeaponBase : MonoBehaviour
 {
+<<<<<<< Updated upstream
     public WeaponData data;//武器基本数据
 
     public bool isAttack = false;//是否可以攻击，必须在攻击范围内
@@ -16,13 +18,47 @@ public class WeaponBase : MonoBehaviour
     public float originZ;
 
     private void Awake()
+=======
+    public WeaponData data;//????????????
+    public float Attack; //伤害
+    public bool isAttack = false;//??????????????????????Χ??
+    public bool isCooling = false;//???????
+    public bool isAiming = true; //?????????
+    public float AttackTimer = 0;//?????????
+    public float moveSpeed;//??????????
+    public Transform enemy;//?????????
+    public float originZ;
+    // public int familyId;  //来源于什么家族
+    // public int affection;  //珍惜度 即几级才能解锁
+    // public int rank;   //职阶 3张能合成一张更高级的
+    // public string Type; //远程/近战/以及其他可能用到的标签（或者提醒玩家武器用的的流派）
+    
+    public void Awake()
+>>>>>>> Stashed changes
     {
         originZ = transform.eulerAngles.z;
     }
 
-    private void Start()
+    public void Start()
     {
-        
+        data.critical_strikes_probability *= GameManager.Instance.propData.critical_strikes_probability;
+        if (data.isLong==0)
+        {
+            //近战武器 范围 伤害 冷却
+            data.range *= GameManager.Instance.propData.short_range;
+            data.damage *= GameManager.Instance.propData.short_damage;
+            data.cooling /= GameManager.Instance.propData.short_attackSpeed;
+
+        }else if (data.isLong==1)
+        {
+            //远程武器 范围 伤害 冷却
+            data.range *= GameManager.Instance.propData.long_range;
+            data.damage *= GameManager.Instance.propData.long_damage;
+            data.cooling /= GameManager.Instance.propData.long_attackSpeed;
+        }
+        //暴击
+        data.critical_strikes_probability *= GameManager.Instance.propData.critical_strikes_probability;
+
     }
 
     private void Update()
@@ -32,32 +68,31 @@ public class WeaponBase : MonoBehaviour
             return;
         }
 
-        //自动瞄准
+        //??????
         if (isAiming)
         {
             Aiming();
         }
 
 
-        //判断攻击
+        //?ж????
         if (isAttack && !isCooling)
         {
-            Fire();
+            // Debug.Log("Fire");
+            StartCoroutine(Fire());
         }
 
 
-        // 攻击冷却处理
+        // ???????????
         if (isCooling)
         {
-            // 累计冷却计时器：每帧增加经过的时间
+            // ???????????????????????????
             AttackTimer += Time.deltaTime;
 
-            // 检查是否已完成冷却时间
+            // ?????????????????
             if (AttackTimer >= data.cooling)
             {
-                // 重置冷却计时器
                 AttackTimer = 0;
-                // 将冷却状态设置为false，表示可以再次攻击
                 isCooling = false;
             }
         }
@@ -68,49 +103,56 @@ public class WeaponBase : MonoBehaviour
 
     private void Aiming()
     {
-        // 1. 检测攻击范围内的所有敌人
-        // 使用圆形检测区域，找出所有在范围内的敌人碰撞体
+        // 1. ???????Χ??????е???
+        // ?????μ????????????????Χ???????????
         Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(
-            transform.position,       // 检测中心点：当前武器位置
-            data.range,               // 检测半径：从WeaponData中获取攻击范围
-            LayerMask.GetMask("Enemy")// 检测层级：只检测标记为"Enemy"层的物体
+            transform.position,       // ???????????????λ??
+            data.range,               // ????????WeaponData?л????????Χ
+            LayerMask.GetMask("Enemy")// ?????????????"Enemy"???????
         );
 
-        // 2. 判断是否检测到敌人
-        if (enemiesInRange.Length > 0) // 如果范围内至少有一个敌人
+        // 2. ?ж??????????
+        if (enemiesInRange.Length > 0) // ?????Χ???????????????
         {
-            isAttack = true; // 设置为攻击状态，表示有目标可攻击
+            isAttack = true; // ?????????????????????????
 
-            // 3. 从检测到的敌人中找出距离最近的一个
+            // 3. ??????????????????????????
             Collider2D nearestEnemy = enemiesInRange
-                // 按距离排序：计算每个敌人与武器的距离，从小到大排列
+                // ?????????????????????????????????С????????
                 .OrderBy(enemy => Vector2.Distance(
-                    transform.position,              // 武器当前位置
-                    enemy.transform.position         // 敌人位置
+                    transform.position,              // ???????λ??
+                    enemy.transform.position         // ????λ??
                 ))
+<<<<<<< Updated upstream
                 .First(); // 取第一个（即距离最近的敌人）
 
             // 4. 保存最近敌人的Transform引用，用于后续攻击
+=======
+                .First(); // ???????????????????????
+             
+            // 4. ????????????Transform????????????????
+>>>>>>> Stashed changes
             enemy = nearestEnemy.transform;
 
-            // 5. 计算武器应该旋转的角度，使其指向敌人
-            Vector2 enemyPos = enemy.position;                    // 敌人位置
-            Vector2 direction = enemyPos - (Vector2)transform.position; // 方向向量：从武器指向敌人
-            float angleDegrees = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg; // 将方向转换为角度
+            // 5. ????????????????????????????
+            Vector2 enemyPos = enemy.position;                    // ????λ??
+            Vector2 direction = enemyPos - (Vector2)transform.position; // ??????????????????????
+            float angleDegrees = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg; // ?????????????
 
-            // 6. 应用旋转角度，使武器指向敌人（保留原始Z轴偏移）
+            // 6. ????????????????????????????Z??????
             transform.eulerAngles =
                 new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, angleDegrees + originZ);
         }
         else
         {
-            // 7. 如果没有检测到敌人，重置状态
-            isAttack = false;    // 设置为非攻击状态
-            enemy = null;        // 清除敌人目标引用
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, originZ); // 重置武器角度到原始方向
+            // 7. ?????м?????????????
+            isAttack = false;    // ????????????
+            enemy = null;        // ??????????????
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, originZ); // ??????????????????
         }
     }
 
+<<<<<<< Updated upstream
     public void Fire()
     {
         // 检查武器是否在冷却中，如果是则直接退出，不执行发射
@@ -130,6 +172,18 @@ public class WeaponBase : MonoBehaviour
 
         // 将武器状态设置为冷却中，防止连续发射
         isCooling = true;
+=======
+    public virtual IEnumerator Fire()
+    {
+        return null;
+    }
+    //计算是否暴击
+    public bool CriicalHits()
+    {
+        float randomvalue = Random.Range(0,1f);
+        return randomvalue < data.critical_strikes_probability;
+        
+>>>>>>> Stashed changes
     }
 
 
