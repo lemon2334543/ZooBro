@@ -2076,7 +2076,11 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   m_LocalScale: {x: 1, y: 1, z: 1}
+=======
+  m_LocalScale: {x: 0.05, y: 0.05, z: 1}
+>>>>>>> Stashed changes
 =======
   m_LocalScale: {x: 0.05, y: 0.05, z: 1}
 >>>>>>> Stashed changes
@@ -3036,6 +3040,9 @@ MonoBehaviour:
   reviveTimer: 0
   exp: 0
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -3261,7 +3268,11 @@ GameObject:
   m_Layer: 0
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   m_Name: Weapons
+=======
+  m_Name: WeaponPos
+>>>>>>> Stashed changes
 =======
   m_Name: WeaponPos
 >>>>>>> Stashed changes
@@ -3352,6 +3363,9 @@ MonoBehaviour:
   WeaponDatas: []
   textAsset: {fileID: 0}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -5172,8 +5186,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   currentWave: 0
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
   currentWave: 1
@@ -5245,6 +5262,9 @@ MonoBehaviour:
   postolBullet_prefab: {fileID: 0}
   enemyBullet_prefab: {fileID: 0}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -5556,7 +5576,10 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 --- !u!1 &2121821709
@@ -5890,6 +5913,9 @@ Transform:
   m_PrefabInstance: {fileID: 6273970408174437374}
   m_PrefabAsset: {fileID: 0}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -5952,7 +5978,10 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: 68c04e797057fb64f9e0fc4dc70bdf5c, type: 3}
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 --- !u!1001 &6273970408174437374
@@ -6153,6 +6182,9 @@ PrefabInstance:
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed435fe598dc91d4a81ba2a495735e5c, type: 3}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -6171,6 +6203,11 @@ SceneRoots:
   - {fileID: 1926329769}
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+  - {fileID: 3704384913827646125}
+  - {fileID: 5328314192993136079}
+>>>>>>> Stashed changes
 =======
   - {fileID: 3704384913827646125}
   - {fileID: 5328314192993136079}

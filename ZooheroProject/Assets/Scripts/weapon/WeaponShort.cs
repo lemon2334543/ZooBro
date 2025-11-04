@@ -55,6 +55,7 @@ public class WeaponShort : WeaponBase
         {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             // �Ե�������˺�����ȡ����������������˷��������������˺�ֵ
             col.GetComponent<EnemyBase>().Injured(data.damage);
 
@@ -64,6 +65,11 @@ public class WeaponShort : WeaponBase
             // 对敌人造成伤害：获取敌人组件并调用受伤方法，传入武器伤害值
            
 
+=======
+            // 对敌人造成伤害：获取敌人组件并调用受伤方法，传入武器伤害值
+           
+
+>>>>>>> Stashed changes
 =======
             // 对敌人造成伤害：获取敌人组件并调用受伤方法，传入武器伤害值
            

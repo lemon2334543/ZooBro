@@ -1,6 +1,10 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 using System;
+=======
+﻿﻿using System;
+>>>>>>> Stashed changes
 =======
 ﻿﻿using System;
 >>>>>>> Stashed changes
@@ -15,8 +19,11 @@ public class Player : MonoBehaviour
 {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public static Player Instance; // ����ʵ�������������ű��������
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     public static Player Instance; // 单例实例，方便其他脚本访问玩家
@@ -48,6 +55,9 @@ public class Player : MonoBehaviour
 =======
     public bool isDead = false ; //是否死亡
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     // public float currenthp = 15f;
     // public int money = 30;
@@ -79,8 +89,11 @@ public class Player : MonoBehaviour
         playerVisual = GameObject.Find("PlayerVisual").transform;
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // ��ȡ�������������
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         
@@ -98,7 +111,10 @@ public class Player : MonoBehaviour
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         //第一关时初始化角色属性
@@ -123,11 +139,14 @@ public class Player : MonoBehaviour
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         ProcessInput(); // ������������
         Move(); // �ƶ����
         TurnAround(); // ����ת���߼�
         UpdateAnimation(); // ���¶���״̬
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         ProcessInput(); // 处理键盘输入
@@ -137,7 +156,10 @@ public class Player : MonoBehaviour
         Revive();//生命再生
         earmoney();//获取金币
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
     }
 
     
@@ -158,6 +180,7 @@ public class Player : MonoBehaviour
 
 
         reviveTimer = 0;
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
     }
 
@@ -213,11 +236,39 @@ public class Player : MonoBehaviour
 =======
         // 组合输入向量并归一化（防止对角线移动过快）
 >>>>>>> Stashed changes
+=======
+    }
+
+    #region 键盘冲突检测
+    /// <summary>
+    /// 处理键盘输入，解决左右键冲突问题
+    /// </summary>
+    private void ProcessInput()
+    {
+        // 检测左键状态（A键或左箭头）
+        bool leftKeyDown = keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed;
+        // 检测右键状态（D键或右箭头）
+        bool rightKeyDown = keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed;
+
+        // 获取垂直输入（W/S键或上下箭头）
+        float verticalInput = GetVerticalInput();
+
+        // 更新左键状态和时间戳
+        UpdateKeyState(ref leftKeyPressed, leftKeyDown, ref leftKeyPressTime);
+        // 更新右键状态和时间戳
+        UpdateKeyState(ref rightKeyPressed, rightKeyDown, ref rightKeyPressTime);
+
+        // 根据按键状态确定水平输入方向
+        float horizontalInput = GetHorizontalInput();
+
+        // 组合输入向量并归一化（防止对角线移动过快）
+>>>>>>> Stashed changes
         input = new Vector2(horizontalInput, verticalInput);
         if (input.magnitude > 1f) input.Normalize();
     }
 
     /// <summary>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
     /// ��ȡ��ֱ��������
@@ -238,6 +289,8 @@ public class Player : MonoBehaviour
         // 无垂直输入
 >>>>>>> Stashed changes
 =======
+=======
+>>>>>>> Stashed changes
     /// 获取垂直方向输入
     /// </summary>
     /// <returns>垂直输入值（-1, 0, 1）</returns>
@@ -248,11 +301,15 @@ public class Player : MonoBehaviour
         // 下键（S或下箭头）
         if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) return -1f;
         // 无垂直输入
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         return 0f;
     }
 
     /// <summary>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
     /// ���°���״̬�Ͱ���ʱ��
@@ -277,6 +334,8 @@ public class Player : MonoBehaviour
         // 按键释放
 >>>>>>> Stashed changes
 =======
+=======
+>>>>>>> Stashed changes
     /// 更新按键状态和按下时间
     /// </summary>
     /// <param name="keyPressed">按键是否按下的引用</param>
@@ -291,6 +350,9 @@ public class Player : MonoBehaviour
             pressTime = Time.time; // 记录按下时间
         }
         // 按键释放
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         else if (!keyDown)
         {
@@ -299,6 +361,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
     /// ȷ��ˮƽ���뷽�򣬽�����Ҽ�ͬʱ���µĳ�ͻ
@@ -323,6 +386,8 @@ public class Player : MonoBehaviour
         // 无水平输入
 >>>>>>> Stashed changes
 =======
+=======
+>>>>>>> Stashed changes
     /// 确定水平输入方向，解决左右键同时按下的冲突
     /// </summary>
     /// <returns>水平输入值（-1, 0, 1）</returns>
@@ -337,6 +402,9 @@ public class Player : MonoBehaviour
         if (rightKeyPressed) return 1f; // 右键按下
 
         // 无水平输入
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         return 0f;
     }
@@ -345,7 +413,11 @@ public class Player : MonoBehaviour
     /// <summary>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     /// �ƶ���ҽ�ɫ
+=======
+    /// 移动玩家角色
+>>>>>>> Stashed changes
 =======
     /// 移动玩家角色
 >>>>>>> Stashed changes
@@ -356,6 +428,7 @@ public class Player : MonoBehaviour
     public void Move() => transform.Translate(input * speed * Time.deltaTime);
 
     /// <summary>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
     /// �������ת���߼�
@@ -377,6 +450,8 @@ public class Player : MonoBehaviour
             // 方向改变且玩家正在移动时触发duang动画
 >>>>>>> Stashed changes
 =======
+=======
+>>>>>>> Stashed changes
     /// 处理玩家转向逻辑
     /// </summary>
     public void TurnAround()
@@ -388,6 +463,9 @@ public class Player : MonoBehaviour
             bool directionChanged = (input.x > 0 && !isFacingRight) || (input.x < 0 && isFacingRight);
 
             // 方向改变且玩家正在移动时触发duang动画
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             if (directionChanged && input.magnitude > 0.1f)
             {
@@ -396,10 +474,13 @@ public class Player : MonoBehaviour
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             // ���³���״̬
             isFacingRight = input.x > 0;
             // ���¾�����Ⱦ���򣨷�תX�ᣩ
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 
@@ -407,6 +488,9 @@ public class Player : MonoBehaviour
             isFacingRight = input.x > 0;
             // 更新精灵渲染方向（翻转X轴）
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -417,7 +501,11 @@ public class Player : MonoBehaviour
     /// <summary>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     /// ������Ҷ���״̬
+=======
+    /// 更新玩家动画状态
+>>>>>>> Stashed changes
 =======
     /// 更新玩家动画状态
 >>>>>>> Stashed changes
@@ -430,7 +518,11 @@ public class Player : MonoBehaviour
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // �������Ƿ����ƶ��������������ȴ�����ֵ��
+=======
+        // 检测玩家是否在移动（输入向量长度大于阈值）
+>>>>>>> Stashed changes
 =======
         // 检测玩家是否在移动（输入向量长度大于阈值）
 >>>>>>> Stashed changes
@@ -443,6 +535,7 @@ public class Player : MonoBehaviour
         {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             // �����ƶ�״̬������Run/Idle������
             animator.SetBool("isMove", isMoving);
 
@@ -450,11 +543,16 @@ public class Player : MonoBehaviour
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
             // 更新移动状态（控制Run/Idle动画）
             animator.SetBool("isMove", isMoving);
 
             // 当停止移动时立即触发duang动画
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -468,7 +566,11 @@ public class Player : MonoBehaviour
     /// <summary>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     /// ��������߼�
+=======
+    /// 玩家受伤逻辑
+>>>>>>> Stashed changes
 =======
     /// 玩家受伤逻辑
 >>>>>>> Stashed changes
@@ -487,6 +589,7 @@ public class Player : MonoBehaviour
             return;
         }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
         //�жϱ��ι����Ƿ�����
@@ -577,6 +680,44 @@ public class Player : MonoBehaviour
 
         
 >>>>>>> Stashed changes
+=======
+        if (GameManager.Instance.Armor!=0)
+        {
+            if (GameManager.Instance.Armor>attack)
+            {
+                GameManager.Instance.Armor -= attack;
+            }else if (GameManager.Instance.Armor<attack)
+            {
+                GameManager.Instance.Armor = 0;
+                attack -= GameManager.Instance.Armor;
+                GameManager.Instance.hp -= attack;
+                GamePanel.Instance.RenewHp();
+                
+            }else if (GameManager.Instance.Armor==attack)
+            {
+                GameManager.Instance.Armor = 0;
+            }
+
+            GamePanel.Instance.RenewArmor();
+
+        }else if(GameManager.Instance.Armor==0)
+        {
+            //判断本次攻击是否死亡
+            if (GameManager.Instance.hp - attack <= 0 )
+            {
+                GameManager.Instance.hp = 0;
+                Dead();
+            }else
+            {
+                GameManager.Instance.hp -= attack;
+            }
+
+            //更新血条
+            GamePanel.Instance.RenewHp();
+        }
+
+        
+>>>>>>> Stashed changes
     }
 
 
@@ -584,7 +725,11 @@ public class Player : MonoBehaviour
     /// <summary>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     /// ��ҹ����߼�
+=======
+    /// 玩家攻击逻辑
+>>>>>>> Stashed changes
 =======
     /// 玩家攻击逻辑
 >>>>>>> Stashed changes
@@ -601,7 +746,11 @@ public class Player : MonoBehaviour
     /// <summary>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     /// ��������߼�
+=======
+    /// 玩家死亡逻辑
+>>>>>>> Stashed changes
 =======
     /// 玩家死亡逻辑
 >>>>>>> Stashed changes
@@ -617,7 +766,12 @@ public class Player : MonoBehaviour
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         //todo ������Ϸʧ�ܺ���
+=======
+
+       
+>>>>>>> Stashed changes
 =======
 
        
@@ -638,9 +792,12 @@ public class Player : MonoBehaviour
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             money += 1;
             GamePanel.Instance.RenewMoney();
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         //获取到范围呢所有的Item（金币）GameOBject 然后遍历销毁加钱
@@ -653,6 +810,9 @@ public class Player : MonoBehaviour
                 GamePanel.Instance.RenewMoney();
             }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

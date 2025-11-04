@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:ZooheroProject/Assets/Data.meta
 guid: cb46ed544666e5541a5957e2b322c66c
+========
+guid: ce8d7358a5a3bc0458ed881512cc6c92
+>>>>>>>> Stashed changes:ZooheroProject/Assets/Resources/Prefabs/Bullet.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

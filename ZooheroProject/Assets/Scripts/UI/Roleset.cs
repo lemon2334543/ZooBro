@@ -60,9 +60,18 @@ public class Roleset : MonoBehaviour ,IPointerEnterHandler, IPointerExitHandler
         _backgroundimage = transform.GetChild(0).GetComponent<Image>();
         _avater = transform.GetChild(0).GetChild(0).GetComponent<Image>();
 <<<<<<<< Updated upstream:ZooheroProject/Assets/Resources/script/Roleset.cs
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes:ZooheroProject/Assets/Scripts/UI/Roleset.cs
 ========
 >>>>>>>> Stashed changes:ZooheroProject/Assets/Scripts/UI/Roleset.cs
+=======
+<<<<<<<< Updated upstream:ZooheroProject/Assets/Resources/script/Roleset.cs
+>>>>>>> Stashed changes:ZooheroProject/Assets/Scripts/UI/Roleset.cs
+========
+>>>>>>>> Stashed changes:ZooheroProject/Assets/Scripts/UI/Roleset.cs
+========
+>>>>>>>> Stashed changes:ZooheroProject/Assets/Scripts/UI/Roleset.cs
+>>>>>>> Stashed changes
         _button = GetComponent<Button>();
         _backring = GameObject.Find("backring");//选中绿色背景
         

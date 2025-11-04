@@ -12,12 +12,15 @@ public class GamePanel : MonoBehaviour
     public Slider _expSlider;
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public TMP_Text _moneyCount;//金币
     public TMP_Text _expCount;//等级
     public TMP_Text _hpCount;//生命值
     public TMP_Text _countDown;//关卡倒计时
     public TMP_Text _waveCount;//波次
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     public Slider _armorpSlider;
@@ -70,10 +73,13 @@ public class GamePanel : MonoBehaviour
     {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         //获取文本
         _hpCount.text = Player.Instance.hp + "/" + Player.Instance.maxHp;
         _hpSlider.value = Player.Instance.hp  /  Player.Instance.maxHp;
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         RectTransform hpSliderRect = _hpSlider.GetComponent<RectTransform>();
@@ -115,6 +121,9 @@ public class GamePanel : MonoBehaviour
         _hpCount.text = GameManager.Instance.hp + "/" + maxHp;
         _hpSlider.value = GameManager.Instance.hp  / maxHp;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -132,6 +141,9 @@ public class GamePanel : MonoBehaviour
         _expSlider.value = GameManager.Instance.exp % 12 / 12;
         // _expCount.text = "LV." + GameManager.Instance.exp / 12;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
