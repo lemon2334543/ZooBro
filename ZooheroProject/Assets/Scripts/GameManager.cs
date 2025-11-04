@@ -1,7 +1,10 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -13,6 +16,9 @@ using Newtonsoft.Json;
 using Resources.script.model;
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -26,11 +32,14 @@ public class GameManager : MonoBehaviour
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public float currentWave ;
 
     void Awake()
     {
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -129,6 +138,9 @@ public class GameManager : MonoBehaviour
         
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -141,8 +153,11 @@ public class GameManager : MonoBehaviour
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         currentWave = 0f;
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -166,6 +181,31 @@ public class GameManager : MonoBehaviour
         // 直接返回对应类型的元素，无需装箱为 Object
         return list[index];
 >>>>>>> Stashed changes
+    }
+
+    public void InitProp()
+    {
+        _PlayerVisual = GameObject.Find("PlayerVisual");
+        _PlayerVisual.GetComponent<SpriteRenderer>().sprite = UnityEngine.Resources.Load<Sprite>(RoleDate.avatar);
+        _PlayerVisual.transform.position = new Vector3(0,0,0);
+        _PlayerVisual.transform.localScale = new Vector3(0.05f, 0.05f, 0);       
+        
+        if (RoleDate.name == "培根.百夫长")
+        {
+            //没有机制 纯数值
+            propData.maxHp += 5;
+            money += 20;
+            // propData.harvest += 8;
+
+        }
+        else if (RoleDate.name == "其他角色")
+        {
+            //todo 需要修改角色生成逻辑 后期每个角色单独建立类，然后在这里调用对应角色类的方法初始化角色 可能修改为switch好一点
+        }
+
+        money += 30; //默认开局30元
+        exp = 0;
+        hp = propData.maxHp;
     }
 
     public void InitProp()

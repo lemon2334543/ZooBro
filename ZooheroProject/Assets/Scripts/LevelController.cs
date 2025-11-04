@@ -1,7 +1,11 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 using NUnit.Framework;
+=======
+﻿﻿using NUnit.Framework;
+>>>>>>> Stashed changes
 =======
 ﻿﻿using NUnit.Framework;
 >>>>>>> Stashed changes
@@ -67,10 +71,13 @@ public class LevelController : MonoBehaviour
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         enemy1_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemy1");
 
         _map = GameObject.Find("Map").transform;
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -112,6 +119,7 @@ public class LevelController : MonoBehaviour
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         //�ؿ�ʱ��
         waveTimer = 15 + 5 * GameManager.Instance.currentWave;
 
@@ -141,6 +149,17 @@ public class LevelController : MonoBehaviour
         GenerateWeapons();
     }
 
+=======
+        // Debug.Log((int)GameManager.Instance.currentWave);
+        CurrentLevelDate = LevelDates[(int)GameManager.Instance.currentWave-1];//保存当前关卡学信息xz
+        waveTimer = CurrentLevelDate.waveTimer;        
+        
+        GenerateEnemy();
+
+        GenerateWeapons();
+    }
+
+>>>>>>> Stashed changes
 =======
         // Debug.Log((int)GameManager.Instance.currentWave);
         CurrentLevelDate = LevelDates[(int)GameManager.Instance.currentWave-1];//保存当前关卡学信息xz
@@ -211,6 +230,9 @@ public class LevelController : MonoBehaviour
         {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -224,6 +246,7 @@ public class LevelController : MonoBehaviour
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
             // �����ɵ�ʵ��������Ԥ���壬����ȡ�������
             EnemyBase go = Instantiate(enemy1_prefab, spawnPoint, Quaternion.identity).GetComponent<EnemyBase>();
@@ -234,6 +257,8 @@ public class LevelController : MonoBehaviour
             // �������ɵĵ�����ӵ������б��У����ں�������
             enemy_list.Add(go);
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -270,6 +295,9 @@ public class LevelController : MonoBehaviour
             
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

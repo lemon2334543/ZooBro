@@ -1,7 +1,11 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 using System;
+=======
+ï»¿ï»¿using System;
+>>>>>>> Stashed changes
 =======
 ï»¿ï»¿using System;
 >>>>>>> Stashed changes
@@ -20,8 +24,11 @@ public class Player : MonoBehaviour
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public static Player Instance; // µ¥ÀıÊµÀı£¬·½±ãÆäËû½Å±¾·ÃÎÊÍæ¼Ò
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -56,6 +63,9 @@ public class Player : MonoBehaviour
     public bool isDead = false ; //æ˜¯å¦æ­»äº¡
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -90,8 +100,11 @@ public class Player : MonoBehaviour
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // »ñÈ¡¶¯»­¿ØÖÆÆ÷×é¼ş
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -112,7 +125,10 @@ public class Player : MonoBehaviour
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -140,11 +156,14 @@ public class Player : MonoBehaviour
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         ProcessInput(); // ´¦Àí¼üÅÌÊäÈë
         Move(); // ÒÆ¶¯Íæ¼Ò
         TurnAround(); // ´¦Àí×ªÏòÂß¼­
         UpdateAnimation(); // ¸üĞÂ¶¯»­×´Ì¬
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -157,7 +176,10 @@ public class Player : MonoBehaviour
         earmoney();//è·å–é‡‘å¸
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     }
@@ -180,6 +202,7 @@ public class Player : MonoBehaviour
 
 
         reviveTimer = 0;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 >>>>>>> Stashed changes
     }
@@ -237,6 +260,8 @@ public class Player : MonoBehaviour
         // ç»„åˆè¾“å…¥å‘é‡å¹¶å½’ä¸€åŒ–ï¼ˆé˜²æ­¢å¯¹è§’çº¿ç§»åŠ¨è¿‡å¿«ï¼‰
 >>>>>>> Stashed changes
 =======
+=======
+>>>>>>> Stashed changes
     }
 
     #region é”®ç›˜å†²çªæ£€æµ‹
@@ -262,12 +287,16 @@ public class Player : MonoBehaviour
         float horizontalInput = GetHorizontalInput();
 
         // ç»„åˆè¾“å…¥å‘é‡å¹¶å½’ä¸€åŒ–ï¼ˆé˜²æ­¢å¯¹è§’çº¿ç§»åŠ¨è¿‡å¿«ï¼‰
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         input = new Vector2(horizontalInput, verticalInput);
         if (input.magnitude > 1f) input.Normalize();
     }
 
     /// <summary>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -291,6 +320,8 @@ public class Player : MonoBehaviour
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     /// è·å–å‚ç›´æ–¹å‘è¾“å…¥
     /// </summary>
     /// <returns>å‚ç›´è¾“å…¥å€¼ï¼ˆ-1, 0, 1ï¼‰</returns>
@@ -302,6 +333,9 @@ public class Player : MonoBehaviour
         if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) return -1f;
         // æ— å‚ç›´è¾“å…¥
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -309,6 +343,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -336,6 +371,8 @@ public class Player : MonoBehaviour
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     /// æ›´æ–°æŒ‰é”®çŠ¶æ€å’ŒæŒ‰ä¸‹æ—¶é—´
     /// </summary>
     /// <param name="keyPressed">æŒ‰é”®æ˜¯å¦æŒ‰ä¸‹çš„å¼•ç”¨</param>
@@ -351,6 +388,9 @@ public class Player : MonoBehaviour
         }
         // æŒ‰é”®é‡Šæ”¾
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -361,6 +401,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -388,6 +429,8 @@ public class Player : MonoBehaviour
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     /// ç¡®å®šæ°´å¹³è¾“å…¥æ–¹å‘ï¼Œè§£å†³å·¦å³é”®åŒæ—¶æŒ‰ä¸‹çš„å†²çª
     /// </summary>
     /// <returns>æ°´å¹³è¾“å…¥å€¼ï¼ˆ-1, 0, 1ï¼‰</returns>
@@ -403,6 +446,9 @@ public class Player : MonoBehaviour
 
         // æ— æ°´å¹³è¾“å…¥
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -411,6 +457,7 @@ public class Player : MonoBehaviour
     #endregion
 
     /// <summary>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -424,10 +471,14 @@ public class Player : MonoBehaviour
 =======
     /// ç§»åŠ¨ç©å®¶è§’è‰²
 >>>>>>> Stashed changes
+=======
+    /// ç§»åŠ¨ç©å®¶è§’è‰²
+>>>>>>> Stashed changes
     /// </summary>
     public void Move() => transform.Translate(input * speed * Time.deltaTime);
 
     /// <summary>
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -452,6 +503,8 @@ public class Player : MonoBehaviour
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     /// å¤„ç†ç©å®¶è½¬å‘é€»è¾‘
     /// </summary>
     public void TurnAround()
@@ -464,6 +517,9 @@ public class Player : MonoBehaviour
 
             // æ–¹å‘æ”¹å˜ä¸”ç©å®¶æ­£åœ¨ç§»åŠ¨æ—¶è§¦å‘duangåŠ¨ç”»
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -475,10 +531,13 @@ public class Player : MonoBehaviour
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             // ¸üĞÂ³¯Ïò×´Ì¬
             isFacingRight = input.x > 0;
             // ¸üĞÂ¾«ÁéäÖÈ¾·½Ïò£¨·­×ªXÖá£©
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -489,6 +548,9 @@ public class Player : MonoBehaviour
             // æ›´æ–°ç²¾çµæ¸²æŸ“æ–¹å‘ï¼ˆç¿»è½¬Xè½´ï¼‰
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -502,7 +564,11 @@ public class Player : MonoBehaviour
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     /// ¸üĞÂÍæ¼Ò¶¯»­×´Ì¬
+=======
+    /// æ›´æ–°ç©å®¶åŠ¨ç”»çŠ¶æ€
+>>>>>>> Stashed changes
 =======
     /// æ›´æ–°ç©å®¶åŠ¨ç”»çŠ¶æ€
 >>>>>>> Stashed changes
@@ -519,7 +585,11 @@ public class Player : MonoBehaviour
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // ¼ì²âÍæ¼ÒÊÇ·ñÔÚÒÆ¶¯£¨ÊäÈëÏòÁ¿³¤¶È´óÓÚãĞÖµ£©
+=======
+        // æ£€æµ‹ç©å®¶æ˜¯å¦åœ¨ç§»åŠ¨ï¼ˆè¾“å…¥å‘é‡é•¿åº¦å¤§äºé˜ˆå€¼ï¼‰
+>>>>>>> Stashed changes
 =======
         // æ£€æµ‹ç©å®¶æ˜¯å¦åœ¨ç§»åŠ¨ï¼ˆè¾“å…¥å‘é‡é•¿åº¦å¤§äºé˜ˆå€¼ï¼‰
 >>>>>>> Stashed changes
@@ -536,11 +606,14 @@ public class Player : MonoBehaviour
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             // ¸üĞÂÒÆ¶¯×´Ì¬£¨¿ØÖÆRun/Idle¶¯»­£©
             animator.SetBool("isMove", isMoving);
 
             // µ±Í£Ö¹ÒÆ¶¯Ê±Á¢¼´´¥·¢duang¶¯»­
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -551,6 +624,9 @@ public class Player : MonoBehaviour
             // å½“åœæ­¢ç§»åŠ¨æ—¶ç«‹å³è§¦å‘duangåŠ¨ç”»
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -567,7 +643,11 @@ public class Player : MonoBehaviour
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     /// Íæ¼ÒÊÜÉËÂß¼­
+=======
+    /// ç©å®¶å—ä¼¤é€»è¾‘
+>>>>>>> Stashed changes
 =======
     /// ç©å®¶å—ä¼¤é€»è¾‘
 >>>>>>> Stashed changes
@@ -589,6 +669,7 @@ public class Player : MonoBehaviour
             return;
         }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -718,6 +799,44 @@ public class Player : MonoBehaviour
 
         
 >>>>>>> Stashed changes
+=======
+        if (GameManager.Instance.Armor!=0)
+        {
+            if (GameManager.Instance.Armor>attack)
+            {
+                GameManager.Instance.Armor -= attack;
+            }else if (GameManager.Instance.Armor<attack)
+            {
+                GameManager.Instance.Armor = 0;
+                attack -= GameManager.Instance.Armor;
+                GameManager.Instance.hp -= attack;
+                GamePanel.Instance.RenewHp();
+                
+            }else if (GameManager.Instance.Armor==attack)
+            {
+                GameManager.Instance.Armor = 0;
+            }
+
+            GamePanel.Instance.RenewArmor();
+
+        }else if(GameManager.Instance.Armor==0)
+        {
+            //åˆ¤æ–­æœ¬æ¬¡æ”»å‡»æ˜¯å¦æ­»äº¡
+            if (GameManager.Instance.hp - attack <= 0 )
+            {
+                GameManager.Instance.hp = 0;
+                Dead();
+            }else
+            {
+                GameManager.Instance.hp -= attack;
+            }
+
+            //æ›´æ–°è¡€æ¡
+            GamePanel.Instance.RenewHp();
+        }
+
+        
+>>>>>>> Stashed changes
     }
 
 
@@ -726,7 +845,11 @@ public class Player : MonoBehaviour
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     /// Íæ¼Ò¹¥»÷Âß¼­
+=======
+    /// ç©å®¶æ”»å‡»é€»è¾‘
+>>>>>>> Stashed changes
 =======
     /// ç©å®¶æ”»å‡»é€»è¾‘
 >>>>>>> Stashed changes
@@ -747,7 +870,11 @@ public class Player : MonoBehaviour
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     /// Íæ¼ÒËÀÍöÂß¼­
+=======
+    /// ç©å®¶æ­»äº¡é€»è¾‘
+>>>>>>> Stashed changes
 =======
     /// ç©å®¶æ­»äº¡é€»è¾‘
 >>>>>>> Stashed changes
@@ -767,7 +894,12 @@ public class Player : MonoBehaviour
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         //todo µ÷ÓÃÓÎÏ·Ê§°Üº¯Êı
+=======
+
+       
+>>>>>>> Stashed changes
 =======
 
        
@@ -793,9 +925,12 @@ public class Player : MonoBehaviour
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             money += 1;
             GamePanel.Instance.RenewMoney();
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -811,6 +946,9 @@ public class Player : MonoBehaviour
             }
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
