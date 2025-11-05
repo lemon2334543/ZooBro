@@ -23,10 +23,17 @@ public class showClick : MonoBehaviour
     {
         _button.onClick.AddListener((() =>
         {
-            _Animator.Play(anName, 0, 0f);
-            
-            
+            Click();
+
+
         }));
+    }
+    
+    public void Click()
+    {
+        // 点击后执行的逻辑（例如播放动画）
+        _Animator.Play(anName, 0, 0f);
+        // 可以在这里添加其他点击后需要执行的操作
     }
 
     // Update is called once per frame

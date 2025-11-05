@@ -1,16 +1,4 @@
 [
-  {
-    "id": 1,
-    "waveTimer": 20,
-    "enemys": [
-      {
-        "enemyName": "enemy5",
-        "timeAxis": 1,
-        "count": 1,
-        "elite": 0
-      }
-    ]
-  },
   
   {
     "id": 1,

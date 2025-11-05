@@ -1,18 +1,78 @@
-ï»¿using System;
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+using System;
+=======
+ï»¿ï»¿using System;
+>>>>>>> Stashed changes
+=======
+ï»¿ï»¿using System;
+>>>>>>> Stashed changes
+=======
+ï»¿ï»¿using System;
+>>>>>>> Stashed changes
+=======
+ï»¿ï»¿using System;
+>>>>>>> Stashed changes
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-<<<<<<< HEAD
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+    public static Player Instance; // µ¥ÀıÊµÀı£¬·½±ãÆäËû½Å±¾·ÃÎÊÍæ¼Ò
+=======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     public static Player Instance; // å•ä¾‹å®ä¾‹ï¼Œæ–¹ä¾¿å…¶ä»–è„šæœ¬è®¿é—®ç©å®¶
+>>>>>>> Stashed changes
 
     [SerializeField] 
+<<<<<<< Updated upstream
+    private float speed = 5f; // Íæ¼ÒÒÆ¶¯ËÙ¶È
+    public bool isDead = false ; //ÊÇ·ñËÀÍö
+    internal int money = 30; //µ±Ç°½ğ±Ò
+    public float hp = 15f; //Íæ¼ÒÑªÁ¿
+    internal float maxHp = 15f;//×î´óÉúÃü
+    internal float exp = 0;//¾­ÑéÖµ
+
+<<<<<<< Updated upstream
+    private Keyboard keyboard; // ¼üÅÌÊäÈëÒıÓÃ
+    private Vector2 input; // µ±Ç°ÊäÈëÏòÁ¿
+    private Transform playerVisual; // Íæ¼ÒÊÓ¾õ±íÏÖ²¿·ÖµÄTransform
+    private Animator animator; // Íæ¼Ò¶¯»­¿ØÖÆÆ÷
+    private SpriteRenderer spriteRenderer; // Íæ¼ÒäÖÈ¾Æ÷£¬ÓÃÓÚ·­×ª½ÇÉ«
+    private bool isFacingRight = true; // ±ê¼ÇÍæ¼Òµ±Ç°ÊÇ·ñÃæÏòÓÒ²à
+
+    // ¼üÅÌ°´¼ü×´Ì¬¸ú×Ù
+    private bool leftKeyPressed = false; // ×ó¼üÊÇ·ñ°´ÏÂ
+    private bool rightKeyPressed = false; // ÓÒ¼üÊÇ·ñ°´ÏÂ
+    private float leftKeyPressTime = 0f; // ×ó¼ü°´ÏÂÊ±¼ä´Á
+    private float rightKeyPressTime = 0f; // ÓÒ¼ü°´ÏÂÊ±¼ä´Á
+=======
+=======
     public bool isDead = false ; //æ˜¯å¦æ­»äº¡
 
-
-
-
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+    // public float currenthp = 15f;
+    // public int money = 30;
+    // public float currentexp = 15f;
+    
     public Transform weaponsPos;//æ­¦å™¨ä½ç½®
 
     private Keyboard keyboard; // é”®ç›˜è¾“å…¥å¼•ç”¨
@@ -21,75 +81,69 @@ public class Player : MonoBehaviour
     private Animator animator; // ç©å®¶åŠ¨ç”»æ§åˆ¶å™¨
     private SpriteRenderer spriteRenderer; // ç©å®¶æ¸²æŸ“å™¨ï¼Œç”¨äºç¿»è½¬è§’è‰²
     private bool isFacingRight = true; // æ ‡è®°ç©å®¶å½“å‰æ˜¯å¦é¢å‘å³ä¾§
-
+    public float reviveTimer;
+    
     // é”®ç›˜æŒ‰é”®çŠ¶æ€è·Ÿè¸ª
     private bool leftKeyPressed = false; // å·¦é”®æ˜¯å¦æŒ‰ä¸‹
     private bool rightKeyPressed = false; // å³é”®æ˜¯å¦æŒ‰ä¸‹
     private float leftKeyPressTime = 0f; // å·¦é”®æŒ‰ä¸‹æ—¶é—´æˆ³
     private float rightKeyPressTime = 0f; // å³é”®æŒ‰ä¸‹æ—¶é—´æˆ³
+>>>>>>> Stashed changes
 
+
+    public float exp;
     private void Awake()
     {
-        Instance = this; // è®¾ç½®å•ä¾‹å®ä¾‹
-
+        Instance = this; // ÉèÖÃµ¥ÀıÊµÀı
+        // ²éÕÒÍæ¼ÒÊÓ¾õ±íÏÖ²¿·Ö
         playerVisual = GameObject.Find("PlayerVisual").transform;
-        weaponsPos = GameObject.Find("WeaponsPos").transform;//æ£€æµ‹æ­¦å™¨ä½ç½®æ§½ä½
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+        // »ñÈ¡¶¯»­¿ØÖÆÆ÷×é¼ş
+=======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+        
+        weaponsPos = GameObject.Find("WeaponPos").transform;//æ£€æµ‹æ­¦å™¨ä½ç½®æ§½ä½
 
         // æŸ¥æ‰¾ç©å®¶è§†è§‰è¡¨ç°éƒ¨åˆ†
         playerVisual = GameObject.Find("PlayerVisual").transform;
         // è·å–åŠ¨ç”»æ§åˆ¶å™¨ç»„ä»¶
+>>>>>>> Stashed changes
         animator = playerVisual.GetComponent<Animator>();
-        // è·å–æ¸²æŸ“å™¨ç»„ä»¶
+        // »ñÈ¡äÖÈ¾Æ÷×é¼ş
         spriteRenderer = playerVisual.GetComponent<SpriteRenderer>();
-        // è·å–å½“å‰é”®ç›˜è¾“å…¥è®¾å¤‡
+        // »ñÈ¡µ±Ç°¼üÅÌÊäÈëÉè±¸
         keyboard = Keyboard.current;
 
-        //åˆå§‹åŒ–è§’è‰²å±æ€§
-        if (GameManager.Instance.currentWave == 1)
-        {
-            GameManager.Instance.InitProp();//åˆå§‹åŒ–è§’è‰²
-        }
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
-    public static Player Instance; // ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+        //ç¬¬ä¸€å…³æ—¶åˆå§‹åŒ–è§’è‰²å±æ€§
+        // Debug.Log(GameManager.Instance.currentWave);
+        if (GameManager.Instance.currentWave == 0)
+        {
+            GameManager.Instance.currentWave = 1;
+            GameManager.Instance.InitProp();//åˆåŒ–è§’è‰²
+            SceneManager.LoadScene("Shop");
+        }
 
-    [SerializeField] 
-    private float speed = 5f; // ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½Ù¶ï¿½
-    public bool isDead = false ; //ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½
-    internal int money = 30; //ï¿½ï¿½Ç°ï¿½ï¿½ï¿½
-    public float hp = 15f; //ï¿½ï¿½ï¿½Ñªï¿½ï¿½
-    internal float maxHp = 15f;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-    internal float exp = 0;//ï¿½ï¿½ï¿½ï¿½Öµ
 
-    private Keyboard keyboard; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-    private Vector2 input; // ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-    private Transform playerVisual; // ï¿½ï¿½ï¿½ï¿½Ó¾ï¿½ï¿½ï¿½ï¿½Ö²ï¿½ï¿½Öµï¿½Transform
-    private Animator animator; // ï¿½ï¿½Ò¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-    private SpriteRenderer spriteRenderer; // ï¿½ï¿½ï¿½ï¿½ï¿½È¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú·ï¿½×ªï¿½ï¿½É«
-    private bool isFacingRight = true; // ï¿½ï¿½ï¿½ï¿½ï¿½Òµï¿½Ç°ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò²ï¿½
-
-    // ï¿½ï¿½ï¿½Ì°ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½
-    private bool leftKeyPressed = false; // ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½
-    private bool rightKeyPressed = false; // ï¿½Ò¼ï¿½ï¿½Ç·ï¿½ï¿½ï¿½
-    private float leftKeyPressTime = 0f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½
-    private float rightKeyPressTime = 0f; // ï¿½Ò¼ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½
-
-    private void Awake()
-    {
-        Instance = this; // ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½Êµï¿½ï¿½
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¾ï¿½ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½
-        playerVisual = GameObject.Find("PlayerVisual").transform;
-        // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-        animator = playerVisual.GetComponent<Animator>();
-        // ï¿½ï¿½È¡ï¿½ï¿½È¾ï¿½ï¿½ï¿½ï¿½ï¿½
-        spriteRenderer = playerVisual.GetComponent<SpriteRenderer>();
-        // ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½è±¸
-        keyboard = Keyboard.current;
-
-        
-        playerVisual.GetComponent<SpriteRenderer>().sprite =
-            UnityEngine.Resources.Load<Sprite>(GameManager.Instance.RoleDate.avatar);
->>>>>>> Bidoofa2
-
+>>>>>>> Stashed changes
     }
 
     void Update()
@@ -99,11 +153,115 @@ public class Player : MonoBehaviour
             return;
         }
 
-<<<<<<< HEAD
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+        ProcessInput(); // ´¦Àí¼üÅÌÊäÈë
+        Move(); // ÒÆ¶¯Íæ¼Ò
+        TurnAround(); // ´¦Àí×ªÏòÂß¼­
+        UpdateAnimation(); // ¸üĞÂ¶¯»­×´Ì¬
+=======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
         ProcessInput(); // å¤„ç†é”®ç›˜è¾“å…¥
         Move(); // ç§»åŠ¨ç©å®¶
         TurnAround(); // å¤„ç†è½¬å‘é€»è¾‘
         UpdateAnimation(); // æ›´æ–°åŠ¨ç”»çŠ¶æ€
+        Revive();//ç”Ÿå‘½å†ç”Ÿ
+        earmoney();//è·å–é‡‘å¸
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+    }
+
+    
+    //ç”Ÿå‘½å†ç”Ÿ
+    //todo ç”Ÿå‘½å†ç”Ÿæœºåˆ¶å¯èƒ½éœ€è¦ä¿®æ”¹    è´´è¿‘åŸæ¿é€»è¾‘
+    private void Revive()
+    {
+        reviveTimer += Time.deltaTime;
+        if (reviveTimer>=1f)
+        {
+            //æ£€æŸ¥åŠ è¡€ä¸è¶…è¿‡æœ€å¤§ç”Ÿå‘½å€¼
+            GameManager.Instance.hp += Mathf.Clamp(GameManager.Instance.propData.revive,0,GameManager.Instance.propData.maxHp);
+        }
+        
+
+
+
+
+
+        reviveTimer = 0;
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+    }
+
+    
+    //ç”Ÿå‘½å†ç”Ÿ
+    //todo ç”Ÿå‘½å†ç”Ÿæœºåˆ¶å¯èƒ½éœ€è¦ä¿®æ”¹    è´´è¿‘åŸæ¿é€»è¾‘
+    private void Revive()
+    {
+        reviveTimer += Time.deltaTime;
+        if (reviveTimer>=1f)
+        {
+            //æ£€æŸ¥åŠ è¡€ä¸è¶…è¿‡æœ€å¤§ç”Ÿå‘½å€¼
+            GameManager.Instance.hp += Mathf.Clamp(GameManager.Instance.propData.revive,0,GameManager.Instance.propData.maxHp);
+        }
+        
+
+
+
+
+
+        reviveTimer = 0;
+>>>>>>> Stashed changes
+    }
+
+    #region ¼üÅÌ³åÍ»¼ì²â
+    /// <summary>
+    /// ´¦Àí¼üÅÌÊäÈë£¬½â¾ö×óÓÒ¼ü³åÍ»ÎÊÌâ
+    /// </summary>
+    private void ProcessInput()
+    {
+        // ¼ì²â×ó¼ü×´Ì¬£¨A¼ü»ò×ó¼ıÍ·£©
+        bool leftKeyDown = keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed;
+        // ¼ì²âÓÒ¼ü×´Ì¬£¨D¼ü»òÓÒ¼ıÍ·£©
+        bool rightKeyDown = keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed;
+
+        // »ñÈ¡´¹Ö±ÊäÈë£¨W/S¼ü»òÉÏÏÂ¼ıÍ·£©
+        float verticalInput = GetVerticalInput();
+
+        // ¸üĞÂ×ó¼ü×´Ì¬ºÍÊ±¼ä´Á
+        UpdateKeyState(ref leftKeyPressed, leftKeyDown, ref leftKeyPressTime);
+        // ¸üĞÂÓÒ¼ü×´Ì¬ºÍÊ±¼ä´Á
+        UpdateKeyState(ref rightKeyPressed, rightKeyDown, ref rightKeyPressTime);
+
+        // ¸ù¾İ°´¼ü×´Ì¬È·¶¨Ë®Æ½ÊäÈë·½Ïò
+        float horizontalInput = GetHorizontalInput();
+
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+        // ×éºÏÊäÈëÏòÁ¿²¢¹éÒ»»¯£¨·ÀÖ¹¶Ô½ÇÏßÒÆ¶¯¹ı¿ì£©
+=======
+        // ç»„åˆè¾“å…¥å‘é‡å¹¶å½’ä¸€åŒ–ï¼ˆé˜²æ­¢å¯¹è§’çº¿ç§»åŠ¨è¿‡å¿«ï¼‰
+>>>>>>> Stashed changes
+=======
+        // ç»„åˆè¾“å…¥å‘é‡å¹¶å½’ä¸€åŒ–ï¼ˆé˜²æ­¢å¯¹è§’çº¿ç§»åŠ¨è¿‡å¿«ï¼‰
+>>>>>>> Stashed changes
+=======
+=======
+>>>>>>> Stashed changes
     }
 
     #region é”®ç›˜å†²çªæ£€æµ‹
@@ -129,43 +287,41 @@ public class Player : MonoBehaviour
         float horizontalInput = GetHorizontalInput();
 
         // ç»„åˆè¾“å…¥å‘é‡å¹¶å½’ä¸€åŒ–ï¼ˆé˜²æ­¢å¯¹è§’çº¿ç§»åŠ¨è¿‡å¿«ï¼‰
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
 =======
-        ProcessInput(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-        Move(); // ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½
-        TurnAround(); // ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ß¼ï¿½
-        UpdateAnimation(); // ï¿½ï¿½ï¿½Â¶ï¿½ï¿½ï¿½×´Ì¬
-    }
-
-    #region ï¿½ï¿½ï¿½Ì³ï¿½Í»ï¿½ï¿½ï¿½
-    /// <summary>
-    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½ï¿½ï¿½Í»ï¿½ï¿½ï¿½ï¿½
-    /// </summary>
-    private void ProcessInput()
-    {
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½
-        bool leftKeyDown = keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed;
-        // ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½×´Ì¬ï¿½ï¿½Dï¿½ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½Í·ï¿½ï¿½
-        bool rightKeyDown = keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed;
-
-        // ï¿½ï¿½È¡ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ë£¨W/Sï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½Í·ï¿½ï¿½
-        float verticalInput = GetVerticalInput();
-
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½Ê±ï¿½ï¿½ï¿½
-        UpdateKeyState(ref leftKeyPressed, leftKeyDown, ref leftKeyPressTime);
-        // ï¿½ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½×´Ì¬ï¿½ï¿½Ê±ï¿½ï¿½ï¿½
-        UpdateKeyState(ref rightKeyPressed, rightKeyDown, ref rightKeyPressTime);
-
-        // ï¿½ï¿½ï¿½İ°ï¿½ï¿½ï¿½×´Ì¬È·ï¿½ï¿½Ë®Æ½ï¿½ï¿½ï¿½ë·½ï¿½ï¿½
-        float horizontalInput = GetHorizontalInput();
-
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¹ï¿½Ô½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ì£©
->>>>>>> Bidoofa2
+>>>>>>> Stashed changes
         input = new Vector2(horizontalInput, verticalInput);
         if (input.magnitude > 1f) input.Normalize();
     }
 
     /// <summary>
-<<<<<<< HEAD
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+    /// »ñÈ¡´¹Ö±·½ÏòÊäÈë
+=======
+    /// è·å–å‚ç›´æ–¹å‘è¾“å…¥
+>>>>>>> Stashed changes
+    /// </summary>
+    /// <returns>´¹Ö±ÊäÈëÖµ£¨-1, 0, 1£©</returns>
+    private float GetVerticalInput()
+    {
+        // ÉÏ¼ü£¨W»òÉÏ¼ıÍ·£©
+        if (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed) return 1f;
+        // ÏÂ¼ü£¨S»òÏÂ¼ıÍ·£©
+        if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) return -1f;
+<<<<<<< Updated upstream
+        // ÎŞ´¹Ö±ÊäÈë
+=======
+        // æ— å‚ç›´è¾“å…¥
+>>>>>>> Stashed changes
+=======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     /// è·å–å‚ç›´æ–¹å‘è¾“å…¥
     /// </summary>
     /// <returns>å‚ç›´è¾“å…¥å€¼ï¼ˆ-1, 0, 1ï¼‰</returns>
@@ -176,23 +332,47 @@ public class Player : MonoBehaviour
         // ä¸‹é”®ï¼ˆSæˆ–ä¸‹ç®­å¤´ï¼‰
         if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) return -1f;
         // æ— å‚ç›´è¾“å…¥
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
 =======
-    /// ï¿½ï¿½È¡ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-    /// </summary>
-    /// <returns>ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½-1, 0, 1ï¿½ï¿½</returns>
-    private float GetVerticalInput()
-    {
-        // ï¿½Ï¼ï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½Ï¼ï¿½Í·ï¿½ï¿½
-        if (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed) return 1f;
-        // ï¿½Â¼ï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½Â¼ï¿½Í·ï¿½ï¿½
-        if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) return -1f;
-        // ï¿½Ş´ï¿½Ö±ï¿½ï¿½ï¿½ï¿½
->>>>>>> Bidoofa2
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
         return 0f;
     }
 
     /// <summary>
-<<<<<<< HEAD
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+    /// ¸üĞÂ°´¼ü×´Ì¬ºÍ°´ÏÂÊ±¼ä
+=======
+    /// æ›´æ–°æŒ‰é”®çŠ¶æ€å’ŒæŒ‰ä¸‹æ—¶é—´
+>>>>>>> Stashed changes
+    /// </summary>
+    /// <param name="keyPressed">°´¼üÊÇ·ñ°´ÏÂµÄÒıÓÃ</param>
+    /// <param name="keyDown">µ±Ç°°´¼ü×´Ì¬</param>
+    /// <param name="pressTime">°´¼ü°´ÏÂÊ±¼äµÄÒıÓÃ</param>
+    private void UpdateKeyState(ref bool keyPressed, bool keyDown, ref float pressTime)
+    {
+        // °´¼ü¸Õ¸Õ°´ÏÂ
+        if (keyDown && !keyPressed)
+        {
+            keyPressed = true;
+            pressTime = Time.time; // ¼ÇÂ¼°´ÏÂÊ±¼ä
+        }
+<<<<<<< Updated upstream
+        // °´¼üÊÍ·Å
+=======
+        // æŒ‰é”®é‡Šæ”¾
+>>>>>>> Stashed changes
+=======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     /// æ›´æ–°æŒ‰é”®çŠ¶æ€å’ŒæŒ‰ä¸‹æ—¶é—´
     /// </summary>
     /// <param name="keyPressed">æŒ‰é”®æ˜¯å¦æŒ‰ä¸‹çš„å¼•ç”¨</param>
@@ -207,22 +387,13 @@ public class Player : MonoBehaviour
             pressTime = Time.time; // è®°å½•æŒ‰ä¸‹æ—¶é—´
         }
         // æŒ‰é”®é‡Šæ”¾
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
 =======
-    /// ï¿½ï¿½ï¿½Â°ï¿½ï¿½ï¿½×´Ì¬ï¿½Í°ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
-    /// </summary>
-    /// <param name="keyPressed">ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½</param>
-    /// <param name="keyDown">ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½×´Ì¬</param>
-    /// <param name="pressTime">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</param>
-    private void UpdateKeyState(ref bool keyPressed, bool keyDown, ref float pressTime)
-    {
-        // ï¿½ï¿½ï¿½ï¿½ï¿½Õ¸Õ°ï¿½ï¿½ï¿½
-        if (keyDown && !keyPressed)
-        {
-            keyPressed = true;
-            pressTime = Time.time; // ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
-        }
-        // ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½
->>>>>>> Bidoofa2
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
         else if (!keyDown)
         {
             keyPressed = false;
@@ -230,7 +401,36 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-<<<<<<< HEAD
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+    /// È·¶¨Ë®Æ½ÊäÈë·½Ïò£¬½â¾ö×óÓÒ¼üÍ¬Ê±°´ÏÂµÄ³åÍ»
+=======
+    /// ç¡®å®šæ°´å¹³è¾“å…¥æ–¹å‘ï¼Œè§£å†³å·¦å³é”®åŒæ—¶æŒ‰ä¸‹çš„å†²çª
+>>>>>>> Stashed changes
+    /// </summary>
+    /// <returns>Ë®Æ½ÊäÈëÖµ£¨-1, 0, 1£©</returns>
+    private float GetHorizontalInput()
+    {
+        // ×óÓÒ¼üÍ¬Ê±°´ÏÂÊ±£¬±È½Ï°´ÏÂÊ±¼ä¾ö¶¨·½Ïò£¨ºó°´ÏÂµÄ·½Ïò¸²¸ÇÏÈ°´ÏÂµÄ·½Ïò£©
+        if (leftKeyPressed && rightKeyPressed)
+            return rightKeyPressTime > leftKeyPressTime ? 1f : -1f;
+
+        // µ¥¼ü°´ÏÂÊ±·µ»ØÏàÓ¦·½Ïò
+        if (leftKeyPressed) return -1f; // ×ó¼ü°´ÏÂ
+        if (rightKeyPressed) return 1f; // ÓÒ¼ü°´ÏÂ
+
+<<<<<<< Updated upstream
+        // ÎŞË®Æ½ÊäÈë
+=======
+        // æ— æ°´å¹³è¾“å…¥
+>>>>>>> Stashed changes
+=======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     /// ç¡®å®šæ°´å¹³è¾“å…¥æ–¹å‘ï¼Œè§£å†³å·¦å³é”®åŒæ—¶æŒ‰ä¸‹çš„å†²çª
     /// </summary>
     /// <returns>æ°´å¹³è¾“å…¥å€¼ï¼ˆ-1, 0, 1ï¼‰</returns>
@@ -245,38 +445,66 @@ public class Player : MonoBehaviour
         if (rightKeyPressed) return 1f; // å³é”®æŒ‰ä¸‹
 
         // æ— æ°´å¹³è¾“å…¥
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
 =======
-    /// È·ï¿½ï¿½Ë®Æ½ï¿½ï¿½ï¿½ë·½ï¿½ò£¬½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½Í¬Ê±ï¿½ï¿½ï¿½ÂµÄ³ï¿½Í»
-    /// </summary>
-    /// <returns>Ë®Æ½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½-1, 0, 1ï¿½ï¿½</returns>
-    private float GetHorizontalInput()
-    {
-        // ï¿½ï¿½ï¿½Ò¼ï¿½Í¬Ê±ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½È½Ï°ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ò£¨ºï¿½ï¿½ÂµÄ·ï¿½ï¿½ò¸²¸ï¿½ï¿½È°ï¿½ï¿½ÂµÄ·ï¿½ï¿½ï¿½
-        if (leftKeyPressed && rightKeyPressed)
-            return rightKeyPressTime > leftKeyPressTime ? 1f : -1f;
-
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½
-        if (leftKeyPressed) return -1f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-        if (rightKeyPressed) return 1f; // ï¿½Ò¼ï¿½ï¿½ï¿½ï¿½ï¿½
-
-        // ï¿½ï¿½Ë®Æ½ï¿½ï¿½ï¿½ï¿½
->>>>>>> Bidoofa2
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
         return 0f;
     }
     #endregion
 
     /// <summary>
-<<<<<<< HEAD
-    /// ç§»åŠ¨ç©å®¶è§’è‰²
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+    /// ÒÆ¶¯Íæ¼Ò½ÇÉ«
 =======
-    /// ï¿½Æ¶ï¿½ï¿½ï¿½Ò½ï¿½É«
->>>>>>> Bidoofa2
+    /// ç§»åŠ¨ç©å®¶è§’è‰²
+>>>>>>> Stashed changes
+=======
+    /// ç§»åŠ¨ç©å®¶è§’è‰²
+>>>>>>> Stashed changes
+=======
+    /// ç§»åŠ¨ç©å®¶è§’è‰²
+>>>>>>> Stashed changes
+=======
+    /// ç§»åŠ¨ç©å®¶è§’è‰²
+>>>>>>> Stashed changes
     /// </summary>
-    public void Move() => transform.Translate(input * GameManager.Instance.propData.speed 
-       * GameManager.Instance.propData.speedPer * Time.deltaTime);
+    public void Move() => transform.Translate(input * speed * Time.deltaTime);
 
     /// <summary>
-<<<<<<< HEAD
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+    /// ´¦ÀíÍæ¼Ò×ªÏòÂß¼­
+=======
+    /// å¤„ç†ç©å®¶è½¬å‘é€»è¾‘
+>>>>>>> Stashed changes
+    /// </summary>
+    public void TurnAround()
+    {
+        // ÓĞË®Æ½ÊäÈëÊ±²Å´¦Àí×ªÏò
+        if (input.x != 0)
+        {
+            // ¼ì²â·½ÏòÊÇ·ñ¸Ä±ä£¨´ÓÓÒ×ª×ó»ò´Ó×ó×ªÓÒ£©
+            bool directionChanged = (input.x > 0 && !isFacingRight) || (input.x < 0 && isFacingRight);
+
+<<<<<<< Updated upstream
+            // ·½Ïò¸Ä±äÇÒÍæ¼ÒÕıÔÚÒÆ¶¯Ê±´¥·¢duang¶¯»­
+=======
+            // æ–¹å‘æ”¹å˜ä¸”ç©å®¶æ­£åœ¨ç§»åŠ¨æ—¶è§¦å‘duangåŠ¨ç”»
+>>>>>>> Stashed changes
+=======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     /// å¤„ç†ç©å®¶è½¬å‘é€»è¾‘
     /// </summary>
     public void TurnAround()
@@ -288,67 +516,122 @@ public class Player : MonoBehaviour
             bool directionChanged = (input.x > 0 && !isFacingRight) || (input.x < 0 && isFacingRight);
 
             // æ–¹å‘æ”¹å˜ä¸”ç©å®¶æ­£åœ¨ç§»åŠ¨æ—¶è§¦å‘duangåŠ¨ç”»
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
 =======
-    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ß¼ï¿½
-    /// </summary>
-    public void TurnAround()
-    {
-        // ï¿½ï¿½Ë®Æ½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Å´ï¿½ï¿½ï¿½×ªï¿½ï¿½
-        if (input.x != 0)
-        {
-            // ï¿½ï¿½â·½ï¿½ï¿½ï¿½Ç·ï¿½Ä±ä£¨ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½Ò£ï¿½
-            bool directionChanged = (input.x > 0 && !isFacingRight) || (input.x < 0 && isFacingRight);
-
-            // ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½Ê±ï¿½ï¿½ï¿½ï¿½duangï¿½ï¿½ï¿½ï¿½
->>>>>>> Bidoofa2
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
             if (directionChanged && input.magnitude > 0.1f)
             {
                 animator.SetTrigger("duang");
             }
 
-<<<<<<< HEAD
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+            // ¸üĞÂ³¯Ïò×´Ì¬
+            isFacingRight = input.x > 0;
+            // ¸üĞÂ¾«ÁéäÖÈ¾·½Ïò£¨·­×ªXÖá£©
+=======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+
             // æ›´æ–°æœå‘çŠ¶æ€
             isFacingRight = input.x > 0;
             // æ›´æ–°ç²¾çµæ¸²æŸ“æ–¹å‘ï¼ˆç¿»è½¬Xè½´ï¼‰
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
 =======
-            // ï¿½ï¿½ï¿½Â³ï¿½ï¿½ï¿½×´Ì¬
-            isFacingRight = input.x > 0;
-            // ï¿½ï¿½ï¿½Â¾ï¿½ï¿½ï¿½ï¿½ï¿½È¾ï¿½ï¿½ï¿½ò£¨·ï¿½×ªXï¿½á£©
->>>>>>> Bidoofa2
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
             spriteRenderer.flipX = !isFacingRight;
         }
     }
 
     /// <summary>
-<<<<<<< HEAD
-    /// æ›´æ–°ç©å®¶åŠ¨ç”»çŠ¶æ€
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+    /// ¸üĞÂÍæ¼Ò¶¯»­×´Ì¬
 =======
-    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¶ï¿½ï¿½ï¿½×´Ì¬
->>>>>>> Bidoofa2
+    /// æ›´æ–°ç©å®¶åŠ¨ç”»çŠ¶æ€
+>>>>>>> Stashed changes
+=======
+    /// æ›´æ–°ç©å®¶åŠ¨ç”»çŠ¶æ€
+>>>>>>> Stashed changes
+=======
+    /// æ›´æ–°ç©å®¶åŠ¨ç”»çŠ¶æ€
+>>>>>>> Stashed changes
+=======
+    /// æ›´æ–°ç©å®¶åŠ¨ç”»çŠ¶æ€
+>>>>>>> Stashed changes
     /// </summary>
     private void UpdateAnimation()
     {
 
-<<<<<<< HEAD
-        // æ£€æµ‹ç©å®¶æ˜¯å¦åœ¨ç§»åŠ¨ï¼ˆè¾“å…¥å‘é‡é•¿åº¦å¤§äºé˜ˆå€¼ï¼‰
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+        // ¼ì²âÍæ¼ÒÊÇ·ñÔÚÒÆ¶¯£¨ÊäÈëÏòÁ¿³¤¶È´óÓÚãĞÖµ£©
 =======
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½
->>>>>>> Bidoofa2
+        // æ£€æµ‹ç©å®¶æ˜¯å¦åœ¨ç§»åŠ¨ï¼ˆè¾“å…¥å‘é‡é•¿åº¦å¤§äºé˜ˆå€¼ï¼‰
+>>>>>>> Stashed changes
+=======
+        // æ£€æµ‹ç©å®¶æ˜¯å¦åœ¨ç§»åŠ¨ï¼ˆè¾“å…¥å‘é‡é•¿åº¦å¤§äºé˜ˆå€¼ï¼‰
+>>>>>>> Stashed changes
+=======
+        // æ£€æµ‹ç©å®¶æ˜¯å¦åœ¨ç§»åŠ¨ï¼ˆè¾“å…¥å‘é‡é•¿åº¦å¤§äºé˜ˆå€¼ï¼‰
+>>>>>>> Stashed changes
+=======
+        // æ£€æµ‹ç©å®¶æ˜¯å¦åœ¨ç§»åŠ¨ï¼ˆè¾“å…¥å‘é‡é•¿åº¦å¤§äºé˜ˆå€¼ï¼‰
+>>>>>>> Stashed changes
         bool isMoving = input.magnitude > 0.1f;
 
         if (animator != null)
         {
-<<<<<<< HEAD
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+            // ¸üĞÂÒÆ¶¯×´Ì¬£¨¿ØÖÆRun/Idle¶¯»­£©
+            animator.SetBool("isMove", isMoving);
+
+            // µ±Í£Ö¹ÒÆ¶¯Ê±Á¢¼´´¥·¢duang¶¯»­
+=======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
             // æ›´æ–°ç§»åŠ¨çŠ¶æ€ï¼ˆæ§åˆ¶Run/IdleåŠ¨ç”»ï¼‰
             animator.SetBool("isMove", isMoving);
 
             // å½“åœæ­¢ç§»åŠ¨æ—¶ç«‹å³è§¦å‘duangåŠ¨ç”»
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
 =======
-            // ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Run/Idleï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-            animator.SetBool("isMove", isMoving);
-
-            // ï¿½ï¿½Í£Ö¹ï¿½Æ¶ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½duangï¿½ï¿½ï¿½ï¿½
->>>>>>> Bidoofa2
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
             if (!isMoving && input.magnitude <= 0.1f)
             {
                 animator.SetTrigger("duang");
@@ -357,50 +640,225 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-<<<<<<< HEAD
-    /// ç©å®¶å—ä¼¤é€»è¾‘
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+    /// Íæ¼ÒÊÜÉËÂß¼­
 =======
-    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
->>>>>>> Bidoofa2
+    /// ç©å®¶å—ä¼¤é€»è¾‘
+>>>>>>> Stashed changes
+=======
+    /// ç©å®¶å—ä¼¤é€»è¾‘
+>>>>>>> Stashed changes
+=======
+    /// ç©å®¶å—ä¼¤é€»è¾‘
+>>>>>>> Stashed changes
+=======
+    /// ç©å®¶å—ä¼¤é€»è¾‘
+>>>>>>> Stashed changes
     /// </summary>
-    public void Injured(float attack) 
+    public void Injured(float attack)
     {
+        //è®¡ç®—é˜²å¾¡åŠ›
+        attack *= GameManager.Instance.propData.Defense;
+        
+        
         if (isDead)
         {
             return;
         }
 
-<<<<<<< HEAD
-        //åˆ¤æ–­æœ¬æ¬¡æ”»å‡»æ˜¯å¦æ­»äº¡
-        if (GameManager.Instance.hp - attack <= 0 )
-=======
-        //ï¿½Ğ¶Ï±ï¿½ï¿½Î¹ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+        //ÅĞ¶Ï±¾´Î¹¥»÷ÊÇ·ñËÀÍö
         if (hp - attack <= 0 )
->>>>>>> Bidoofa2
         {
-            GameManager.Instance.hp = 0;
+            hp = 0;
             Dead();
         }else
         {
-            GameManager.Instance.hp -= attack;
+            hp -= attack;
         }
 
-<<<<<<< HEAD
-        //æ›´æ–°è¡€æ¡
-=======
-        //ï¿½ï¿½ï¿½ï¿½Ñªï¿½ï¿½
->>>>>>> Bidoofa2
+        //¸üĞÂÑªÌõ
         GamePanel.Instance.RenewHp();
+=======
+        if (GameManager.Instance.Armor!=0)
+        {
+            if (GameManager.Instance.Armor>attack)
+            {
+                GameManager.Instance.Armor -= attack;
+            }else if (GameManager.Instance.Armor<attack)
+            {
+                GameManager.Instance.Armor = 0;
+                attack -= GameManager.Instance.Armor;
+                GameManager.Instance.hp -= attack;
+                GamePanel.Instance.RenewHp();
+                
+            }else if (GameManager.Instance.Armor==attack)
+            {
+                GameManager.Instance.Armor = 0;
+            }
+
+            GamePanel.Instance.RenewArmor();
+
+        }else if(GameManager.Instance.Armor==0)
+        {
+            //åˆ¤æ–­æœ¬æ¬¡æ”»å‡»æ˜¯å¦æ­»äº¡
+            if (GameManager.Instance.hp - attack <= 0 )
+            {
+                GameManager.Instance.hp = 0;
+                Dead();
+            }else
+            {
+                GameManager.Instance.hp -= attack;
+            }
+
+            //æ›´æ–°è¡€æ¡
+            GamePanel.Instance.RenewHp();
+        }
+
+        
+>>>>>>> Stashed changes
+=======
+        if (GameManager.Instance.Armor!=0)
+        {
+            if (GameManager.Instance.Armor>attack)
+            {
+                GameManager.Instance.Armor -= attack;
+            }else if (GameManager.Instance.Armor<attack)
+            {
+                GameManager.Instance.Armor = 0;
+                attack -= GameManager.Instance.Armor;
+                GameManager.Instance.hp -= attack;
+                GamePanel.Instance.RenewHp();
+                
+            }else if (GameManager.Instance.Armor==attack)
+            {
+                GameManager.Instance.Armor = 0;
+            }
+
+            GamePanel.Instance.RenewArmor();
+
+        }else if(GameManager.Instance.Armor==0)
+        {
+            //åˆ¤æ–­æœ¬æ¬¡æ”»å‡»æ˜¯å¦æ­»äº¡
+            if (GameManager.Instance.hp - attack <= 0 )
+            {
+                GameManager.Instance.hp = 0;
+                Dead();
+            }else
+            {
+                GameManager.Instance.hp -= attack;
+            }
+
+            //æ›´æ–°è¡€æ¡
+            GamePanel.Instance.RenewHp();
+        }
+
+        
+>>>>>>> Stashed changes
+=======
+        if (GameManager.Instance.Armor!=0)
+        {
+            if (GameManager.Instance.Armor>attack)
+            {
+                GameManager.Instance.Armor -= attack;
+            }else if (GameManager.Instance.Armor<attack)
+            {
+                GameManager.Instance.Armor = 0;
+                attack -= GameManager.Instance.Armor;
+                GameManager.Instance.hp -= attack;
+                GamePanel.Instance.RenewHp();
+                
+            }else if (GameManager.Instance.Armor==attack)
+            {
+                GameManager.Instance.Armor = 0;
+            }
+
+            GamePanel.Instance.RenewArmor();
+
+        }else if(GameManager.Instance.Armor==0)
+        {
+            //åˆ¤æ–­æœ¬æ¬¡æ”»å‡»æ˜¯å¦æ­»äº¡
+            if (GameManager.Instance.hp - attack <= 0 )
+            {
+                GameManager.Instance.hp = 0;
+                Dead();
+            }else
+            {
+                GameManager.Instance.hp -= attack;
+            }
+
+            //æ›´æ–°è¡€æ¡
+            GamePanel.Instance.RenewHp();
+        }
+
+        
+>>>>>>> Stashed changes
+=======
+        if (GameManager.Instance.Armor!=0)
+        {
+            if (GameManager.Instance.Armor>attack)
+            {
+                GameManager.Instance.Armor -= attack;
+            }else if (GameManager.Instance.Armor<attack)
+            {
+                GameManager.Instance.Armor = 0;
+                attack -= GameManager.Instance.Armor;
+                GameManager.Instance.hp -= attack;
+                GamePanel.Instance.RenewHp();
+                
+            }else if (GameManager.Instance.Armor==attack)
+            {
+                GameManager.Instance.Armor = 0;
+            }
+
+            GamePanel.Instance.RenewArmor();
+
+        }else if(GameManager.Instance.Armor==0)
+        {
+            //åˆ¤æ–­æœ¬æ¬¡æ”»å‡»æ˜¯å¦æ­»äº¡
+            if (GameManager.Instance.hp - attack <= 0 )
+            {
+                GameManager.Instance.hp = 0;
+                Dead();
+            }else
+            {
+                GameManager.Instance.hp -= attack;
+            }
+
+            //æ›´æ–°è¡€æ¡
+            GamePanel.Instance.RenewHp();
+        }
+
+        
+>>>>>>> Stashed changes
     }
 
 
 
     /// <summary>
-<<<<<<< HEAD
-    /// ç©å®¶æ”»å‡»é€»è¾‘
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+    /// Íæ¼Ò¹¥»÷Âß¼­
 =======
-    /// ï¿½ï¿½Ò¹ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
->>>>>>> Bidoofa2
+    /// ç©å®¶æ”»å‡»é€»è¾‘
+>>>>>>> Stashed changes
+=======
+    /// ç©å®¶æ”»å‡»é€»è¾‘
+>>>>>>> Stashed changes
+=======
+    /// ç©å®¶æ”»å‡»é€»è¾‘
+>>>>>>> Stashed changes
+=======
+    /// ç©å®¶æ”»å‡»é€»è¾‘
+>>>>>>> Stashed changes
     /// </summary>
     public void Attack() 
     {
@@ -409,11 +867,23 @@ public class Player : MonoBehaviour
 
 
     /// <summary>
-<<<<<<< HEAD
-    /// ç©å®¶æ­»äº¡é€»è¾‘
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+    /// Íæ¼ÒËÀÍöÂß¼­
 =======
-    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
->>>>>>> Bidoofa2
+    /// ç©å®¶æ­»äº¡é€»è¾‘
+>>>>>>> Stashed changes
+=======
+    /// ç©å®¶æ­»äº¡é€»è¾‘
+>>>>>>> Stashed changes
+=======
+    /// ç©å®¶æ­»äº¡é€»è¾‘
+>>>>>>> Stashed changes
+=======
+    /// ç©å®¶æ­»äº¡é€»è¾‘
+>>>>>>> Stashed changes
     /// </summary>
     public void Dead()
     {
@@ -421,24 +891,72 @@ public class Player : MonoBehaviour
 
         animator.speed = 0;
 
-<<<<<<< HEAD
-        //todo è°ƒç”¨æ¸¸æˆå¤±è´¥å‡½æ•°
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+        //todo µ÷ÓÃÓÎÏ·Ê§°Üº¯Êı
 =======
-        //todo ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·Ê§ï¿½Üºï¿½ï¿½ï¿½
->>>>>>> Bidoofa2
+
+       
+>>>>>>> Stashed changes
+=======
+
+       
+>>>>>>> Stashed changes
+=======
+
+       
+>>>>>>> Stashed changes
+=======
+
+       
+>>>>>>> Stashed changes
         LevelController.Instance.BadGame();
     }
+    
 
-
-    private void OnTriggerEnter2D(Collider2D col)
+    private void earmoney()
     {
-        if (col.CompareTag("Money"))
-        {
-            Destroy(col.gameObject);
+        //Physics2D.OverlapCircleAll ä»¥ç©å®¶ä¸ºä¸­å¿ƒæ„å»ºåœ† å°„çº¿æ£€æŸ¥ä¸Itemmï¼ˆé‡‘å¸ï¼‰çš„è·ç¦»
+        Collider2D[] moenyInRange = Physics2D.OverlapCircleAll(
+            transform.position, 0.5f*GameManager.Instance.propData.pickRange, LayerMask.GetMask("Item"));
 
-            GameManager.Instance.money += 1;
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+            money += 1;
             GamePanel.Instance.RenewMoney();
+=======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+        //è·å–åˆ°èŒƒå›´å‘¢æ‰€æœ‰çš„Itemï¼ˆé‡‘å¸ï¼‰GameOBject ç„¶åéå†é”€æ¯åŠ é’±
+        if (moenyInRange.Length>=0)
+        {
+            for (int i = 0; i < moenyInRange.Length; i++)
+            {
+                Destroy(moenyInRange[i].gameObject);
+                GameManager.Instance.money += 1;
+                GamePanel.Instance.RenewMoney();
+            }
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
         }
+        
+        
     }
 
 }

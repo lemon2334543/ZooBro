@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7443374697447122262}
   - component: {fileID: 9053946571526389316}
   - component: {fileID: 6707797316263440703}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Money
   m_TagString: Money
   m_Icon: {fileID: 0}

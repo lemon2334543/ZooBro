@@ -1,37 +1,71 @@
+<<<<<<< Updated upstream
+=======
 ﻿using System;
+using System.Collections;
+using System.Threading.Tasks;
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 using UnityEngine;
 
 public class WeaponLong : WeaponBase
 {
-    public new void Awake()
-    {
-        base.Awake();
 
+<<<<<<< Updated upstream
+=======
 
     }
-    public override void Fire()
+    public override IEnumerator Fire()
     {
         if (isCooling)
         {
-            return;
+
+            yield break; // 协程中用yield break代替return
         }
-        //获取方向
-        Vector2 dir = (enemy.position - transform.position).normalized;
+        isCooling = true;
+        // 根据攻击次数逐个发射，每次间隔300毫秒
+        for (int i = 0; i < data.attackcount; i++)
+        {
+            // 获取方向
+            if (enemy==null)
+            {
+                yield break; 
+            }
+            Vector2 dir = (enemy.position - transform.position).normalized;
 
+            // 创造子弹
+            GameObject bullet = GenerateBullet(dir);
 
-        //创造子弹
-        GameObject bullet = GenerateBullet(dir);
+            // 旋转子弹对准敌人
+            SetZ(bullet);
 
-        //旋转子弹对准敌人
-        SetZ(bullet);
+            // 处理暴击逻辑
+            bool isCritical = CriicalHits(); // 注意原代码拼写错误：CriicalHits→CriticalHits
+            Bullet bulletComp = bullet.GetComponent<Bullet>();
+            if (isCritical)
+            {
+                // 暴击伤害（修复原代码的赋值错误：避免修改原data.damage）
+                bulletComp.damage = data.damage * data.critical_strikes_multiple;
+            }
+            else
+            {
+                bulletComp.damage = data.damage;
+            }
 
+            // 设置子弹速度
+            bulletComp.speed = 15f;
 
-        //设置伤害和子弹初速度
-        bullet.GetComponent<Bullet>().damage = data.damage;
-        bullet.GetComponent<Bullet>().speed = 15f;
-
-        //
-
+            // 等待300毫秒（0.3秒）后再进行下一次循环
+            yield return new WaitForSeconds(0.1f);
+        }
+     
 
         isCooling = true;
     }
@@ -48,4 +82,5 @@ public class WeaponLong : WeaponBase
     {
         return null;
     }
+>>>>>>> Stashed changes
 }

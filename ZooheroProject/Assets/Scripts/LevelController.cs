@@ -1,10 +1,23 @@
-﻿using NUnit.Framework;
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+using NUnit.Framework;
+=======
+﻿﻿using NUnit.Framework;
+>>>>>>> Stashed changes
+=======
+﻿﻿using NUnit.Framework;
+>>>>>>> Stashed changes
+=======
+﻿﻿using NUnit.Framework;
+>>>>>>> Stashed changes
+=======
+﻿﻿using NUnit.Framework;
+>>>>>>> Stashed changes
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Enemy;
-using Newtonsoft.Json;
-using Resources.script.model;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,18 +31,11 @@ public class LevelController : MonoBehaviour
     public GameObject _successPanel;//�ɹ����
 
     public GameObject enemy1_prefab;
-    public GameObject enemy2_prefab;
-    public GameObject enemy3_prefab;
-    public GameObject enemy4_prefab;
-    public GameObject enemy5_prefab;
-    //敌人字典
-    public Dictionary<string, GameObject> enemyDictionary = new Dictionary<string, GameObject>();
-    
-    
     public List<EnemyBase> enemy_list;
     public Transform _map;
-    private TextAsset levelTextAsset;
 
+<<<<<<< Updated upstream
+=======
     public GameObject redfork_prefab;
     public TextAsset leveTestAsset;
     public List<LevelDate> LevelDates = new List<LevelDate>();
@@ -37,25 +43,53 @@ public class LevelController : MonoBehaviour
 
     public Transform enemyfahter;
     
+    
+///////////////////////////////////////////武器生成测试 修改weaponID可以任意生成指定的武器用于测试/////////////////////////////////////////////////////
+    public List<WeaponData> WeaponDatas = new List<WeaponData>();//获取json
+    public TextAsset textAsset;//json文本z
+///////////////////////////////////////////武器生成测试 修改weaponID可以任意生成指定的武器用于测试/////////////////////////////////////////////////////
+    
    
+>>>>>>> Stashed changes
     private void Awake()
     {
         Instance = this;
+        
+        
+///////////////////////////////////////////武器生成测试 修改weaponID可以任意生成指定的武器用于测试/////////////////////////////////////////////////////
+        int weaponID = 3;
+        textAsset = UnityEngine.Resources.Load<TextAsset>("Data/weapon");
+        GameManager.Instance.currentWeapons.Add(JsonConvert.DeserializeObject<List<WeaponData>>(textAsset.text)[weaponID-1]); 
+///////////////////////////////////////////武器生成测试 修改weaponID可以任意生成指定的武器用于测试/////////////////////////////////////////////////////
+        
+        
+        
+        
 
         _failPanel = GameObject.Find("FailPanel");
         _successPanel = GameObject.Find("SuccessPanel");
-<<<<<<< HEAD
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
         enemy1_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemy1");
+
+        _map = GameObject.Find("Map").transform;
 =======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
         
-        enemy1_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemy1");
-        enemy2_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemy2");
-        enemy3_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemy3");
-        enemy4_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemy4");
-        enemy5_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemy5");
+        enemy1_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemys/Enemy1");
+        enemy2_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemys/Enemy2");
+        enemy3_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemys/Enemy3");
+        enemy4_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemys/Enemy4");
+        enemy5_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemys/Enemy5");
         
         redfork_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/RedFork");
->>>>>>> 第二部分Test
 
         _map = GameObject.Find("Map").transform;
         
@@ -74,178 +108,29 @@ public class LevelController : MonoBehaviour
         enemyfahter = GameObject.Find("Enemys").transform;
         
         
+        
+        
 
+>>>>>>> Stashed changes
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-<<<<<<< HEAD
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
         //�ؿ�ʱ��
-=======
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-        //�ؿ�ʱ��
->>>>>>> 第二部分Test
         waveTimer = 15 + 5 * GameManager.Instance.currentWave;
-=======
-        waveTimer = 15 + 5 * GameManager.Instance.currentWave; //保存关卡信息
->>>>>>> Stashed changes
 
-
-
-        //生成敌人
-=======
-        Debug.Log((int)GameManager.Instance.currentWave);
-        CurrentLevelDate = LevelDates[(int)GameManager.Instance.currentWave];//保存当前关卡学信息xz
-        waveTimer = CurrentLevelDate.waveTimer;        
-        
->>>>>>> Bidoofa2
         GenerateEnemy();
-
-        //生成武器
-        GenerateWeapon();
-
-
-
-
     }
 
-<<<<<<< HEAD
     // ��ʼ���ɵ��˵���ڷ���
-=======
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-    // ��ʼ���ɵ��˵���ڷ���
-=======
-    #region 原版调用
-    //private void GenerateWeapon()
-    //{
-    //    // 开始生成武器（调试信息）
-    //    Debug.Log("生成武器开始");
-
-    //    // 计数器，用于记录当前是第几把武器
-    //    int i = 0;
-
-    //    // 遍历玩家当前拥有的所有武器数据
-    //    foreach (WeaponData weaponData in GameManager.Instance.currentWeapons)
-    //    {
-    //        // 根据武器名称加载对应的预制体
-    //        // 路径格式：Resources/Prefabs/武器名称
-    //        GameObject go = UnityEngine.Resources.Load<GameObject>("Prefabs/" + weaponData.name);
-
-    //        // 在玩家武器挂点上创建武器实例
-    //        // 挂点位置：Player.Instance.weaponsPos的第i个子节点
-    //        WeaponBase wb = Instantiate(go, Player.Instance.weaponsPos.GetChild(i)).GetComponent<WeaponBase>();
-
-    //        // 将武器数据绑定到新创建的武器实例上
-    //        wb.data = weaponData;
-
-
-    //        i++;
-    //    }
-
-    //    // 结束生成武器（调试信息）
-    //    Debug.Log("生成武器结束");
-
-    //}
-    #endregion
-
-    private void GenerateWeapon()
-    {
-        Debug.Log("生成武器开始");
-        //初始化武器系统
-        GameManager.Instance.currentWeaponNames = new List<string>();
-
-        //手动添加 武器名称
-        GameManager.Instance.currentWeaponNames.AddRange(new List<string> {
-            "拳","十字弓"});
-
-        // 防御性检查 1：确保Player实例存在
-        if (Player.Instance == null)
-        {
-            Debug.LogError("Player.Instance 未初始化！");
-            return;
-        }
-
-        // 防御性检查 2：确保武器挂点存在
-        if (Player.Instance.weaponsPos == null)
-        {
-            Debug.LogError("武器挂点 weaponsPos 未初始化！");
-            return;
-        }
-
-        int i = 0;
-        int slotCount = Player.Instance.weaponsPos.childCount;
-        int weaponCount = GameManager.Instance.currentWeaponNames.Count;
-
-        Debug.Log($"准备生成武器：数量={weaponCount}, 可用槽位={slotCount}");
-
-        foreach (string weaponName in GameManager.Instance.currentWeaponNames)
-        {
-            // 防御性检查 3：确保槽位足够
-            if (i >= slotCount)
-            {
-                Debug.LogError($"武器槽位不足！需要：{i + 1}个，实际：{slotCount}个");
-                break;
-            }
-
-            // 1. 获取武器数据
-            WeaponData weaponData = GameManager.Instance.GetWeaponByName(weaponName);
-
-            // 防御性检查 4：武器数据是否存在
-            if (weaponData == null)
-            {
-                Debug.LogError($"武器数据不存在：{weaponName}");
-                i++;
-                continue;
-            }
-
-            // 2. 加载武器预制体
-            GameObject weaponPrefab = UnityEngine.Resources.Load<GameObject>($"Prefabs/{weaponData.name}");
-
-            // 防御性检查 5：预制体是否存在
-            if (weaponPrefab == null)
-            {
-                Debug.LogError($"预制体未找到：{weaponData.name}");
-                i++;
-                continue;
-            }
-
-            // 3. 获取武器槽位
-            Transform weaponSlot = Player.Instance.weaponsPos.GetChild(i);
-
-            // 4. 实例化武器
-            GameObject weaponObj = Instantiate(weaponPrefab, weaponSlot);
-
-            // 5. 获取武器组件并绑定数据
-            WeaponBase weaponComponent = weaponObj.GetComponent<WeaponBase>();
-
-            // 防御性检查 6：武器组件是否存在
-            if (weaponComponent == null)
-            {
-                Debug.LogError($"预制体缺少WeaponBase组件：{weaponData.name}");
-                i++;
-                continue;
-            }
-
-            weaponComponent.data = weaponData;
-            Debug.Log($"成功生成武器：{weaponData.name} 在槽位 {i}");
-
-            i++;
-        }
-
-        Debug.Log($"生成武器结束，计划生成：{weaponCount}，实际生成：{i} 把武器");
-    }
-
-
-    // ��ʼ���ɵ��˵���ڷ���
->>>>>>> Stashed changes
->>>>>>> 第二部分Test
     private void GenerateEnemy()
     {
         // �����������ɵ�Э��
         StartCoroutine(SwawnEnemies());
-
     }
 
     // �������ɵ�Э��
@@ -253,16 +138,78 @@ public class LevelController : MonoBehaviour
     {
         // ѭ�����������μ�ʱ������0 ���� ���û������
         while (waveTimer > 0 && !Player.Instance.isDead)
+        {
 =======
+        // Debug.Log((int)GameManager.Instance.currentWave);
+        CurrentLevelDate = LevelDates[(int)GameManager.Instance.currentWave-1];//保存当前关卡学信息xz
+        waveTimer = CurrentLevelDate.waveTimer;        
+        
+        GenerateEnemy();
+
+        GenerateWeapons();
+    }
+
+=======
+        // Debug.Log((int)GameManager.Instance.currentWave);
+        CurrentLevelDate = LevelDates[(int)GameManager.Instance.currentWave-1];//保存当前关卡学信息xz
+        waveTimer = CurrentLevelDate.waveTimer;        
+        
+        GenerateEnemy();
+
+        GenerateWeapons();
+    }
+
+>>>>>>> Stashed changes
+=======
+        // Debug.Log((int)GameManager.Instance.currentWave);
+        CurrentLevelDate = LevelDates[(int)GameManager.Instance.currentWave-1];//保存当前关卡学信息xz
+        waveTimer = CurrentLevelDate.waveTimer;        
+        
+        GenerateEnemy();
+
+        GenerateWeapons();
+    }
+
+>>>>>>> Stashed changes
+=======
+        // Debug.Log((int)GameManager.Instance.currentWave);
+        CurrentLevelDate = LevelDates[(int)GameManager.Instance.currentWave-1];//保存当前关卡学信息xz
+        waveTimer = CurrentLevelDate.waveTimer;        
+        
+        GenerateEnemy();
+
+        GenerateWeapons();
+    }
+
+>>>>>>> Stashed changes
+    private void GenerateWeapons()
+    {
+        Debug.Log("开始生成武器");
+        
+
+        int i = 0;
+        foreach (WeaponData weapon in GameManager.Instance.currentWeapons)
+        {
+            
+            GameObject gameObject = UnityEngine.Resources.Load<GameObject>("Prefabs/Waepons/" + weapon.name);
+            // Debug.Log(weapon.name);
+            //i 代表第几把武器
+            WeaponBase WeaponBase = Instantiate(gameObject, Player.Instance.weaponsPos.GetChild(i)).GetComponent<WeaponBase>();
+            WeaponBase.data = weapon;
+            
+            i++;
+        }
+        
+        
+        // Debug.Log("武器生成完成");
+    }
+
     // ��ʼ���ɵ��˵���ڷ���
     private void GenerateEnemy()
     {
         ////////////////////////////可以在这里控制难度(增加数量)//////////////////////////
         foreach (WaveDate waveDate in CurrentLevelDate.enemys)
->>>>>>> Bidoofa2
         {
-<<<<<<< HEAD
-=======
             // Debug.Log(waveDate.count);
             for (int i = 0; i < waveDate.count; i++)
             {
@@ -281,13 +228,25 @@ public class LevelController : MonoBehaviour
         yield return new WaitForSeconds(waveDate.timeAxis);
         if (waveTimer>0 && !Player.Instance.isDead)
         {
->>>>>>> 第二部分Test
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
             // �ȴ�0.5����������һ�����ˣ���������Ƶ�ʣ�
             yield return new WaitForSeconds(0.5f);
 
             // �ڵ�ͼ��Χ�ڻ�ȡһ���������λ��
             var spawnPoint = GetRandomPosition(_map.GetComponent<SpriteRenderer>().bounds);
-<<<<<<< HEAD
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
             // �����ɵ�ʵ��������Ԥ���壬����ȡ�������
             EnemyBase go = Instantiate(enemy1_prefab, spawnPoint, Quaternion.identity).GetComponent<EnemyBase>();
@@ -298,10 +257,16 @@ public class LevelController : MonoBehaviour
             // �������ɵĵ�����ӵ������б��У����ں�������
             enemy_list.Add(go);
 =======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
             GameObject go = Instantiate(redfork_prefab, spawnPoint, Quaternion.identity);
             yield return new WaitForSeconds(1);
             Destroy(go);
-            Debug.Log(enemyDictionary[waveDate.enemyName]);
+            // Debug.Log(enemyDictionary[waveDate.enemyName]);
             if (waveTimer>0 && !Player.Instance.isDead)
             {
                 
@@ -328,7 +293,16 @@ public class LevelController : MonoBehaviour
                 
             }
             
->>>>>>> 第二部分Test
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
         }
     }
 
@@ -361,14 +335,35 @@ public class LevelController : MonoBehaviour
             if (waveTimer <= 0)
             {
                 waveTimer = 0;
-                GoodGame();
+                if (GameManager.Instance.currentWave<20)
+                {
+                    //下一关
+                    NextWave();
+                }
+                else
+                {
+                    GoodGame();
+                }
+                
+                
+                
+                
             }
 
         }
         GamePanel.Instance.RenewCountDown(waveTimer);
     }
 
-    
+    private void NextWave()
+    {
+        //添加收获
+        GameManager.Instance.money += GameManager.Instance.propData.harvest;
+        //跳转商店
+        SceneManager.LoadScene("shop");
+        //增加波数 
+        GameManager.Instance.currentWave += 1;
+        
+    }
 
 
     //��Ϸʤ��

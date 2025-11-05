@@ -1,95 +1,60 @@
-<<<<<<< HEAD
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 using System.Collections.Generic;
 using Enemy;
 using model;
 using Newtonsoft.Json;
 using Resources.script.model;
->>>>>>> Bidoofa2
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 using UnityEngine;
-using UnityEngine.U2D;
-using Random = System.Random;
 
 public class GameManager : MonoBehaviour
 {
-<<<<<<< HEAD
-    [Header("调试设置")]
-    public string debugRoleName = "全能者";
-
     public static GameManager Instance;
-    public RoleData currentRole; //记录当前角色数据
-    public List<WeaponData> currentWeapons = new List<WeaponData>(); //记录当前武器数据
-    
-    
-    //临时武器加载 根据名称生成
-    public List<string> currentWeaponNames = new List<string> {};
-
-    [SerializeField]
-    public PropData propData = new PropData(); //当前的属性
-    public List<PropData> currentProps = new List<PropData>(); //当前的道具列表
-
-
-
-    public DifficultyData currentDifficulty; //记录当前难度
-    public int currentWave = 1; //当前波次
-
-
-    public GameObject enemyBullet_prefab; //敌人子弹预制体
-    public GameObject moeny_prefab; // 金币预制体
-    public GameObject redCircle_prefab; // 红圈预制体
-    public GameObject arrowBullet_prefab; // 弓箭子弹预制体
-    public GameObject pistolBullet_prefab; // 手枪子弹预制体 
-    public GameObject medicalBullet_prefab; // 医疗枪子弹预制体
-
-    public List<RoleData> roleDatas = new List<RoleData>(); //角色数据信息
-    public TextAsset roleTextAsset; //json文件
-    public List<DifficultyData> difficultyDatas = new List<DifficultyData>(); //难度数据信息
-    public TextAsset difficultyTextAsset; //json文件
-
-    public List<WeaponData> weaponDatas = new List<WeaponData>(); //武器数据信息
-    public TextAsset weaponTextAsset; //json文件
-
-    public List<EnemyData> enemyDatas = new List<EnemyData>();
-    public TextAsset enemyTextAsset;
-
-    //道具数据信息
-    public List<PropData> propDatas = new List<PropData>();
-    public TextAsset propTextAsset;
-
-
-    public float hp = 15f; //当前生命
-    public int money = 30; //当前金币
-    public float exp = 0; //当前经验值
-
-    public SpriteAtlas propsAtlas; //道具图集
-    public GameObject number_prefab; //文字预制体
-
-    public GameObject attackMusic; //攻击音效
-    public GameObject shootMusic; //射击音效
-    public GameObject menuMusic; //菜单音效
-    public GameObject hurtMusic; //受伤音效
-
-    private void Awake()
-    {
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-        LoadWeaponData();
-
-        if (!PlayerPrefs.HasKey("多面手"))
-=======
-    public static GameManager Instance;
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public float currentWave ;
+
+    void Awake()
+    {
+=======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+    public float currentWave;
     // public static GameManger Instance;
     
     public RoleDate RoleDate;
+ 
+
 
     public List<EnemyDate> EnemyDates = new List<EnemyDate>();
     public TextAsset enemytextAsset;
     
-    public GameObject enemyBullet_prefab;//敌人子弹预制体
+    //敌人子弹预制体
     public DifficultyDate DifficultyDate;//难度
     
     
@@ -99,199 +64,106 @@ public class GameManager : MonoBehaviour
     public Color color1 = new Color(0.6f, 0.9f, 0.6f);
     public Color color2 = new Color(0.6f, 0.8f, 0.9f);
     public Color color3 = new Color(0.8f, 0.6f, 0.9f);
-    public Color color4 = new Color(0.95f, 0.7f, 0.75f);
-    public Color color5 =  new Color(0.95f, 0.9f, 0.7f);
+    public Color color4 =  new Color(0.95f, 0.9f, 0.7f);
+    public Color color5 = new Color(0.95f, 0.7f, 0.75f);
+    
 
     public List<FamilyDate> FamilyDates = new List<FamilyDate>();
+    public GameObject _PlayerVisual;
     
-    public 
-    void Awake()
+    public float hp;
+    public float money;
+    public float exp;
+    public float Armor;
+    
+    [SerializeField]
+    public PropData propData = new PropData();//角色数据ss
+    public List<PropData> PropDatas = new List<PropData>();//拥有的物品列表
+    
+//武器列表
+    public List<WeaponData> currentWeapons = new List<WeaponData>();
+    
+    //难度
+    public List<DifficultyDate> difficultyDates = new List<DifficultyDate>();//获取json
+    public TextAsset DifficultytextAsset;//json文本z
+    //家族
+    public List<FamilyDate> familyDates = new List<FamilyDate>();//获取json
+    public TextAsset FamilytextAsset;//json文本z
+    //角色
+    public List<RoleDate> RoleDates = new List<RoleDate>();//获取json
+    public TextAsset RoletextAsset;//json文本z
+    
+    //todo  期待优化子弹获取逻辑
+    //////////////////////////获取子弹预制体//////////////////////////////
+    public GameObject arrowBullet_prefab;
+    public GameObject medlcalBullet_prefab;
+    public GameObject postolBullet_prefab;
+    public GameObject enemyBullet_prefab;
+    
+    public void Awake()
     {
+        
+        
 
+>>>>>>> Stashed changes
         if (Instance == null)
->>>>>>> Bidoofa2
         {
-            PlayerPrefs.SetInt("多面手", 0);
-        }
-        if (!PlayerPrefs.HasKey("公牛"))
-        {
-            PlayerPrefs.SetInt("公牛", 0);
-        }
-
-
-        enemyTextAsset = UnityEngine.Resources.Load<TextAsset>("Data/enemy");
-        enemyDatas = JsonConvert.DeserializeObject<List<EnemyData>>(enemyTextAsset.text);
-
-        enemyBullet_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/EnemyBullet");
-        moeny_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Money");
-        redCircle_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/RedCircle");
-        number_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Number");
-
-        //音效
-        attackMusic = UnityEngine.Resources.Load<GameObject>("Prefabs/AttackMusic");
-        shootMusic = UnityEngine.Resources.Load<GameObject>("Prefabs/ShootMusic");
-        menuMusic = UnityEngine.Resources.Load<GameObject>("Prefabs/MenuMusic");
-        hurtMusic = UnityEngine.Resources.Load<GameObject>("Prefabs/HurtMusic");
-
-
-
-        difficultyTextAsset = UnityEngine.Resources.Load<TextAsset>("Data/difficulty");
-        difficultyDatas = JsonConvert.DeserializeObject<List<DifficultyData>>(difficultyTextAsset.text);
-
-        //读取json文件, 并转化为对象
-        roleTextAsset = UnityEngine.Resources.Load<TextAsset>("Data/role");
-        roleDatas = JsonConvert.DeserializeObject<List<RoleData>>(roleTextAsset.text);
-        //读取json文件
-        weaponTextAsset = UnityEngine.Resources.Load<TextAsset>("Data/weapon");
-        weaponDatas = JsonConvert.DeserializeObject<List<WeaponData>>(weaponTextAsset.text);
-
-        //读取json文件
-        propTextAsset = UnityEngine.Resources.Load<TextAsset>("Data/prop");
-        propDatas = JsonConvert.DeserializeObject<List<PropData>>(propTextAsset.text);
-
-        arrowBullet_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/ArrowBullet"); // 弓箭子弹预制体
-        pistolBullet_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/PistolBullet"); // 手枪子弹预制体
-        medicalBullet_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/MedicalBullet"); // 医疗枪子弹预制体
-
-        propsAtlas = UnityEngine.Resources.Load<SpriteAtlas>("Image/其他/Props");
-
-        // 直接调用角色
-        SetDefaultRole();
-    }
-
-    //临时加载，找到武器JSON数据然后生成数组
-    void LoadWeaponData()
-    {
-        TextAsset weaponJson = UnityEngine.Resources.Load<TextAsset>("Data/weapon");
-        weaponDatas = JsonConvert.DeserializeObject<List<WeaponData>>(weaponJson.text);
-    }
-
-    //临时加载，根据名称找到相应的武器
-    public WeaponData GetWeaponByName(string name)
-    {
-        return weaponDatas.Find(w => w.name == name);
-    }
-
-
-    private void Start()
-    {
-    }
-
-    private void Update()
-    {
-    }
-
-    public object RandomOne<T>(List<T> list)
-    {
-        if (list == null || list.Count == 0)
-        {
-            return null;
-        }
-
-        Random random = new Random();
-        int index = random.Next(0, list.Count);
-
-        return list[index];
-    }
-
-
-    //初始化选择角色给特殊属性
-    public void InitProp()
-    {
-
-
-        if (currentRole.name == "全能者")
-        {
-            propData.maxHp += 5;
-            propData.speedPer += 0.05f;
-            propData.harvest += 8;
-
-        }
-        else if (currentRole.name == "斗士")
-        {
-            propData.short_attackSpeed += 0.5f;
-            propData.long_range -= 0.5f;
-            propData.short_range -= 0.5f;
-            propData.long_damage -= 0.5f;
-
-        }
-        else if (currentRole.name == "医生")
-        {
-            propData.revive += 5f;
-            propData.short_attackSpeed -= 0.5f;
-            propData.long_attackSpeed -= 0.5f;
-        }
-        else if (currentRole.name == "公牛")
-        {
-            propData.maxHp += 20f;
-            propData.revive += 15f;
-            propData.slot = 0;
-
-        }
-        else if (currentRole.name == "多面手")
-        {
-            propData.long_damage += 0.2f;
-            propData.short_damage += 0.2f;
-            propData.slot = 12;
-        }
-
-
-        hp = propData.maxHp;
-        money = 30;
-        exp = 0;
-
-    }
-
-    //直接设置默认角色
-    private void SetDefaultRole()
-    {
-        // 使用公共字段
-        string roleNameToUse = debugRoleName;
-
-        // 查找角色
-        RoleData defaultRole = roleDatas.Find(r => r.name == roleNameToUse);
-        if (defaultRole != null)
-        {
-            currentRole = defaultRole;
-            Debug.Log($"已设置默认角色为: {roleNameToUse}");
-
-            // 初始化角色属性
-            InitProp();
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Debug.LogError($"未找到角色: {roleNameToUse}，使用第一个角色作为默认");
-            if (roleDatas.Count > 0)
-            {
-                currentRole = roleDatas[0];
-                InitProp();
-            }
+            Destroy(gameObject);
         }
+<<<<<<< Updated upstream
+=======
 
         enemytextAsset = UnityEngine.Resources.Load<TextAsset>("Data/enemy");
         EnemyDates = JsonConvert.DeserializeObject<List<EnemyDate>>(enemytextAsset.text);
         enemyBullet_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/enemyBullet");
 
+        
+        DifficultytextAsset = UnityEngine.Resources.Load<TextAsset>("Data/difficulty");
+        difficultyDates = JsonConvert.DeserializeObject<List<DifficultyDate>>(DifficultytextAsset.text);
+        FamilytextAsset = UnityEngine.Resources.Load<TextAsset>("Data/Family");
+        familyDates = JsonConvert.DeserializeObject<List<FamilyDate>>(FamilytextAsset.text);
+        RoletextAsset = UnityEngine.Resources.Load<TextAsset>("Data/role");
+        RoleDates = JsonConvert.DeserializeObject<List<RoleDate>>(RoletextAsset.text);
+       
+        //todo  期待优化子弹获取逻辑
+        //////////////////////////获取子弹预制体//////////////////////////////
+        arrowBullet_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Bullet/ArrowBullet");
+        medlcalBullet_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Bullet/MedlcalBullet");
+        postolBullet_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Bullet/PostolBullet");
+        
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     }
 
-    //融合属性
-    public void FusionAttr(PropData shopProp)
+    void Start()
     {
-        propData.maxHp += shopProp.maxHp;
-        propData.revive += shopProp.revive;
-        propData.short_damage += shopProp.short_damage;
-        propData.short_range += shopProp.short_range;
-        propData.short_attackSpeed += shopProp.short_attackSpeed;
-        propData.long_damage += shopProp.long_damage;
-        propData.long_range += shopProp.long_range;
-        propData.long_attackSpeed += shopProp.long_attackSpeed;
-        propData.speedPer += shopProp.speedPer;
-        propData.harvest += shopProp.harvest;
-        propData.shopDiscount += shopProp.shopDiscount;
-        propData.expMuti += shopProp.expMuti;
-        propData.pickRange += shopProp.pickRange;
-        propData.critical_strikes_probability += shopProp.critical_strikes_probability;
-
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+        currentWave = 0f;
+=======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+        //从0开始
+        currentWave = 0f;
     }
 
     //从数组中随机选择一个返回
@@ -308,5 +180,106 @@ public class GameManager : MonoBehaviour
         int index = Random.Range(0, list.Count);
         // 直接返回对应类型的元素，无需装箱为 Object
         return list[index];
+>>>>>>> Stashed changes
+    }
+
+    public void InitProp()
+    {
+        _PlayerVisual = GameObject.Find("PlayerVisual");
+        _PlayerVisual.GetComponent<SpriteRenderer>().sprite = UnityEngine.Resources.Load<Sprite>(RoleDate.avatar);
+        _PlayerVisual.transform.position = new Vector3(0,0,0);
+        _PlayerVisual.transform.localScale = new Vector3(0.05f, 0.05f, 0);       
+        
+        if (RoleDate.name == "培根.百夫长")
+        {
+            //没有机制 纯数值
+            propData.maxHp += 5;
+            money += 20;
+            // propData.harvest += 8;
+
+        }
+        else if (RoleDate.name == "其他角色")
+        {
+            //todo 需要修改角色生成逻辑 后期每个角色单独建立类，然后在这里调用对应角色类的方法初始化角色 可能修改为switch好一点
+        }
+
+        money += 30; //默认开局30元
+        exp = 0;
+        hp = propData.maxHp;
+    }
+
+    public void InitProp()
+    {
+        _PlayerVisual = GameObject.Find("PlayerVisual");
+        _PlayerVisual.GetComponent<SpriteRenderer>().sprite = UnityEngine.Resources.Load<Sprite>(RoleDate.avatar);
+        _PlayerVisual.transform.position = new Vector3(0,0,0);
+        _PlayerVisual.transform.localScale = new Vector3(0.05f, 0.05f, 0);       
+        
+        if (RoleDate.name == "培根.百夫长")
+        {
+            //没有机制 纯数值
+            propData.maxHp += 5;
+            money += 20;
+            // propData.harvest += 8;
+
+        }
+        else if (RoleDate.name == "其他角色")
+        {
+            //todo 需要修改角色生成逻辑 后期每个角色单独建立类，然后在这里调用对应角色类的方法初始化角色 可能修改为switch好一点
+        }
+
+        money += 30; //默认开局30元
+        exp = 0;
+        hp = propData.maxHp;
+    }
+
+    public void InitProp()
+    {
+        _PlayerVisual = GameObject.Find("PlayerVisual");
+        _PlayerVisual.GetComponent<SpriteRenderer>().sprite = UnityEngine.Resources.Load<Sprite>(RoleDate.avatar);
+        _PlayerVisual.transform.position = new Vector3(0,0,0);
+        _PlayerVisual.transform.localScale = new Vector3(0.05f, 0.05f, 0);       
+        
+        if (RoleDate.name == "培根.百夫长")
+        {
+            //没有机制 纯数值
+            propData.maxHp += 5;
+            money += 20;
+            // propData.harvest += 8;
+
+        }
+        else if (RoleDate.name == "其他角色")
+        {
+            //todo 需要修改角色生成逻辑 后期每个角色单独建立类，然后在这里调用对应角色类的方法初始化角色 可能修改为switch好一点
+        }
+
+        money += 30; //默认开局30元
+        exp = 0;
+        hp = propData.maxHp;
+    }
+
+    public void InitProp()
+    {
+        _PlayerVisual = GameObject.Find("PlayerVisual");
+        _PlayerVisual.GetComponent<SpriteRenderer>().sprite = UnityEngine.Resources.Load<Sprite>(RoleDate.avatar);
+        _PlayerVisual.transform.position = new Vector3(0,0,0);
+        _PlayerVisual.transform.localScale = new Vector3(0.05f, 0.05f, 0);       
+        
+        if (RoleDate.name == "培根.百夫长")
+        {
+            //没有机制 纯数值
+            propData.maxHp += 5;
+            money += 20;
+            // propData.harvest += 8;
+
+        }
+        else if (RoleDate.name == "其他角色")
+        {
+            //todo 需要修改角色生成逻辑 后期每个角色单独建立类，然后在这里调用对应角色类的方法初始化角色 可能修改为switch好一点
+        }
+
+        money += 30; //默认开局30元
+        exp = 0;
+        hp = propData.maxHp;
     }
 }

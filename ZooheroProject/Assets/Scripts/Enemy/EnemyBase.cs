@@ -1,13 +1,24 @@
-<<<<<<< HEAD
-ï»¿using UnityEngine;
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 using Enemy;
+>>>>>>> Stashed changes
 using UnityEngine;
->>>>>>> Bidoofa2
 
 public class EnemyBase : MonoBehaviour
 {
-<<<<<<< HEAD
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public float hp; //Ñªï¿½ï¿½
     public float damage; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public float speed; //ï¿½Æ¶ï¿½ï¿½Ù¶ï¿½
@@ -19,7 +30,18 @@ public class EnemyBase : MonoBehaviour
 
     public GameObject money_prefab;//ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½
  
+
+    private void Awake()
+    {
+        money_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Money");//ä¿®æ”¹å
+        // money_prefab = Resources.Load<GameObject>("Prefabs/Money");  //ä¿®æ”¹å‰
 =======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 
     public float hp; //ÑªÁ¿
     public float damage; //¹¥»÷Á¦
@@ -38,18 +60,22 @@ public class EnemyBase : MonoBehaviour
     //¼¼ÄÜ¼ÆËãÆ÷
     public float skillTimer = 0;
     public bool skilling = false;//¼¼ÄÜ³ÖĞø
->>>>>>> ç¬¬äºŒéƒ¨åˆ†Test
 
     
     private void Awake()
     {
-<<<<<<< HEAD
-        money_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Money");//ä¿®æ”¹å
-        // money_prefab = Resources.Load<GameObject>("Prefabs/Money");  //ä¿®æ”¹å‰
-=======
         money_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Money");//ĞŞ¸Äºó
         // money_prefab = Resources.Load<GameObject>("Prefabs/Money");  //ĞŞ¸ÄÇ°
->>>>>>> ç¬¬äºŒéƒ¨åˆ†Test
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     }
 
     private void Start()
@@ -66,15 +92,15 @@ public class EnemyBase : MonoBehaviour
         }
 
 
-        Move();//ï¿½Æ¶ï¿½
+        Move();//ÒÆ¶¯
 
-        //ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¶ï¿½
+        //¹¥»÷ÅĞ¶Ï
         if (isContact && !isCooling)
         {
             Attack();
         }
 
-        //ï¿½ï¿½ï¿½Â¼ï¿½Ê±ï¿½ï¿½
+        //¸üĞÂ¼ÆÊ±Æ÷
         if (isCooling)
         {
             attackTimer -= Time.deltaTime;
@@ -86,49 +112,6 @@ public class EnemyBase : MonoBehaviour
             }
         }
 
-        UpdateSkill();
-
-    }
-
-    public void SetElite()
-    {
-        EnemyDate.hp *= 2;
-        EnemyDate.damage *= 2;
-        GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 113 / 255f, 113 / 255f);
-    }
-    
-    private void UpdateSkill()
-    {
-        if (EnemyDate.SkillTime<0)
-        {
-            return;
-        }
-
-        if (skillTimer<=0)
-        {
-            float dis = Vector2.Distance(transform.position, Player.Instance.transform.position);
-            if (dis <= EnemyDate.range)
-            {
-                //¾àÀëÅĞ¶¨£¬·¢¶¯¼¼ÄÜ£»
-                Vector2 dir = (Player.Instance.transform.position - transform.position).normalized;
-                LaunchSkill(dir);
-                skillTimer = EnemyDate.SkillTime;
-            }
-
-        }
-        else
-        {
-            skillTimer -= Time.deltaTime;
-            if (skillTimer<0)
-            {
-                skillTimer = 0;
-            }
-        }
-    }
-    //×ÓÀàÊµÏÖ
-    public virtual void LaunchSkill(Vector2 dir)
-    {
-        
     }
 
     public void OnTriggerEnter2D(Collider2D other)
@@ -144,33 +127,51 @@ public class EnemyBase : MonoBehaviour
         isContact = false;
     }
 
-    //ï¿½Ô¶ï¿½ï¿½Æ¶ï¿½
+    //×Ô¶¯ÒÆ¶¯
     public void Move() 
     {
-<<<<<<< HEAD
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
         //ï¿½Ãµï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ß¾ï¿½ï¿½ë£¬È»ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ * ï¿½Ù¶ï¿½ * ï¿½Ì¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
 =======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
         //µÃµ½¹éÒ»»¯µÄÖ±Ïß¾àÀë£¬È»ºóµ÷ÓÃ ¾àÀë * ËÙ¶È * ¹Ì¶¨ÔËĞĞËÙ¶È
         //ï¿½Ãµï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ß¾ï¿½ï¿½ë£¬È»ï¿½ï¿½ï¿½ï¿½ï¿? ï¿½ï¿½ï¿½ï¿½ * ï¿½Ù¶ï¿½ * ï¿½Ì¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
         if (skilling)
         {
             return;
         }
->>>>>>> ç¬¬äºŒéƒ¨åˆ†Test
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
         Vector2 direction = (Player.Instance.transform.position - transform.position).normalized;
-        transform.Translate(direction * EnemyDate.speed * Time.deltaTime);
+        transform.Translate(direction * speed * Time.deltaTime);
 
         TurnAround();
     }
 
 
-    //ï¿½Ô¶ï¿½×ªï¿½ï¿½
+    //×Ô¶¯×ªÏò
     public void TurnAround() 
     {
-        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        //¼ì²â¾àÀëÏà¼õÖªµÀ·½Ïò
         if (Player.Instance.transform.position.x - transform.position.x >= 0.1)
         {
-            //È¡localScale.xï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½Ó²ï¿½ï¿½áµ¼ï¿½Âºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            //È¡localScale.x¾ø¶ÔÖµÕâÑù×Ó²»»áµ¼ÖÂºóËõ·ÅÎÊÌâ
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
         else if (Player.Instance.transform.position.x - transform.position.x < 0.1)
@@ -180,46 +181,59 @@ public class EnemyBase : MonoBehaviour
     }
 
 
-    //ï¿½ï¿½ï¿½ï¿½
+    //¹¥»÷
     public void Attack() 
     {
-        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½ò·µ»ï¿½
+        //Èç¹û¹¥»÷ÀäÈ´£¬Ôò·µ»Ø
         if (isCooling)
         {
             return;
         }
 
-        Player.Instance.Injured(EnemyDate.damage);
+        Player.Instance.Injured(damage);
 
-        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È´
+        //¹¥»÷½øÈëÀäÈ´
         isCooling = true;
-        attackTimer = EnemyDate.attackTime;
+        attackTimer = attackTime;
     }
 
-    //ï¿½ï¿½ï¿½ï¿½
+    //ÊÜÉË
     public void Injured(float attack)
     {
         //if (isDead)
         //{
         //    return;
         //}
-<<<<<<< HEAD
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
         //ï¿½Ğ¶Ï±ï¿½ï¿½Î¹ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½
 =======
         
         //ÅĞ¶Ï±¾´Î¹¥»÷ÊÇ·ñËÀÍö
->>>>>>> ç¬¬äºŒéƒ¨åˆ†Test
+>>>>>>> Stashed changes
+=======
+        
+        //ÅĞ¶Ï±¾´Î¹¥»÷ÊÇ·ñËÀÍö
+>>>>>>> Stashed changes
+=======
+        
+        //ÅĞ¶Ï±¾´Î¹¥»÷ÊÇ·ñËÀÍö
+>>>>>>> Stashed changes
+=======
+        
+        //ÅĞ¶Ï±¾´Î¹¥»÷ÊÇ·ñËÀÍö
+>>>>>>> Stashed changes
         if (hp - attack <= 0)
-        //ï¿½Ğ¶Ï±ï¿½ï¿½Î¹ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½
-        if (EnemyDate.hp - attack <= 0)
         {
-            EnemyDate.hp = 0;
+            hp = 0;
             Dead();
         }
         else
         {
-            EnemyDate.hp -= attack;
+            hp -= attack;
         }
 
 
@@ -228,31 +242,42 @@ public class EnemyBase : MonoBehaviour
 
 
 
-    //ï¿½ï¿½ï¿½ï¿½
+    //ËÀÍö
     public void Dead()
     {
-<<<<<<< HEAD
-        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½Öµ
-=======
 <<<<<<< Updated upstream
-        //Ôö¼ÓÍæ¼Ò¾­ÑéÖµ
->>>>>>> ç¬¬äºŒéƒ¨åˆ†Test
-        Player.Instance.exp += provideExp;
-<<<<<<< HEAD
-=======
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
         //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½Öµ
-        GameManager.Instance.exp += provideExp;
+        Player.Instance.exp += provideExp;
+=======
+=======
 >>>>>>> Stashed changes
 =======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+        //Ôö¼ÓÍæ¼Ò¾­ÑéÖµ
+        GameManager.Instance.exp += EnemyDate.provideExp;
         //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½Ö?
         Player.Instance.exp += EnemyDate.provideExp;
->>>>>>> Bidoofa2
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
         GamePanel.Instance.RenewExp();
 
-        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        //µôÂä½ğ±Ò
         Instantiate(money_prefab, transform.position, Quaternion.identity);
 
-        //ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½
+        //Ïú»Ù×Ô¼º
         Destroy(gameObject);
     }
 
