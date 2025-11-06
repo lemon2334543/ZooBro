@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,17 +10,17 @@ public class GamePanel : MonoBehaviour
 
     public Slider _hpSlider;
     public Slider _expSlider;
-    public TMP_Text _moneyCount;//½ğ±Ò
-    public TMP_Text _expCount;//µÈ¼¶
-    public TMP_Text _hpCount;//ÉúÃüÖµ
-    public TMP_Text _countDown;//¹Ø¿¨µ¹¼ÆÊ±
-    public TMP_Text _waveCount;//²¨´Î
+    public TMP_Text _moneyCount;//é‡‘å¸
+    public TMP_Text _expCount;//ç­‰çº§
+    public TMP_Text _hpCount;//ç”Ÿå‘½å€¼
+    public TMP_Text _countDown;//å…³å¡å€’è®¡æ—¶
+    public TMP_Text _waveCount;//æ³¢æ¬¡
 
 
     private void Awake()
     {
         Instance = this;
-        //ÕÒµ½ ¶ÔÓ¦µÄ¶ÔÏó£¬ÕÒµ½Ãû×ÖHpSlider»ñµÃSlider×é¼ş¿ØÖÆÈ¨
+        //æ‰¾åˆ° å¯¹åº”çš„å¯¹è±¡ï¼Œæ‰¾åˆ°åå­—HpSliderè·å¾—Sliderç»„ä»¶æ§åˆ¶æƒ
         _hpSlider = GameObject.Find("HpSlider").GetComponent<Slider>();
         _expSlider = GameObject.Find("ExpSlider").GetComponent<Slider>();
         _moneyCount = GameObject.Find("MoneyCount").GetComponent<TMP_Text>();
@@ -33,34 +33,34 @@ public class GamePanel : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //¸üĞÂ¾­ÑéÌõ
+        //æ›´æ–°ç»éªŒæ¡
         RenewExp();
-        //¸üĞÂÉúÃüÖĞ
+        //æ›´æ–°ç”Ÿå‘½ä¸­
         RenewHp();
-        //¸üĞÂ½ğ±Ò
+        //æ›´æ–°é‡‘å¸
         RenewMoney();
-        //¸üĞÂ²¨´ÎĞÅÏ¢
+        //æ›´æ–°æ³¢æ¬¡ä¿¡æ¯
         RenewWaveCount();
     }
 
     public void RenewMoney()
     {
-        _moneyCount.text = Player.Instance.money.ToString();
+        _moneyCount.text = GameManager.Instance.money.ToString();
     }
 
     public void RenewHp()
     {
-        //»ñÈ¡ÎÄ±¾
-        _hpCount.text = Player.Instance.hp + "/" + Player.Instance.maxHp;
-        _hpSlider.value = Player.Instance.hp  /  Player.Instance.maxHp;
+        //è·å–æ–‡æœ¬
+        _hpCount.text = GameManager.Instance.hp + "/" + GameManager.Instance.propData.maxHp;
+        _hpSlider.value = GameManager.Instance.hp  / GameManager.Instance.propData.maxHp;
 
     }
 
     public void RenewExp()
     {
-        // %³ıÓà Ê£ÏÂ¶àÉÙÔÙ / 12
-        _expSlider.value = Player.Instance.exp % 12 / 12;
-        _expCount.text = "LV." + Player.Instance.exp / 12;
+        // %é™¤ä½™ å‰©ä¸‹å¤šå°‘å† / 12
+        _expSlider.value = GameManager.Instance.exp % 12 / 12;
+        _expCount.text = "LV." + GameManager.Instance.exp / 12;
     }
 
     // Update is called once per frame
@@ -69,17 +69,17 @@ public class GamePanel : MonoBehaviour
         
     }
 
-    //¸üĞÂµ¹¼ÆÊ±
+    //æ›´æ–°å€’è®¡æ—¶
     public void RenewCountDown(float time)
     {
-        //F0 Ö»È¡ÕûÊı
+        //F0 åªå–æ•´æ•°
         _countDown.text = time.ToString("F0");
     }
 
-    //¸üĞÂ²¨´Î
+    //æ›´æ–°æ³¢æ¬¡
     public void RenewWaveCount()
     {
-        _waveCount.text = "µÚ" + GameManager.Instance.currentWave.ToString() + "¹Ø";
+        _waveCount.text = "ç¬¬" + GameManager.Instance.currentWave.ToString() + "å…³";
     }
 
 

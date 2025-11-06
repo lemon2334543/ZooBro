@@ -4,10 +4,10 @@
     "waveTimer": 20,
     "enemys": [
       {
-        "enemyName": "enemy2",
+        "enemyName": "enemy1",
         "timeAxis": 1,
         "count": 1,
-        "elite": 0
+        "elite": 1
       }
     ]
   },

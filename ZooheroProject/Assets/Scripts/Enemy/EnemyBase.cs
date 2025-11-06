@@ -1,52 +1,83 @@
+using Enemy;
 using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
-    public float hp; //Ñªï¿½ï¿½
-    public float damage; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-    public float speed; //ï¿½Æ¶ï¿½ï¿½Ù¶ï¿½
-    public float attackTime; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±
-    public float attackTimer = 0; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
-    public bool isContact = false; //ï¿½Ç·ï¿½Ó´ï¿½ï¿½ï¿½ï¿½
-    public bool isCooling = false; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È´
-    public int provideExp = 1; //ï¿½ï¿½ï¿½ï¿½Öµ
+    [SerializeField]
+    public EnemyDate EnemyDate; // µĞÈËÊı¾İ£¨Í³Ò»Ê¹ÓÃĞÂ°æÊı¾İ½á¹¹£©
 
-    public GameObject money_prefab;//ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½
- 
+    public bool isContact = false; // ÊÇ·ñ½Ó´¥Íæ¼Ò
+    public bool isCooling = false; // ¹¥»÷ÀäÈ´
+    public bool skilling = false; // ¼¼ÄÜ³ÖĞø×´Ì¬
+
+    // ¼ÆÊ±Æ÷
+    public float attackTimer = 0; // ¹¥»÷ÀäÈ´¼ÆÊ±Æ÷
+    public float skillTimer = 0; // ¼¼ÄÜ¼ÆÊ±Æ÷
+
+    public GameObject money_prefab; // ½ğ±ÒÔ¤ÖÆÌå
 
     private void Awake()
     {
-        money_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Money");//ä¿®æ”¹å
-        // money_prefab = Resources.Load<GameObject>("Prefabs/Money");  //ä¿®æ”¹å‰
-    }
-
-    private void Start()
-    {
-        
+        money_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Money");
     }
 
     private void Update()
     {
+        if (Player.Instance.isDead) return;
 
-        if (Player.Instance.isDead)
+        Move(); // ÒÆ¶¯Âß¼­
+        UpdateAttack(); // ¹¥»÷Âß¼­
+        UpdateSkill(); // ¼¼ÄÜÂß¼­
+    }
+
+    /// <summary>
+    /// ÉèÖÃÎª¾«Ó¢µĞÈË£¨Ç¿»¯ÊôĞÔ+±äÉ«£©
+    /// </summary>
+    public void SetElite()
+    {
+        EnemyDate.hp *= 2;
+        EnemyDate.damage *= 2;
+        GetComponent<SpriteRenderer>().color = new Color(1f, 0.44f, 0.44f); // ºìÉ«µ÷
+    }
+
+    /// <summary>
+    /// ¼¼ÄÜ¸üĞÂÂß¼­
+    /// </summary>
+    private void UpdateSkill()
+    {
+        if (EnemyDate.SkillTime < 0) return; // ÎŞ¼¼ÄÜµÄµĞÈËÖ±½Ó·µ»Ø
+
+        if (skillTimer <= 0)
         {
-            return;
+            // ¼ì²âÓëÍæ¼ÒµÄ¾àÀëÊÇ·ñÔÚ¼¼ÄÜ·¶Î§ÄÚ
+            float distance = Vector2.Distance(transform.position, Player.Instance.transform.position);
+            if (distance <= EnemyDate.range)
+            {
+                Vector2 direction = (Player.Instance.transform.position - transform.position).normalized;
+                LaunchSkill(direction); // ÊÍ·Å¼¼ÄÜ
+                skillTimer = EnemyDate.SkillTime; // ÖØÖÃ¼¼ÄÜ¼ÆÊ±Æ÷
+            }
         }
-
-
-        Move();//ï¿½Æ¶ï¿½
-
-        //ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¶ï¿½
-        if (isContact && !isCooling)
+        else
         {
-            Attack();
+            skillTimer -= Time.deltaTime;
         }
+    }
 
-        //ï¿½ï¿½ï¿½Â¼ï¿½Ê±ï¿½ï¿½
+    /// <summary>
+    /// ÊÍ·Å¼¼ÄÜ£¨Áô¸ø×ÓÀàÊµÏÖ£©
+    /// </summary>
+    public virtual void LaunchSkill(Vector2 direction) { }
+
+    /// <summary>
+    /// ¹¥»÷Âß¼­¸üĞÂ
+    /// </summary>
+    private void UpdateAttack()
+    {
+        // ¹¥»÷ÀäÈ´´¦Àí
         if (isCooling)
         {
             attackTimer -= Time.deltaTime;
-
             if (attackTimer <= 0)
             {
                 attackTimer = 0;
@@ -54,101 +85,99 @@ public class EnemyBase : MonoBehaviour
             }
         }
 
+        // ½Ó´¥Íæ¼ÒÇÒ²»ÔÚÀäÈ´Ê±·¢¶¯¹¥»÷
+        if (isContact && !isCooling)
+        {
+            Attack();
+        }
     }
 
-    public void OnTriggerEnter2D(Collider2D other)
-    { 
+    /// <summary>
+    /// µĞÈËÒÆ¶¯Âß¼­
+    /// </summary>
+    public void Move()
+    {
+        if (skilling) return; // ¼¼ÄÜÆÚ¼ä²»ÒÆ¶¯
+
+        // ³¯ÏòÍæ¼ÒÒÆ¶¯
+        Vector2 direction = (Player.Instance.transform.position - transform.position).normalized;
+        transform.Translate(direction * EnemyDate.speed * Time.deltaTime);
+
+        // ×Ô¶¯×ªÏò
+        TurnAround();
+    }
+
+    /// <summary>
+    /// ³¯ÏòÍæ¼Ò×ªÏò
+    /// </summary>
+    public void TurnAround()
+    {
+        float xDiff = Player.Instance.transform.position.x - transform.position.x;
+        if (xDiff >= 0.1f)
+        {
+            // ³¯ÓÒ
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
+        else if (xDiff <= -0.1f)
+        {
+            // ³¯×ó
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
+    }
+
+    /// <summary>
+    /// ¹¥»÷Íæ¼Ò
+    /// </summary>
+    public void Attack()
+    {
+        Player.Instance.Injured(EnemyDate.damage);
+        isCooling = true;
+        attackTimer = EnemyDate.attackTime; // ÖØÖÃ¹¥»÷ÀäÈ´
+    }
+
+    /// <summary>
+    /// ÊÜÉËÂß¼­
+    /// </summary>
+    public void Injured(float attack)
+    {
+        EnemyDate.hp -= attack;
+        if (EnemyDate.hp <= 0)
+        {
+            Dead();
+        }
+    }
+
+    /// <summary>
+    /// ËÀÍöÂß¼­
+    /// </summary>
+    public void Dead()
+    {
+        // Ôö¼ÓÍæ¼Ò¾­Ñé
+        Player.Instance.exp += EnemyDate.provideExp;
+        GamePanel.Instance.RenewExp();
+
+        // µôÂä½ğ±Ò
+        Instantiate(money_prefab, transform.position, Quaternion.identity);
+
+        // Ïú»Ù×ÔÉí
+        Destroy(gameObject);
+    }
+
+    // Åö×²¼ì²â£º½Ó´¥Íæ¼Ò
+    private void OnTriggerEnter2D(Collider2D other)
+    {
         if (other.CompareTag("Player"))
         {
             isContact = true;
         }
     }
 
-    public void OnTriggerExit2D(Collider2D other)
+    // Åö×²¼ì²â£ºÀë¿ªÍæ¼Ò
+    private void OnTriggerExit2D(Collider2D other)
     {
-        isContact = false;
-    }
-
-    //ï¿½Ô¶ï¿½ï¿½Æ¶ï¿½
-    public void Move() 
-    {
-        //ï¿½Ãµï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ß¾ï¿½ï¿½ë£¬È»ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ * ï¿½Ù¶ï¿½ * ï¿½Ì¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
-        Vector2 direction = (Player.Instance.transform.position - transform.position).normalized;
-        transform.Translate(direction * speed * Time.deltaTime);
-
-        TurnAround();
-    }
-
-
-    //ï¿½Ô¶ï¿½×ªï¿½ï¿½
-    public void TurnAround() 
-    {
-        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-        if (Player.Instance.transform.position.x - transform.position.x >= 0.1)
+        if (other.CompareTag("Player"))
         {
-            //È¡localScale.xï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½Ó²ï¿½ï¿½áµ¼ï¿½Âºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        }
-        else if (Player.Instance.transform.position.x - transform.position.x < 0.1)
-        {
-            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            isContact = false;
         }
     }
-
-
-    //ï¿½ï¿½ï¿½ï¿½
-    public void Attack() 
-    {
-        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½ò·µ»ï¿½
-        if (isCooling)
-        {
-            return;
-        }
-
-        Player.Instance.Injured(damage);
-
-        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È´
-        isCooling = true;
-        attackTimer = attackTime;
-    }
-
-    //ï¿½ï¿½ï¿½ï¿½
-    public void Injured(float attack)
-    {
-        //if (isDead)
-        //{
-        //    return;
-        //}
-
-        //ï¿½Ğ¶Ï±ï¿½ï¿½Î¹ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½
-        if (hp - attack <= 0)
-        {
-            hp = 0;
-            Dead();
-        }
-        else
-        {
-            hp -= attack;
-        }
-
-
-
-    }
-
-
-
-    //ï¿½ï¿½ï¿½ï¿½
-    public void Dead()
-    {
-        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½Öµ
-        Player.Instance.exp += provideExp;
-        GamePanel.Instance.RenewExp();
-
-        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-        Instantiate(money_prefab, transform.position, Quaternion.identity);
-
-        //ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½
-        Destroy(gameObject);
-    }
-
 }
