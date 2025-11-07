@@ -1,19 +1,62 @@
+using System.Collections;
 using NUnit.Framework;
 using UnityEngine;
 
 public class WeaponShort : WeaponBase
 {
-    // µ±ÎäÆ÷Åö×²ÌåÓëÆäËûÅö×²Ìå½Ó´¥Ê±×Ô¶¯µ÷ÓÃ
+    public new void Awake()
+    {
+        // è°ƒç”¨çˆ¶ç±»Awakeæ–¹æ³•
+        base.Awake();
+        moveSpeed = 10;
+    }
+
+    // è¿‘æˆ˜å¼€ç«é€»è¾‘ï¼ˆé‡å†™çˆ¶ç±»æ–¹æ³•ï¼‰
+    public override IEnumerator Fire()
+    {
+        // æ£€æŸ¥å†·å´çŠ¶æ€ï¼Œé¿å…é‡å¤æ”»å‡»
+        if (isCooling)
+            yield break;
+
+        isCooling = true;
+
+        // æŒ‰æ”»å‡»æ¬¡æ•°é‡å¤æ”»å‡»
+        for (int i = 0; i < data.attackcount; i++)
+        {
+            // å¯ç”¨ç¢°æ’ä½“æ£€æµ‹
+            CapsuleCollider2D collider = GetComponent<CapsuleCollider2D>();
+            if (collider != null)
+                collider.enabled = true;
+
+            // æ”»å‡»æœŸé—´åœæ­¢ç„å‡†
+            isAiming = false;
+
+            // ç§»åŠ¨åˆ°ç›®æ ‡ä½ç½®
+            yield return StartCoroutine(Goposition());
+            
+            // æ”»å‡»é—´éš”
+            yield return new WaitForSeconds(0.3f);
+        }
+
+        // å†·å´çŠ¶æ€ä¿æŒåˆ°è®¡æ—¶ç»“æŸï¼ˆç”±çˆ¶ç±»Updateå¤„ç†ï¼‰
+    }
+
+    // ç¢°æ’æ£€æµ‹ï¼ˆå‡»ä¸­æ•Œäººæ—¶ï¼‰
     private void OnTriggerEnter2D(Collider2D col)
     {
-        // ¼ì²éÅö×²µ½µÄÎïÌåÊÇ·ñ±ê¼ÇÎª"Enemy"±êÇ©
         if (col.CompareTag("Enemy"))
         {
-            // ¶ÔµĞÈËÔì³ÉÉËº¦£º»ñÈ¡µĞÈË×é¼ş²¢µ÷ÓÃÊÜÉË·½·¨£¬´«ÈëÎäÆ÷ÉËº¦Öµ
-            col.GetComponent<EnemyBase>().Injured(data.damage);
+            // æš´å‡»åˆ¤å®š
+            bool isCritical = CriicalHits();
+            float finalDamage = isCritical ? data.damage * data.critical_strikes_multiple : data.damage;
 
-            // Á¢¼´¹Ø±ÕÎäÆ÷µÄÅö×²Ìå£¬·ÀÖ¹Í¬Ò»Ö¡ÄÚ¶à´Î´¥·¢ÉËº¦
-            gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
+            // å¯¹æ•Œäººé€ æˆä¼¤å®³
+            col.GetComponent<EnemyBase>().Injured(finalDamage);
+
+            // å…³é—­ç¢°æ’ä½“é˜²æ­¢é‡å¤ä¼¤å®³
+            CapsuleCollider2D collider = GetComponent<CapsuleCollider2D>();
+            if (collider != null)
+                collider.enabled = false;
         }
     }
 }

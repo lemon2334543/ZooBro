@@ -3,7 +3,7 @@
     "id": 1,
     "name": "培根.百夫长!",
     "avatar": "Image/人物/将军猪",
-    "describe": "<color=#00FF00>+5</color> 最大生命值\n<color=#00FF00>+5</color> %速度\n<color=#00FF00>+8</color> 收获",
+    "describe": "<color=#00FF00>+5</color> 最大生命值\n<color=#00FF00>+20</color> 开局额外金钱",
     "slot": 6,
     "record": -1,
     "unlock": 1,

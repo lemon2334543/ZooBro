@@ -4,147 +4,208 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Newtonsoft.Json;
+using Resources.script.model;
+using Enemy;
 
 public class LevelController : MonoBehaviour
 {
-    public static LevelController Instance;//����
+    public static LevelController Instance;
 
-    public float waveTimer;//�ؿ�ʱ��
+    public float waveTimer;
 
-    public GameObject _failPanel;//ʧ�����
-    public GameObject _successPanel;//�ɹ����
+    public GameObject _failPanel;
+    public GameObject _successPanel;
 
     public GameObject enemy1_prefab;
-    public List<EnemyBase> enemy_list;
+    public GameObject enemy2_prefab;
+    public GameObject enemy3_prefab;
+    public GameObject enemy4_prefab;
+    public GameObject enemy5_prefab;
+    public List<EnemyBase> enemy_list = new List<EnemyBase>();
     public Transform _map;
+
+    public GameObject redfork_prefab;
+    public TextAsset leveTestAsset;
+    public List<LevelDate> LevelDates = new List<LevelDate>();
+    public LevelDate CurrentLevelDate;
+
+    public Transform enemyfahter;
+    
+    // 武器生成测试：修改weaponID可生成指定武器
+    public List<WeaponData> WeaponDatas = new List<WeaponData>();
+    public TextAsset textAsset;
+    
+    private Dictionary<string, GameObject> enemyDictionary = new Dictionary<string, GameObject>();
 
     private void Awake()
     {
         Instance = this;
-
+        
+        // 武器生成测试逻辑
+        int weaponID = 3;
+        textAsset = UnityEngine.Resources.Load<TextAsset>("Data/weapon");
+        GameManager.Instance.currentWeapons.Add(JsonConvert.DeserializeObject<List<WeaponData>>(textAsset.text)[weaponID-1]); 
+        
         _failPanel = GameObject.Find("FailPanel");
         _successPanel = GameObject.Find("SuccessPanel");
-        enemy1_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemy1");
+        
+        enemy1_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemys/Enemy1");
+        enemy2_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemys/Enemy2");
+        enemy3_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemys/Enemy3");
+        enemy4_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemys/Enemy4");
+        enemy5_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemys/Enemy5");
+        
+        redfork_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/RedFork");
 
         _map = GameObject.Find("Map").transform;
+        
+        // 加载关卡配置文件
+        leveTestAsset = UnityEngine.Resources.Load<TextAsset>("Data/"+GameManager.Instance.DifficultyDate.levelName);
+        LevelDates = JsonConvert.DeserializeObject<List<LevelDate>>(leveTestAsset.text);
+        
+        // 初始化敌人字典
+        enemyDictionary.Add("enemy1",enemy1_prefab);
+        enemyDictionary.Add("enemy2",enemy2_prefab);
+        enemyDictionary.Add("enemy3",enemy3_prefab);
+        enemyDictionary.Add("enemy4",enemy4_prefab);
+        enemyDictionary.Add("enemy5",enemy5_prefab);
+
+        enemyfahter = GameObject.Find("Enemys").transform;
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
-        //�ؿ�ʱ��
-        waveTimer = 15 + 5 * GameManager.Instance.currentWave;
-
+        CurrentLevelDate = LevelDates[(int)GameManager.Instance.currentWave-1];
+        waveTimer = CurrentLevelDate.waveTimer;        
+        
         GenerateEnemy();
+        GenerateWeapons();
     }
 
-    // ��ʼ���ɵ��˵���ڷ���
+    private void GenerateWeapons()
+    {
+        Debug.Log("开始生成武器");
+        int i = 0;
+        foreach (WeaponData weapon in GameManager.Instance.currentWeapons)
+        {
+            GameObject gameObject = UnityEngine.Resources.Load<GameObject>("Prefabs/Waepons/" + weapon.name);
+            WeaponBase WeaponBase = Instantiate(gameObject, Player.Instance.weaponsPos.GetChild(i)).GetComponent<WeaponBase>();
+            WeaponBase.data = weapon;
+            i++;
+        }
+        Debug.Log("武器生成完成");
+    }
+
     private void GenerateEnemy()
     {
-        // �����������ɵ�Э��
-        StartCoroutine(SwawnEnemies());
-    }
-
-    // �������ɵ�Э��
-    IEnumerator SwawnEnemies()
-    {
-        // ѭ�����������μ�ʱ������0 ���� ���û������
-        while (waveTimer > 0 && !Player.Instance.isDead)
+        // 按关卡配置生成敌人
+        foreach (WaveDate waveDate in CurrentLevelDate.enemys)
         {
-            // �ȴ�0.5����������һ�����ˣ���������Ƶ�ʣ�
-            yield return new WaitForSeconds(0.5f);
-
-            // �ڵ�ͼ��Χ�ڻ�ȡһ���������λ��
-            var spawnPoint = GetRandomPosition(_map.GetComponent<SpriteRenderer>().bounds);
-
-            // �����ɵ�ʵ��������Ԥ���壬����ȡ�������
-            EnemyBase go = Instantiate(enemy1_prefab, spawnPoint, Quaternion.identity).GetComponent<EnemyBase>();
-
-            //��֤����״̬
-            go.gameObject.SetActive(true);
-
-            // �������ɵĵ�����ӵ������б��У����ں�������
-            enemy_list.Add(go);
+            for (int i = 0; i < waveDate.count; i++)
+            {
+                StartCoroutine(SwawnEnemies(waveDate));
+            }
+        }
+    }
+    
+    IEnumerator SwawnEnemies(WaveDate waveDate)
+    {
+        yield return new WaitForSeconds(waveDate.timeAxis);
+        if (waveTimer>0 && !Player.Instance.isDead)
+        {
+            // 生成红叉提示
+            Vector3 spawnPoint = GetRandomPosition(_map.GetComponent<SpriteRenderer>().bounds);
+            GameObject go = Instantiate(redfork_prefab, spawnPoint, Quaternion.identity);
+            yield return new WaitForSeconds(1);
+            Destroy(go);
+            
+            if (waveTimer>0 && !Player.Instance.isDead)
+            {
+                // 生成敌人并绑定数据
+                EnemyBase enemy = Instantiate(enemyDictionary[waveDate.enemyName], spawnPoint, Quaternion.identity).GetComponent<EnemyBase>();
+                enemy.transform.parent = enemyfahter;
+                
+                foreach (EnemyDate en in GameManager.Instance.EnemyDates)
+                {
+                    if (en.name == waveDate.enemyName)
+                    {
+                        enemy.EnemyDate = en;
+                        if (waveDate.elite == 1)
+                        {
+                            enemy.SetElite();
+                        }
+                    }
+                }
+                
+                enemy_list.Add(enemy);
+            }
         }
     }
 
-    // �ڵ�ͼ�߽��ڻ�ȡ���λ��
+    // 生成地图内随机位置
     private Vector3 GetRandomPosition(Bounds bounds)
     {
-        // ��ȫ���룺ȷ�����˲���������̫������ͼ��Ե��λ��
         float safeDistance = 3.5f;
-
-        // �ڵ�ͼ�߽����������X���꣨���ǰ�ȫ���룩
         float randomX = UnityEngine.Random.Range(bounds.min.x + safeDistance, bounds.max.x - safeDistance);
-
-        // �ڵ�ͼ�߽����������Y���꣨���ǰ�ȫ���룩
         float randomY = UnityEngine.Random.Range(bounds.min.y + safeDistance, bounds.max.y - safeDistance);
-
-        // Z����̶�Ϊ0��2D��Ϸ��
-        float randomZ = 0f;
-
-        // ����������ɵ�λ������
-        return new Vector3(randomX, randomY, randomZ);
+        return new Vector3(randomX, randomY, 0f);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (waveTimer > 0)
         {
             waveTimer -= Time.deltaTime;
-
             if (waveTimer <= 0)
             {
                 waveTimer = 0;
-                GoodGame();
+                if (GameManager.Instance.currentWave < 20)
+                {
+                    NextWave();
+                }
+                else
+                {
+                    GoodGame();
+                }
             }
-
         }
         GamePanel.Instance.RenewCountDown(waveTimer);
     }
 
-    
+    // 下一波（跳转商店）
+    private void NextWave()
+    {
+        GameManager.Instance.money += GameManager.Instance.propData.harvest;
+        SceneManager.LoadScene("shop");
+        GameManager.Instance.currentWave += 1;
+    }
 
-
-    //��Ϸʤ��
-   public void GoodGame() 
+    // 游戏胜利
+    public void GoodGame() 
     {
         _successPanel.GetComponent<CanvasGroup>().alpha = 1;
         StartCoroutine(GoMenu());
 
-        //todo ���е�����ʧ
-        for (int i = 0; i < enemy_list.Count; i++)
+        foreach (var enemy in enemy_list)
         {
-            if (enemy_list[i])
-            {
-                enemy_list[i].Dead();
-
-            }
+            enemy?.Dead();
         }
     }
 
-    //todo �������
-
-
-
-    //��Ϸʧ��
+    // 游戏失败
     public void BadGame() 
     {
         _failPanel.GetComponent<CanvasGroup>().alpha = 1;
         StartCoroutine(GoMenu());
 
-        //todo ���е�����ʧ
-        for (int i = 0; i < enemy_list.Count; i++)
+        foreach (var enemy in enemy_list)
         {
-            if (enemy_list[i])
-            {
-            enemy_list[i].Dead();
-                
-            }
+            enemy?.Dead();
         }
     }
 
-    //�������˵�
+    // 返回主菜单
     IEnumerator GoMenu()
     {
         yield return new WaitForSeconds(3);

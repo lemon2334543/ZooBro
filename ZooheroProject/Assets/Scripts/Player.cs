@@ -1,115 +1,152 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    public static Player Instance; // µ¥ÀıÊµÀı£¬·½±ãÆäËû½Å±¾·ÃÎÊÍæ¼Ò
+    public static Player Instance; // å•ä¾‹å®ä¾‹ï¼Œæ–¹ä¾¿å…¶ä»–è„šæœ¬è®¿é—®ç©å®¶
 
-    [SerializeField] 
-    private float speed = 5f; // Íæ¼ÒÒÆ¶¯ËÙ¶È
-    public bool isDead = false ; //ÊÇ·ñËÀÍö
-    internal int money = 30; //µ±Ç°½ğ±Ò
-    public float hp = 15f; //Íæ¼ÒÑªÁ¿
-    internal float maxHp = 15f;//×î´óÉúÃü
-    internal float exp = 0;//¾­ÑéÖµ
+    [SerializeField]
+    private float speed = 5f; // ç§»åŠ¨é€Ÿåº¦
+    public bool isDead = false; // æ˜¯å¦æ­»äº¡
+    internal int money = 30; // å½“å‰é‡‘é’±
+    public float hp = 15f; // ç©å®¶è¡€é‡
+    internal float maxHp = 15f; // æœ€å¤§è¡€é‡
+    internal float exp = 0; // ç»éªŒå€¼
+    public Transform weaponsPos; // æ­¦å™¨ä½ç½®
+    public float reviveTimer; // å†ç”Ÿè®¡æ—¶å™¨
 
-    private Keyboard keyboard; // ¼üÅÌÊäÈëÒıÓÃ
-    private Vector2 input; // µ±Ç°ÊäÈëÏòÁ¿
-    private Transform playerVisual; // Íæ¼ÒÊÓ¾õ±íÏÖ²¿·ÖµÄTransform
-    private Animator animator; // Íæ¼Ò¶¯»­¿ØÖÆÆ÷
-    private SpriteRenderer spriteRenderer; // Íæ¼ÒäÖÈ¾Æ÷£¬ÓÃÓÚ·­×ª½ÇÉ«
-    private bool isFacingRight = true; // ±ê¼ÇÍæ¼Òµ±Ç°ÊÇ·ñÃæÏòÓÒ²à
+    private Keyboard keyboard; // é”®ç›˜è¾“å…¥å¼•ç”¨
+    private Vector2 input; // å½“å‰è¾“å…¥å‘é‡
+    private Transform playerVisual; // ç©å®¶è§†è§‰è¡¨ç°éƒ¨åˆ†çš„Transform
+    private Animator animator; // ç©å®¶åŠ¨ç”»æ§åˆ¶å™¨
+    private SpriteRenderer spriteRenderer; // ç©å®¶æ¸²æŸ“å™¨ï¼Œç”¨äºç¿»è½¬è§’è‰²
+    private bool isFacingRight = true; // æ ‡è®°ç©å®¶å½“å‰æ˜¯å¦é¢å‘å³ä¾§
 
-    // ¼üÅÌ°´¼ü×´Ì¬¸ú×Ù
-    private bool leftKeyPressed = false; // ×ó¼üÊÇ·ñ°´ÏÂ
-    private bool rightKeyPressed = false; // ÓÒ¼üÊÇ·ñ°´ÏÂ
-    private float leftKeyPressTime = 0f; // ×ó¼ü°´ÏÂÊ±¼ä´Á
-    private float rightKeyPressTime = 0f; // ÓÒ¼ü°´ÏÂÊ±¼ä´Á
+    // é”®ç›˜æŒ‰é”®çŠ¶æ€è·Ÿè¸ª
+    private bool leftKeyPressed = false; // å·¦é”®æ˜¯å¦æŒ‰ä¸‹
+    private bool rightKeyPressed = false; // å³é”®æ˜¯å¦æŒ‰ä¸‹
+    private float leftKeyPressTime = 0f; // å·¦é”®æŒ‰ä¸‹æ—¶é—´æˆ³
+    private float rightKeyPressTime = 0f; // å³é”®æŒ‰ä¸‹æ—¶é—´æˆ³
 
     private void Awake()
     {
-        Instance = this; // ÉèÖÃµ¥ÀıÊµÀı
-        // ²éÕÒÍæ¼ÒÊÓ¾õ±íÏÖ²¿·Ö
+        Instance = this; // è®¾ç½®å•ä¾‹å®ä¾‹
+
+        // æŸ¥æ‰¾ç©å®¶è§†è§‰è¡¨ç°éƒ¨åˆ†å’Œæ­¦å™¨æŒ‚ç‚¹
         playerVisual = GameObject.Find("PlayerVisual").transform;
-        // »ñÈ¡¶¯»­¿ØÖÆÆ÷×é¼ş
+        weaponsPos = GameObject.Find("WeaponPos").transform; // æ£€æµ‹æ­¦å™¨ä½ç½®æ§½ä½
+
+        // è·å–ç»„ä»¶
         animator = playerVisual.GetComponent<Animator>();
-        // »ñÈ¡äÖÈ¾Æ÷×é¼ş
         spriteRenderer = playerVisual.GetComponent<SpriteRenderer>();
-        // »ñÈ¡µ±Ç°¼üÅÌÊäÈëÉè±¸
         keyboard = Keyboard.current;
 
+        // ç¬¬ä¸€å…³æ—¶åˆå§‹åŒ–è§’è‰²å±æ€§ï¼ˆè·³è½¬å•†åº—ï¼‰
+        if (GameManager.Instance.currentWave == 0)
+        {
+            GameManager.Instance.currentWave = 1;
+            GameManager.Instance.InitProp();
+            SceneManager.LoadScene("Shop");
+        }
     }
 
     void Update()
     {
         if (isDead)
-        {
             return;
-        }
 
-        ProcessInput(); // ´¦Àí¼üÅÌÊäÈë
-        Move(); // ÒÆ¶¯Íæ¼Ò
-        TurnAround(); // ´¦Àí×ªÏòÂß¼­
-        UpdateAnimation(); // ¸üĞÂ¶¯»­×´Ì¬
+        ProcessInput(); // å¤„ç†é”®ç›˜è¾“å…¥
+        Move(); // ç§»åŠ¨ç©å®¶
+        TurnAround(); // å¤„ç†è½¬å‘é€»è¾‘
+        UpdateAnimation(); // æ›´æ–°åŠ¨ç”»çŠ¶æ€
+        Revive(); // ç”Ÿå‘½å†ç”Ÿ
+        earmoney(); // è·å–é‡‘å¸
     }
 
-    #region ¼üÅÌ³åÍ»¼ì²â
     /// <summary>
-    /// ´¦Àí¼üÅÌÊäÈë£¬½â¾ö×óÓÒ¼ü³åÍ»ÎÊÌâ
+    /// ç”Ÿå‘½å†ç”Ÿæœºåˆ¶
+    /// </summary>
+    private void Revive()
+    {
+        reviveTimer += Time.deltaTime;
+        if (reviveTimer >= 1f)
+        {
+            // åŠ è¡€ä¸è¶…è¿‡æœ€å¤§ç”Ÿå‘½å€¼
+            GameManager.Instance.hp = Mathf.Clamp(GameManager.Instance.hp + GameManager.Instance.propData.revive, 0, GameManager.Instance.propData.maxHp);
+            reviveTimer = 0;
+        }
+    }
+
+    /// <summary>
+    /// è‡ªåŠ¨æ‹¾å–é‡‘å¸
+    /// </summary>
+    private void earmoney()
+    {
+        // æ£€æµ‹èŒƒå›´å†…çš„é‡‘å¸
+        Collider2D[] moenyInRange = Physics2D.OverlapCircleAll(
+            transform.position, 0.5f * GameManager.Instance.propData.pickRange, LayerMask.GetMask("Item"));
+
+        // éå†æ‹¾å–é‡‘å¸
+        if (moenyInRange.Length > 0)
+        {
+            for (int i = 0; i < moenyInRange.Length; i++)
+            {
+                Destroy(moenyInRange[i].gameObject);
+                GameManager.Instance.money += 1;
+                GamePanel.Instance.RenewMoney();
+            }
+        }
+    }
+
+    #region é”®ç›˜å†²çªæ£€æµ‹
+    /// <summary>
+    /// å¤„ç†é”®ç›˜è¾“å…¥ï¼Œè§£å†³å·¦å³é”®å†²çªé—®é¢˜
     /// </summary>
     private void ProcessInput()
     {
-        // ¼ì²â×ó¼ü×´Ì¬£¨A¼ü»ò×ó¼ıÍ·£©
+        // æ£€æµ‹å·¦é”®çŠ¶æ€ï¼ˆAé”®æˆ–å·¦ç®­å¤´ï¼‰
         bool leftKeyDown = keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed;
-        // ¼ì²âÓÒ¼ü×´Ì¬£¨D¼ü»òÓÒ¼ıÍ·£©
+        // æ£€æµ‹å³é”®çŠ¶æ€ï¼ˆDé”®æˆ–å³ç®­å¤´ï¼‰
         bool rightKeyDown = keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed;
 
-        // »ñÈ¡´¹Ö±ÊäÈë£¨W/S¼ü»òÉÏÏÂ¼ıÍ·£©
+        // è·å–å‚ç›´è¾“å…¥ï¼ˆW/Sé”®æˆ–ä¸Šä¸‹ç®­å¤´ï¼‰
         float verticalInput = GetVerticalInput();
 
-        // ¸üĞÂ×ó¼ü×´Ì¬ºÍÊ±¼ä´Á
+        // æ›´æ–°å·¦é”®çŠ¶æ€å’Œæ—¶é—´æˆ³
         UpdateKeyState(ref leftKeyPressed, leftKeyDown, ref leftKeyPressTime);
-        // ¸üĞÂÓÒ¼ü×´Ì¬ºÍÊ±¼ä´Á
+        // æ›´æ–°å³é”®çŠ¶æ€å’Œæ—¶é—´æˆ³
         UpdateKeyState(ref rightKeyPressed, rightKeyDown, ref rightKeyPressTime);
 
-        // ¸ù¾İ°´¼ü×´Ì¬È·¶¨Ë®Æ½ÊäÈë·½Ïò
+        // æ ¹æ®æŒ‰é”®çŠ¶æ€ç¡®å®šæ°´å¹³è¾“å…¥æ–¹å‘
         float horizontalInput = GetHorizontalInput();
 
-        // ×éºÏÊäÈëÏòÁ¿²¢¹éÒ»»¯£¨·ÀÖ¹¶Ô½ÇÏßÒÆ¶¯¹ı¿ì£©
+        // ç»„åˆè¾“å…¥å‘é‡å¹¶å½’ä¸€åŒ–ï¼ˆé˜²æ­¢å¯¹è§’çº¿ç§»åŠ¨è¿‡å¿«ï¼‰
         input = new Vector2(horizontalInput, verticalInput);
         if (input.magnitude > 1f) input.Normalize();
     }
 
     /// <summary>
-    /// »ñÈ¡´¹Ö±·½ÏòÊäÈë
+    /// è·å–å‚ç›´æ–¹å‘è¾“å…¥
     /// </summary>
-    /// <returns>´¹Ö±ÊäÈëÖµ£¨-1, 0, 1£©</returns>
     private float GetVerticalInput()
     {
-        // ÉÏ¼ü£¨W»òÉÏ¼ıÍ·£©
         if (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed) return 1f;
-        // ÏÂ¼ü£¨S»òÏÂ¼ıÍ·£©
         if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) return -1f;
-        // ÎŞ´¹Ö±ÊäÈë
         return 0f;
     }
 
     /// <summary>
-    /// ¸üĞÂ°´¼ü×´Ì¬ºÍ°´ÏÂÊ±¼ä
+    /// æ›´æ–°æŒ‰é”®çŠ¶æ€å’ŒæŒ‰ä¸‹æ—¶é—´
     /// </summary>
-    /// <param name="keyPressed">°´¼üÊÇ·ñ°´ÏÂµÄÒıÓÃ</param>
-    /// <param name="keyDown">µ±Ç°°´¼ü×´Ì¬</param>
-    /// <param name="pressTime">°´¼ü°´ÏÂÊ±¼äµÄÒıÓÃ</param>
     private void UpdateKeyState(ref bool keyPressed, bool keyDown, ref float pressTime)
     {
-        // °´¼ü¸Õ¸Õ°´ÏÂ
         if (keyDown && !keyPressed)
         {
             keyPressed = true;
-            pressTime = Time.time; // ¼ÇÂ¼°´ÏÂÊ±¼ä
+            pressTime = Time.time;
         }
-        // °´¼üÊÍ·Å
         else if (!keyDown)
         {
             keyPressed = false;
@@ -117,68 +154,54 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// È·¶¨Ë®Æ½ÊäÈë·½Ïò£¬½â¾ö×óÓÒ¼üÍ¬Ê±°´ÏÂµÄ³åÍ»
+    /// ç¡®å®šæ°´å¹³è¾“å…¥æ–¹å‘ï¼Œè§£å†³å·¦å³é”®åŒæ—¶æŒ‰ä¸‹çš„å†²çª
     /// </summary>
-    /// <returns>Ë®Æ½ÊäÈëÖµ£¨-1, 0, 1£©</returns>
     private float GetHorizontalInput()
     {
-        // ×óÓÒ¼üÍ¬Ê±°´ÏÂÊ±£¬±È½Ï°´ÏÂÊ±¼ä¾ö¶¨·½Ïò£¨ºó°´ÏÂµÄ·½Ïò¸²¸ÇÏÈ°´ÏÂµÄ·½Ïò£©
         if (leftKeyPressed && rightKeyPressed)
             return rightKeyPressTime > leftKeyPressTime ? 1f : -1f;
 
-        // µ¥¼ü°´ÏÂÊ±·µ»ØÏàÓ¦·½Ïò
-        if (leftKeyPressed) return -1f; // ×ó¼ü°´ÏÂ
-        if (rightKeyPressed) return 1f; // ÓÒ¼ü°´ÏÂ
-
-        // ÎŞË®Æ½ÊäÈë
+        if (leftKeyPressed) return -1f;
+        if (rightKeyPressed) return 1f;
         return 0f;
     }
     #endregion
 
     /// <summary>
-    /// ÒÆ¶¯Íæ¼Ò½ÇÉ«
+    /// ç§»åŠ¨ç©å®¶è§’è‰²
     /// </summary>
     public void Move() => transform.Translate(input * speed * Time.deltaTime);
 
     /// <summary>
-    /// ´¦ÀíÍæ¼Ò×ªÏòÂß¼­
+    /// å¤„ç†ç©å®¶è½¬å‘é€»è¾‘
     /// </summary>
     public void TurnAround()
     {
-        // ÓĞË®Æ½ÊäÈëÊ±²Å´¦Àí×ªÏò
         if (input.x != 0)
         {
-            // ¼ì²â·½ÏòÊÇ·ñ¸Ä±ä£¨´ÓÓÒ×ª×ó»ò´Ó×ó×ªÓÒ£©
             bool directionChanged = (input.x > 0 && !isFacingRight) || (input.x < 0 && isFacingRight);
 
-            // ·½Ïò¸Ä±äÇÒÍæ¼ÒÕıÔÚÒÆ¶¯Ê±´¥·¢duang¶¯»­
             if (directionChanged && input.magnitude > 0.1f)
             {
                 animator.SetTrigger("duang");
             }
 
-            // ¸üĞÂ³¯Ïò×´Ì¬
             isFacingRight = input.x > 0;
-            // ¸üĞÂ¾«ÁéäÖÈ¾·½Ïò£¨·­×ªXÖá£©
             spriteRenderer.flipX = !isFacingRight;
         }
     }
 
     /// <summary>
-    /// ¸üĞÂÍæ¼Ò¶¯»­×´Ì¬
+    /// æ›´æ–°ç©å®¶åŠ¨ç”»çŠ¶æ€
     /// </summary>
     private void UpdateAnimation()
     {
-
-        // ¼ì²âÍæ¼ÒÊÇ·ñÔÚÒÆ¶¯£¨ÊäÈëÏòÁ¿³¤¶È´óÓÚãĞÖµ£©
         bool isMoving = input.magnitude > 0.1f;
 
         if (animator != null)
         {
-            // ¸üĞÂÒÆ¶¯×´Ì¬£¨¿ØÖÆRun/Idle¶¯»­£©
             animator.SetBool("isMove", isMoving);
 
-            // µ±Í£Ö¹ÒÆ¶¯Ê±Á¢¼´´¥·¢duang¶¯»­
             if (!isMoving && input.magnitude <= 0.1f)
             {
                 animator.SetTrigger("duang");
@@ -187,63 +210,66 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Íæ¼ÒÊÜÉËÂß¼­
+    /// ç©å®¶å—ä¼¤é€»è¾‘ï¼ˆå¸¦é˜²å¾¡æœºåˆ¶ï¼‰
     /// </summary>
-    public void Injured(float attack) 
+    public void Injured(float attack)
     {
+        // è®¡ç®—é˜²å¾¡åŠ›æŠµæ¶ˆä¼¤å®³
+        attack *= GameManager.Instance.propData.Defense;
+
         if (isDead)
-        {
             return;
-        }
 
-        //ÅĞ¶Ï±¾´Î¹¥»÷ÊÇ·ñËÀÍö
-        if (hp - attack <= 0 )
+        if (GameManager.Instance.Armor != 0)
         {
-            hp = 0;
-            Dead();
-        }else
-        {
-            hp -= attack;
+            if (GameManager.Instance.Armor > attack)
+            {
+                GameManager.Instance.Armor -= attack;
+            }
+            else if (GameManager.Instance.Armor < attack)
+            {
+                attack -= GameManager.Instance.Armor;
+                GameManager.Instance.Armor = 0;
+                GameManager.Instance.hp -= attack;
+                GamePanel.Instance.RenewHp();
+            }
+            else
+            {
+                GameManager.Instance.Armor = 0;
+            }
+            GamePanel.Instance.RenewArmor();
         }
-
-        //¸üĞÂÑªÌõ
-        GamePanel.Instance.RenewHp();
+        else
+        {
+            // åˆ¤æ–­æ˜¯å¦æ­»äº¡
+            if (GameManager.Instance.hp - attack <= 0)
+            {
+                GameManager.Instance.hp = 0;
+                Dead();
+            }
+            else
+            {
+                GameManager.Instance.hp -= attack;
+            }
+            GamePanel.Instance.RenewHp();
+        }
     }
 
-
-
     /// <summary>
-    /// Íæ¼Ò¹¥»÷Âß¼­
+    /// ç©å®¶æ”»å‡»é€»è¾‘
     /// </summary>
-    public void Attack() 
+    public void Attack()
     {
-
+        // å¯åœ¨æ­¤æ·»åŠ æ”»å‡»é€»è¾‘
     }
 
-
     /// <summary>
-    /// Íæ¼ÒËÀÍöÂß¼­
+    /// ç©å®¶æ­»äº¡é€»è¾‘
     /// </summary>
     public void Dead()
     {
         isDead = true;
-
         animator.speed = 0;
-
-        //todo µ÷ÓÃÓÎÏ·Ê§°Üº¯Êı
         LevelController.Instance.BadGame();
     }
-
-
-    private void OnTriggerEnter2D(Collider2D col)
-    {
-        if (col.CompareTag("Money"))
-        {
-            Destroy(col.gameObject);
-
-            money += 1;
-            GamePanel.Instance.RenewMoney();
-        }
-    }
-
 }
