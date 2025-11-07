@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Resources.script.model;
 // using Resources.script.model;
 // using script;
 using TMPro;

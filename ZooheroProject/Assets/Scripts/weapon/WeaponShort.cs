@@ -5,7 +5,7 @@ public class WeaponShort : WeaponBase
 {
     private float moveSpeed = 10f; // 近战武器移动速度
 
-    public override void Awake()
+    public void Awake()
     {
         base.Awake();
         moveSpeed = 10f; // 初始化移动速度
@@ -14,7 +14,7 @@ public class WeaponShort : WeaponBase
     /// <summary>
     /// 近战攻击逻辑（协程实现完整攻击流程）
     /// </summary>
-    public override IEnumerator Fire()
+    public IEnumerator Fire()
     {
         // 检查冷却状态
         if (isCooling) 

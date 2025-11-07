@@ -14,7 +14,7 @@ public class EnemyBase : MonoBehaviour
     public bool isContact = false; // 是否接触玩家
     public bool isCooling = false; // 是否处于攻击冷却
     public bool skilling = false; // 是否正在释放技能
-    public int provideExp = 1; // 提供的经验值
+    public int provideExp = 1; // 提供的经验值（已修正为int类型）
 
     public GameObject money_prefab; // 金币预制体
     
@@ -23,7 +23,7 @@ public class EnemyBase : MonoBehaviour
 
     private void Awake()
     {
-        money_prefab = Resources.Load<GameObject>("Prefabs/Money");
+        money_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Money");
     }
 
     private void Start()
@@ -35,13 +35,13 @@ public class EnemyBase : MonoBehaviour
             damage = EnemyDate.damage;
             speed = EnemyDate.speed;
             attackTime = EnemyDate.attackTime;
-            provideExp = EnemyDate.provideExp;
+            provideExp = (int)EnemyDate.provideExp; // 显式类型转换
         }
     }
 
     private void Update()
     {
-        if (Player.Instance.isDead) return;
+        if (Player.Instance == null || Player.Instance.isDead) return;
 
         Move();       // 移动逻辑
         UpdateAttack(); // 攻击更新逻辑
@@ -119,7 +119,7 @@ public class EnemyBase : MonoBehaviour
 
         // 朝向玩家移动
         Vector2 direction = (Player.Instance.transform.position - transform.position).normalized;
-        transform.Translate(direction * EnemyDate.speed * Time.deltaTime);
+        transform.Translate(direction * speed * Time.deltaTime);
 
         // 敌方转向
         TurnAround();
@@ -148,9 +148,9 @@ public class EnemyBase : MonoBehaviour
     /// </summary>
     public void Attack()
     {
-        Player.Instance.Injured(EnemyDate.damage);
+        Player.Instance.Injured(damage);
         isCooling = true;
-        attackTimer = EnemyDate.attackTime; // 更新攻击冷却
+        attackTimer = attackTime; // 更新攻击冷却
     }
 
     /// <summary>
@@ -158,8 +158,8 @@ public class EnemyBase : MonoBehaviour
     /// </summary>
     public void Injured(float attack)
     {
-        EnemyDate.hp -= attack;
-        if (EnemyDate.hp <= 0)
+        hp -= attack;
+        if (hp <= 0)
         {
             Dead();
         }
@@ -170,8 +170,8 @@ public class EnemyBase : MonoBehaviour
     /// </summary>
     public void Dead()
     {
-        // 增加玩家经验
-        Player.Instance.exp += EnemyDate.provideExp;
+        // 增加玩家经验（使用int类型相加）
+        Player.Instance.exp += provideExp;
         GamePanel.Instance.RenewExp();
 
         // 掉落金币

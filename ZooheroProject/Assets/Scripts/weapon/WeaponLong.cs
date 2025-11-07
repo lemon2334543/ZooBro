@@ -7,7 +7,7 @@ public class WeaponLong : WeaponBase
     // 原始Z轴角度（用于子弹旋转校准）
     private float originZ;
 
-    public override void Awake()
+    public void Awake()
     {
         base.Awake();
         // 记录初始Z轴角度作为基准
@@ -17,7 +17,7 @@ public class WeaponLong : WeaponBase
     /// <summary>
     /// 远程攻击逻辑（协程实现多次攻击）
     /// </summary>
-    public override IEnumerator Fire()
+    public IEnumerator Fire()
     {
         // 检查冷却状态
         if (isCooling) 
@@ -75,7 +75,7 @@ public class WeaponLong : WeaponBase
 
         // 设置速度和方向
         bulletComp.speed = 15f;
-        bulletComp.direction = dir;
+        bulletComp.dir = dir;
     }
 
     /// <summary>
