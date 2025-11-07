@@ -39,6 +39,7 @@ public class StartGame : MonoBehaviour
         }));
     }
 
+
     private async Task loadplayscans()
     {
         _MaskLayer.GetComponent<CanvasGroup>().alpha = 1;
@@ -77,6 +78,7 @@ public class StartGame : MonoBehaviour
         }
         return null;
     }
+
 
     // Update is called once per frame
     void Update()

@@ -1,4 +1,4 @@
-﻿using Unity.VisualScripting;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PistolWeapon : WeaponLong
@@ -12,4 +12,5 @@ public class PistolWeapon : WeaponLong
 
         return bullet.gameObject;
     }
+
 }

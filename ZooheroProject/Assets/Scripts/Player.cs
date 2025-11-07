@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -15,7 +15,6 @@ public class Player : MonoBehaviour
     internal float maxHp = 15f; // 最大血量
     internal float exp = 0; // 经验值
     public Transform weaponsPos; // 武器位置
-    public float reviveTimer; // 再生计时器
 
     private Keyboard keyboard; // 键盘输入引用
     private Vector2 input; // 当前输入向量
@@ -34,21 +33,23 @@ public class Player : MonoBehaviour
     {
         Instance = this; // 设置单例实例
 
-        // 查找玩家视觉表现部分和武器挂点
+        // 查找玩家视觉表现部分
         playerVisual = GameObject.Find("PlayerVisual").transform;
-        weaponsPos = GameObject.Find("WeaponPos").transform; // 检测武器位置槽位
+        weaponsPos = GameObject.Find("WeaponsPos").transform; // 检测武器位置槽位
 
         // 获取组件
         animator = playerVisual.GetComponent<Animator>();
         spriteRenderer = playerVisual.GetComponent<SpriteRenderer>();
         keyboard = Keyboard.current;
 
-        // 第一关时初始化角色属性（跳转商店）
-        if (GameManager.Instance.currentWave == 0)
+        // 加载角色头像
+        playerVisual.GetComponent<SpriteRenderer>().sprite =
+            UnityEngine.Resources.Load<Sprite>(GameManager.Instance.RoleDate.avatar);
+
+        // 初始化角色属性
+        if (GameManager.Instance.currentWave == 1)
         {
-            GameManager.Instance.currentWave = 1;
-            GameManager.Instance.InitProp();
-            SceneManager.LoadScene("Shop");
+            GameManager.Instance.InitProp(); // 初始化角色
         }
     }
 
@@ -61,43 +62,6 @@ public class Player : MonoBehaviour
         Move(); // 移动玩家
         TurnAround(); // 处理转向逻辑
         UpdateAnimation(); // 更新动画状态
-        Revive(); // 生命再生
-        earmoney(); // 获取金币
-    }
-
-    /// <summary>
-    /// 生命再生机制
-    /// </summary>
-    private void Revive()
-    {
-        reviveTimer += Time.deltaTime;
-        if (reviveTimer >= 1f)
-        {
-            // 加血不超过最大生命值
-            GameManager.Instance.hp = Mathf.Clamp(GameManager.Instance.hp + GameManager.Instance.propData.revive, 0, GameManager.Instance.propData.maxHp);
-            reviveTimer = 0;
-        }
-    }
-
-    /// <summary>
-    /// 自动拾取金币
-    /// </summary>
-    private void earmoney()
-    {
-        // 检测范围内的金币
-        Collider2D[] moenyInRange = Physics2D.OverlapCircleAll(
-            transform.position, 0.5f * GameManager.Instance.propData.pickRange, LayerMask.GetMask("Item"));
-
-        // 遍历拾取金币
-        if (moenyInRange.Length > 0)
-        {
-            for (int i = 0; i < moenyInRange.Length; i++)
-            {
-                Destroy(moenyInRange[i].gameObject);
-                GameManager.Instance.money += 1;
-                GamePanel.Instance.RenewMoney();
-            }
-        }
     }
 
     #region 键盘冲突检测
@@ -130,10 +94,14 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 获取垂直方向输入
     /// </summary>
+    /// <returns>垂直输入值（-1, 0, 1）</returns>
     private float GetVerticalInput()
     {
+        // 上键（W或上箭头）
         if (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed) return 1f;
+        // 下键（S或下箭头）
         if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) return -1f;
+        // 无垂直输入
         return 0f;
     }
 
@@ -142,11 +110,13 @@ public class Player : MonoBehaviour
     /// </summary>
     private void UpdateKeyState(ref bool keyPressed, bool keyDown, ref float pressTime)
     {
+        // 按键刚刚按下
         if (keyDown && !keyPressed)
         {
             keyPressed = true;
-            pressTime = Time.time;
+            pressTime = Time.time; // 记录按下时间
         }
+        // 按键释放
         else if (!keyDown)
         {
             keyPressed = false;
@@ -158,11 +128,15 @@ public class Player : MonoBehaviour
     /// </summary>
     private float GetHorizontalInput()
     {
+        // 左右键同时按下时，比较按下时间决定方向（后按下的方向覆盖先按下的方向）
         if (leftKeyPressed && rightKeyPressed)
             return rightKeyPressTime > leftKeyPressTime ? 1f : -1f;
 
-        if (leftKeyPressed) return -1f;
-        if (rightKeyPressed) return 1f;
+        // 单键按下时返回相应方向
+        if (leftKeyPressed) return -1f; // 左键按下
+        if (rightKeyPressed) return 1f; // 右键按下
+
+        // 无水平输入
         return 0f;
     }
     #endregion
@@ -170,23 +144,29 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 移动玩家角色
     /// </summary>
-    public void Move() => transform.Translate(input * speed * Time.deltaTime);
+    public void Move() => transform.Translate(input * GameManager.Instance.propData.speed 
+       * GameManager.Instance.propData.speedPer * Time.deltaTime);
 
     /// <summary>
     /// 处理玩家转向逻辑
     /// </summary>
     public void TurnAround()
     {
+        // 有水平输入时才处理转向
         if (input.x != 0)
         {
+            // 检测方向是否改变（从右转左或从左转右）
             bool directionChanged = (input.x > 0 && !isFacingRight) || (input.x < 0 && isFacingRight);
 
+            // 方向改变且玩家正在移动时触发duang动画
             if (directionChanged && input.magnitude > 0.1f)
             {
                 animator.SetTrigger("duang");
             }
 
+            // 更新朝向状态
             isFacingRight = input.x > 0;
+            // 更新精灵渲染方向（翻转X轴）
             spriteRenderer.flipX = !isFacingRight;
         }
     }
@@ -196,12 +176,15 @@ public class Player : MonoBehaviour
     /// </summary>
     private void UpdateAnimation()
     {
+        // 检测玩家是否在移动（输入向量长度大于阈值）
         bool isMoving = input.magnitude > 0.1f;
 
         if (animator != null)
         {
+            // 更新移动状态（控制Run/Idle动画）
             animator.SetBool("isMove", isMoving);
 
+            // 当停止移动时立即触发duang动画
             if (!isMoving && input.magnitude <= 0.1f)
             {
                 animator.SetTrigger("duang");
@@ -210,7 +193,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// 玩家受伤逻辑（带防御机制）
+    /// 玩家受伤逻辑
     /// </summary>
     public void Injured(float attack)
     {
@@ -220,39 +203,19 @@ public class Player : MonoBehaviour
         if (isDead)
             return;
 
-        if (GameManager.Instance.Armor != 0)
+        // 判断本次攻击是否死亡（统一使用GameManager的hp管理）
+        if (GameManager.Instance.hp - attack <= 0)
         {
-            if (GameManager.Instance.Armor > attack)
-            {
-                GameManager.Instance.Armor -= attack;
-            }
-            else if (GameManager.Instance.Armor < attack)
-            {
-                attack -= GameManager.Instance.Armor;
-                GameManager.Instance.Armor = 0;
-                GameManager.Instance.hp -= attack;
-                GamePanel.Instance.RenewHp();
-            }
-            else
-            {
-                GameManager.Instance.Armor = 0;
-            }
-            GamePanel.Instance.RenewArmor();
+            GameManager.Instance.hp = 0;
+            Dead();
         }
         else
         {
-            // 判断是否死亡
-            if (GameManager.Instance.hp - attack <= 0)
-            {
-                GameManager.Instance.hp = 0;
-                Dead();
-            }
-            else
-            {
-                GameManager.Instance.hp -= attack;
-            }
-            GamePanel.Instance.RenewHp();
+            GameManager.Instance.hp -= attack;
         }
+
+        // 更新血条
+        GamePanel.Instance.RenewHp();
     }
 
     /// <summary>
@@ -271,5 +234,15 @@ public class Player : MonoBehaviour
         isDead = true;
         animator.speed = 0;
         LevelController.Instance.BadGame();
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.CompareTag("Money"))
+        {
+            Destroy(col.gameObject);
+            GameManager.Instance.money += 1;
+            GamePanel.Instance.RenewMoney();
+        }
     }
 }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,14 +7,15 @@ public class GamePanel : MonoBehaviour
 {
     public static GamePanel Instance;
 
-    public Slider _hpSlider;
-    public Slider _expSlider;
-    public Slider _armorpSlider;
-    public TMP_Text _moneyCount;//金币
-    public TMP_Text _hpCount;//生命值
-    public TMP_Text _armorount;//护甲值
-    public TMP_Text _countDown;//关卡倒计时
-    public TMP_Text _waveCount;//波次
+    public Slider _hpSlider;       // 生命值进度条
+    public Slider _expSlider;      // 经验值进度条
+    public Slider _armorpSlider;   // 护甲值进度条
+    public TMP_Text _moneyCount;   // 金币数量显示
+    public TMP_Text _hpCount;      // 生命值数值显示
+    public TMP_Text _armorount;    // 护甲值数值显示
+    public TMP_Text _countDown;    // 关卡倒计时显示
+    public TMP_Text _waveCount;    // 波次显示
+    public TMP_Text _expCount;     // 等级显示
 
     private void Awake()
     {
@@ -28,16 +29,17 @@ public class GamePanel : MonoBehaviour
         _waveCount = GameObject.Find("WaveCount").GetComponent<TMP_Text>();
         _armorpSlider = GameObject.Find("ArmorSlider").GetComponent<Slider>();
         _armorount = GameObject.Find("ArmorCount").GetComponent<TMP_Text>();
+        _expCount = GameObject.Find("ExpCount").GetComponent<TMP_Text>();
     }
 
     void Start()
     {
-        // 初始化UI显示
+        // 初始化所有UI显示
         RenewExp();
         RenewHp();
         RenewMoney();
         RenewWaveCount();
-        RenewArmor(); // 初始化护甲显示
+        RenewArmor();
     }
 
     /// <summary>
@@ -55,16 +57,16 @@ public class GamePanel : MonoBehaviour
     {
         float maxHp = GameManager.Instance.propData.maxHp;
         float currentHp = GameManager.Instance.hp;
+        
+        // 更新文本和滑块值
+        _hpCount.text = $"{currentHp}/{maxHp}";
+        _hpSlider.value = currentHp / maxHp;
 
         // 血条自适应宽度计算
         RectTransform hpSliderRect = _hpSlider.GetComponent<RectTransform>();
         SetSliderLayout(hpSliderRect, 20);
         float hpSliderWidth = CalculateAdaptiveWidth(maxHp);
         hpSliderRect.sizeDelta = new Vector2(hpSliderWidth, hpSliderRect.sizeDelta.y);
-
-        // 更新文本和滑块值
-        _hpCount.text = $"{currentHp}/{maxHp}";
-        _hpSlider.value = currentHp / maxHp;
     }
 
     /// <summary>
@@ -72,8 +74,9 @@ public class GamePanel : MonoBehaviour
     /// </summary>
     public void RenewExp()
     {
-        float totalExp = GameManager.Instance.exp;
-        _expSlider.value = totalExp % 12 / 12;
+        // 计算经验条进度（取余数后除以12）
+        _expSlider.value = GameManager.Instance.exp % 12 / 12;
+        _expCount.text = "LV." + (GameManager.Instance.exp / 12).ToString("F0");
     }
 
     /// <summary>
@@ -104,12 +107,6 @@ public class GamePanel : MonoBehaviour
         if (currentArmor > maxHp)
             currentArmor = maxHp;
         GameManager.Instance.Armor = currentArmor;
-
-        // 护甲条自适应宽度计算
-        RectTransform armorSliderRect = _armorpSlider.GetComponent<RectTransform>();
-        SetSliderLayout(armorSliderRect, 10);
-        float armorSliderWidth = CalculateAdaptiveWidth(maxHp);
-        armorSliderRect.sizeDelta = new Vector2(armorSliderWidth, armorSliderRect.sizeDelta.y);
 
         // 更新文本、滑块值和显示状态
         _armorount.text = currentArmor.ToString();

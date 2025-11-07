@@ -11,6 +11,8 @@ public class familypanel : MonoBehaviour
 {
     public static familypanel Instance;
 
+    public List<FamilyDate> familyDates = new List<FamilyDate>();//获取json
+    public TextAsset textAsset;//json文本z
 
     public Transform _familylist;//UI列表
     public GameObject family_Prefab;//预制件
@@ -26,7 +28,10 @@ public class familypanel : MonoBehaviour
         _familylist = GameObject.Find("familypannel").transform;
         family_Prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/family");
         
-  
+
+        textAsset = UnityEngine.Resources.Load<TextAsset>("Data/Family");
+        familyDates = JsonConvert.DeserializeObject<List<FamilyDate>>(textAsset.text);
+
         
 
     }
@@ -35,6 +40,7 @@ public class familypanel : MonoBehaviour
     void Start()
     {
         foreach (FamilyDate familyDate in GameManager.Instance.familyDates)
+        //foreach (FamilyDate familyDate in familyDates)
         {
             if (familyDate.id==1)
             {

@@ -16,6 +16,7 @@ public class WeaponBase : MonoBehaviour
     public Transform enemy; // 瞄准的敌人
     public float originZ; // 初始Z轴角度
 
+
     public void Awake()
     {
         originZ = transform.eulerAngles.z;
@@ -82,6 +83,7 @@ public class WeaponBase : MonoBehaviour
 
             // 找到最近的敌人
             Collider2D nearestEnemy = enemiesInRange
+
                 .OrderBy(enemy => Vector2.Distance(transform.position, enemy.transform.position))
                 .First();
 
@@ -179,3 +181,4 @@ public class WeaponBase : MonoBehaviour
         isAiming = true;
     }
 }
+

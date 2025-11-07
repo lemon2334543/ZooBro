@@ -1,4 +1,4 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,31 +12,31 @@ public class LevelController : MonoBehaviour
 {
     public static LevelController Instance;
 
-    public float waveTimer;
+    public float waveTimer; // 波次计时器
 
-    public GameObject _failPanel;
-    public GameObject _successPanel;
+    public GameObject _failPanel;    // 失败面板
+    public GameObject _successPanel; // 胜利面板
 
-    public GameObject enemy1_prefab;
+    public GameObject enemy1_prefab; // 敌人预制体
     public GameObject enemy2_prefab;
     public GameObject enemy3_prefab;
     public GameObject enemy4_prefab;
     public GameObject enemy5_prefab;
-    public List<EnemyBase> enemy_list = new List<EnemyBase>();
-    public Transform _map;
+    public List<EnemyBase> enemy_list = new List<EnemyBase>(); // 敌人列表
+    public Transform _map;            // 地图对象
 
-    public GameObject redfork_prefab;
-    public TextAsset leveTestAsset;
-    public List<LevelDate> LevelDates = new List<LevelDate>();
-    public LevelDate CurrentLevelDate;
+    public GameObject redfork_prefab; // 红叉提示预制体
+    public TextAsset leveTestAsset;  // 关卡配置资源
+    public List<LevelDate> LevelDates = new List<LevelDate>(); // 关卡配置列表
+    public LevelDate CurrentLevelDate; // 当前关卡配置
 
-    public Transform enemyfahter;
+    public Transform enemyfahter;    // 敌人父对象
     
     // 武器生成测试：修改weaponID可生成指定武器
     public List<WeaponData> WeaponDatas = new List<WeaponData>();
-    public TextAsset textAsset;
+    public TextAsset textAsset;     // 武器配置资源
     
-    private Dictionary<string, GameObject> enemyDictionary = new Dictionary<string, GameObject>();
+    private Dictionary<string, GameObject> enemyDictionary = new Dictionary<string, GameObject>(); // 敌人字典
 
     private void Awake()
     {
@@ -83,6 +83,9 @@ public class LevelController : MonoBehaviour
         GenerateWeapons();
     }
 
+    /// <summary>
+    /// 生成武器
+    /// </summary>
     private void GenerateWeapons()
     {
         Debug.Log("开始生成武器");
@@ -97,6 +100,9 @@ public class LevelController : MonoBehaviour
         Debug.Log("武器生成完成");
     }
 
+    /// <summary>
+    /// 生成敌人
+    /// </summary>
     private void GenerateEnemy()
     {
         // 按关卡配置生成敌人
@@ -109,6 +115,9 @@ public class LevelController : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// 生成敌人协程
+    /// </summary>
     IEnumerator SwawnEnemies(WaveDate waveDate)
     {
         yield return new WaitForSeconds(waveDate.timeAxis);
@@ -143,13 +152,16 @@ public class LevelController : MonoBehaviour
         }
     }
 
-    // 生成地图内随机位置
+    /// <summary>
+    /// 获取地图内随机位置
+    /// </summary>
     private Vector3 GetRandomPosition(Bounds bounds)
     {
         float safeDistance = 3.5f;
         float randomX = UnityEngine.Random.Range(bounds.min.x + safeDistance, bounds.max.x - safeDistance);
         float randomY = UnityEngine.Random.Range(bounds.min.y + safeDistance, bounds.max.y - safeDistance);
-        return new Vector3(randomX, randomY, 0f);
+        float randomZ = 0f;
+        return new Vector3(randomX, randomY, randomZ);
     }
 
     void Update()
@@ -173,7 +185,9 @@ public class LevelController : MonoBehaviour
         GamePanel.Instance.RenewCountDown(waveTimer);
     }
 
-    // 下一波（跳转商店）
+    /// <summary>
+    /// 下一波（跳转商店）
+    /// </summary>
     private void NextWave()
     {
         GameManager.Instance.money += GameManager.Instance.propData.harvest;
@@ -181,31 +195,45 @@ public class LevelController : MonoBehaviour
         GameManager.Instance.currentWave += 1;
     }
 
-    // 游戏胜利
+    /// <summary>
+    /// 游戏胜利
+    /// </summary>
     public void GoodGame() 
     {
         _successPanel.GetComponent<CanvasGroup>().alpha = 1;
         StartCoroutine(GoMenu());
 
-        foreach (var enemy in enemy_list)
+        // 清除所有敌人
+        for (int i = 0; i < enemy_list.Count; i++)
         {
-            enemy?.Dead();
+            if (enemy_list[i])
+            {
+                enemy_list[i].Dead();
+            }
         }
     }
 
-    // 游戏失败
+    /// <summary>
+    /// 游戏失败
+    /// </summary>
     public void BadGame() 
     {
         _failPanel.GetComponent<CanvasGroup>().alpha = 1;
         StartCoroutine(GoMenu());
 
-        foreach (var enemy in enemy_list)
+        // 清除所有敌人
+        for (int i = 0; i < enemy_list.Count; i++)
         {
-            enemy?.Dead();
+            if (enemy_list[i])
+            {
+                enemy_list[i].Dead();
+            }
         }
     }
 
-    // 返回主菜单
+    /// <summary>
+    /// 返回主菜单
+    /// </summary>
     IEnumerator GoMenu()
     {
         yield return new WaitForSeconds(3);

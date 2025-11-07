@@ -35,8 +35,8 @@ public class GameManager : MonoBehaviour
     public float Armor;
     
     [SerializeField]
-    public PropData propData = new PropData();// 角色属性数据
-    public List<PropData> PropDatas = new List<PropData>();// 拥有的物品列表
+    public PropData propData = new PropData();
+    public List<PropData> PropDatas = new List<PropData>();
     
     // 武器列表
     public List<WeaponData> currentWeapons = new List<WeaponData>();
