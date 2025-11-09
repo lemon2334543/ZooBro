@@ -86,16 +86,17 @@ public class StartGame : MonoBehaviour
         if (GameManager.Instance.FamilyDates.Count>=3 && GameManager.Instance.DifficultyDate.id!=-1)
         {
             
-            _CanvasGroup.alpha = 1;
-            _CanvasGroup.interactable = true;
-            _CanvasGroup.blocksRaycasts = true;
+            GameManager.Instance.GameObjectShow(_CanvasGroup);
             
         }
         else
         {
-            _CanvasGroup.alpha = 0;
-            _CanvasGroup.interactable = false;
-            _CanvasGroup.blocksRaycasts = false;
+            GameManager.Instance.GameObjectHide(_CanvasGroup);
+        }
+
+        if (GameManager.Instance.FamilyDates.Count<3)
+        {
+            GameManager.Instance.GameObjectHide(_CanvasGroup);
         }
     }
 }

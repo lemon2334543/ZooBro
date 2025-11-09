@@ -77,7 +77,8 @@ public class LevelController : MonoBehaviour
     void Start()
     {
         CurrentLevelDate = LevelDates[(int)GameManager.Instance.currentWave-1];
-        waveTimer = CurrentLevelDate.waveTimer;        
+        waveTimer = CurrentLevelDate.waveTimer;
+        
         
         GenerateEnemy();
         GenerateWeapons();
@@ -190,7 +191,8 @@ public class LevelController : MonoBehaviour
     /// </summary>
     private void NextWave()
     {
-        GameManager.Instance.money += GameManager.Instance.propData.harvest;
+        //todo 收获属性，但是感觉我们用不到
+        // GameManager.Instance.money += GameManager.Instance.propData.harvest;
         SceneManager.LoadScene("shop");
         GameManager.Instance.currentWave += 1;
     }

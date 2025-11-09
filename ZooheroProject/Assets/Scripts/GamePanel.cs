@@ -29,7 +29,7 @@ public class GamePanel : MonoBehaviour
         _waveCount = GameObject.Find("WaveCount").GetComponent<TMP_Text>();
         _armorpSlider = GameObject.Find("ArmorSlider").GetComponent<Slider>();
         _armorount = GameObject.Find("ArmorCount").GetComponent<TMP_Text>();
-        _expCount = GameObject.Find("ExpCount").GetComponent<TMP_Text>();
+        // _expCount = GameObject.Find("ExpCount").GetComponent<TMP_Text>();
     }
 
     void Start()
@@ -76,7 +76,7 @@ public class GamePanel : MonoBehaviour
     {
         // 计算经验条进度（取余数后除以12）
         _expSlider.value = GameManager.Instance.exp % 12 / 12;
-        _expCount.text = "LV." + (GameManager.Instance.exp / 12).ToString("F0");
+        // _expCount.text = "LV." + (GameManager.Instance.exp / 12).ToString("F0");
     }
 
     /// <summary>

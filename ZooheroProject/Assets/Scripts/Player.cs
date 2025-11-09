@@ -50,6 +50,7 @@ public class Player : MonoBehaviour
         if (GameManager.Instance.currentWave == 1)
         {
             GameManager.Instance.InitProp(); // 初始化角色
+            Debug.Log("初始化角色");
         }
     }
 

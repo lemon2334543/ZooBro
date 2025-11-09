@@ -44,8 +44,8 @@ public class Roleset : MonoBehaviour ,IPointerEnterHandler, IPointerExitHandler
     private void Awake()
     {
         Instense = this;
-        _backgroundimage = GetComponent<Image>();
-        _avater = transform.GetChild(0).GetComponent<Image>();
+        _backgroundimage = transform.GetChild(0).GetComponent<Image>();
+        _avater = transform.GetChild(0).GetChild(0).GetComponent<Image>();
         _button = GetComponent<Button>();
         _backring = GameObject.Find("backring");//选中绿色背景
         

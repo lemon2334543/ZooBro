@@ -10,6 +10,9 @@ public class nextclick : MonoBehaviour
     public GameObject _familypannel;
 
     public Button _button;
+
+    public GameObject BackToMain;
+    public GameObject BacktoRoleselect;
     
     private void Awake()
     {
@@ -24,29 +27,20 @@ public class nextclick : MonoBehaviour
     {
         _button.onClick.AddListener((() =>
         {
-            
+           
             showFamilyPannel();
         }));
     }
 
     private void showFamilyPannel()
     {
-        _rolelist.GetComponent<CanvasGroup>().alpha = 0;
-        _rolelist.GetComponent<CanvasGroup>().interactable = false;
-        _rolelist.GetComponent<CanvasGroup>().blocksRaycasts = false;
+        GameManager.Instance.GameObjectHide(_rolelist.GetComponent<CanvasGroup>());
+        GameManager.Instance.GameObjectShow(_familypannel.GetComponent<CanvasGroup>());
+        GameManager.Instance.GameObjectShow(Difficultypannel.Instance.GetComponent<CanvasGroup>());
+        GameManager.Instance.GameObjectHide(Instance.GetComponent<CanvasGroup>());
+        GameManager.Instance.GameObjectHide(BackToMain.GetComponent<CanvasGroup>());
+        GameManager.Instance.GameObjectShow( BacktoRoleselect.GetComponent<CanvasGroup>());
         
-        
-        _familypannel.GetComponent<CanvasGroup>().alpha = 1;
-        _familypannel.GetComponent<CanvasGroup>().interactable = true;
-        _familypannel.GetComponent<CanvasGroup>().blocksRaycasts = true;
-        
-        Difficultypannel.Instance.GetComponent<CanvasGroup>().alpha = 1;
-        Difficultypannel.Instance.GetComponent<CanvasGroup>().interactable = true;
-        Difficultypannel.Instance.GetComponent<CanvasGroup>().blocksRaycasts = true;
-
-        Instance.GetComponent<CanvasGroup>().alpha = 0;
-        Instance.GetComponent<CanvasGroup>().interactable = false;
-        Instance.GetComponent<CanvasGroup>().blocksRaycasts = false;
         
         
     }

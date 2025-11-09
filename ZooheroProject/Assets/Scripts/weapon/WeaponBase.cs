@@ -83,12 +83,11 @@ public class WeaponBase : MonoBehaviour
 
             // 找到最近的敌人
             Collider2D nearestEnemy = enemiesInRange
-
                 .OrderBy(enemy => Vector2.Distance(transform.position, enemy.transform.position))
                 .First();
 
             enemy = nearestEnemy.transform;
-
+            Debug.Log(enemy.position);
             // 计算瞄准角度并旋转武器
             Vector2 direction = (Vector2)enemy.position - (Vector2)transform.position;
             float angleDegrees = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -108,23 +107,7 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     public virtual IEnumerator Fire()
     {
-        // 冷却判断
-        if (isCooling)
-            yield break;
-
-        // 启用碰撞体（近战攻击）
-        CapsuleCollider2D collider = GetComponent<CapsuleCollider2D>();
-        if (collider != null)
-            collider.enabled = true;
-
-        // 攻击期间停止瞄准
-        isAiming = false;
-
-        // 移动到目标位置
-        yield return StartCoroutine(Goposition());
-
-        // 进入冷却状态
-        isCooling = true;
+        yield break;
     }
 
     /// <summary>

@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
     
     public void Awake()
     {
+        // Debug.Log("下一步");
         if (Instance == null)
         {
             Instance = this;
@@ -89,7 +90,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        currentWave = 0f;
+        currentWave = 1f;
     }
 
     /// <summary>
@@ -104,6 +105,21 @@ public class GameManager : MonoBehaviour
 
         int index = Random.Range(0, list.Count);
         return list[index];
+    }
+
+    //显示GameObject
+    public void GameObjectShow(CanvasGroup canvasGroup)
+    {
+        canvasGroup.alpha = 1;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+    }
+    //隐藏GameObject
+    public void GameObjectHide(CanvasGroup canvasGroup)
+    {
+        canvasGroup.alpha = 0;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
     }
 
     /// <summary>

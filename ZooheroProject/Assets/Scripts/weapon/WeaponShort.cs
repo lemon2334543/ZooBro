@@ -14,7 +14,7 @@ public class WeaponShort : WeaponBase
     /// <summary>
     /// 近战攻击逻辑（协程实现完整攻击流程）
     /// </summary>
-    public IEnumerator Fire()
+    public override IEnumerator Fire()
     {
         // 检查冷却状态
         if (isCooling) 
