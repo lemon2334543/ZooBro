@@ -43,7 +43,7 @@ public class LevelController : MonoBehaviour
         Instance = this;
         
         // 武器生成测试逻辑
-        int weaponID = 3;
+        int weaponID = 1;
         textAsset = UnityEngine.Resources.Load<TextAsset>("Data/weapon");
         GameManager.Instance.currentWeapons.Add(JsonConvert.DeserializeObject<List<WeaponData>>(textAsset.text)[weaponID-1]); 
         
@@ -84,22 +84,99 @@ public class LevelController : MonoBehaviour
         GenerateWeapons();
     }
 
-    /// <summary>
-    /// 生成武器
-    /// </summary>
-    private void GenerateWeapons()
+/// <summary>
+/// 生成武器 - 修复数据传递问题，添加召唤武器特殊处理
+/// </summary>
+private void GenerateWeapons()
+{
+    Debug.Log("开始生成武器");
+    int i = 0;
+    
+    foreach (WeaponData weapon in GameManager.Instance.currentWeapons)
     {
-        Debug.Log("开始生成武器");
-        int i = 0;
-        foreach (WeaponData weapon in GameManager.Instance.currentWeapons)
+        Debug.Log($"正在加载武器: {weapon.name}, ID: {weapon.id}, 伤害: {weapon.damage}, 范围: {weapon.range}");
+    
+        string path = "Prefabs/Weapons/" + weapon.name;
+        GameObject weaponPrefab = UnityEngine.Resources.Load<GameObject>(path);
+    
+        if (weaponPrefab == null)
         {
-            GameObject gameObject = UnityEngine.Resources.Load<GameObject>("Prefabs/Waepons/" + weapon.name);
-            WeaponBase WeaponBase = Instantiate(gameObject, Player.Instance.weaponsPos.GetChild(i)).GetComponent<WeaponBase>();
-            WeaponBase.data = weapon;
-            i++;
+            Debug.LogError($"无法加载武器预制体: {path}");
+            continue;
         }
-        Debug.Log("武器生成完成");
+    
+        // 创建武器实例
+        GameObject weaponInstance = Instantiate(weaponPrefab, Player.Instance.weaponsPos.GetChild(i));
+        WeaponBase weaponBase = weaponInstance.GetComponent<WeaponBase>();
+        
+        // 重要：确保数据正确设置
+        if (weaponBase != null)
+        {
+            weaponBase.data = weapon;
+            Debug.Log($"武器数据设置完成 - 伤害: {weaponBase.data.damage}, 范围: {weaponBase.data.range}");
+        }
+        else
+        {
+            Debug.LogError("武器基础组件未找到");
+            continue;
+        }
+        
+        // 🔥 新增：检查是否是召唤武器
+        WeaponSummon summonWeapon = weaponInstance.GetComponent<WeaponSummon>();
+        if (summonWeapon != null)
+        {
+            Debug.Log($"检测到召唤武器: {weapon.name}");
+            
+            // 重新设置数据以确保正确
+            summonWeapon.data = weapon;
+            
+            // 为召唤武器设置召唤物预制体
+            GameObject summonPrefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Summons");
+            if (summonPrefab != null)
+            {
+                // 使用公共方法设置召唤物预制体
+                summonWeapon.SetSummonPrefab(summonPrefab);
+                Debug.Log($"已为召唤武器设置召唤物预制体");
+            }
+            else
+            {
+                Debug.LogError("无法加载Summons预制体");
+            }
+        }
+        
+        // 检查是否是挥砍武器
+        WeaponSwing swingWeapon = weaponInstance.GetComponent<WeaponSwing>();
+        if (swingWeapon != null)
+        {
+            Debug.Log($"检测到挥砍武器: {weapon.name}");
+            
+            // 重新设置数据以确保正确
+            swingWeapon.data = weapon;
+            
+            // 加载挥砍特效预制体
+            GameObject swingEffectPrefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Effects/SwingEffect");
+            if (swingEffectPrefab != null)
+            {
+                // 使用反射设置私有字段
+                var effectField = typeof(WeaponSwing).GetField("_swingEffectPrefab", 
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                if (effectField != null)
+                {
+                    effectField.SetValue(swingWeapon, swingEffectPrefab);
+                    Debug.Log($"已为挥砍武器设置特效预制体");
+                }
+            }
+            else
+            {
+                Debug.LogError("无法加载SwingEffect预制体");
+            }
+        }
+        
+        i++;
     }
+    
+    Debug.Log("武器生成完成");
+}
 
     /// <summary>
     /// 生成敌人

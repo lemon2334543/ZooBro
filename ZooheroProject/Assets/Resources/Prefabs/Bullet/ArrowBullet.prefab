@@ -82,7 +82,7 @@ SpriteRenderer:
   m_SortingLayerID: -1215170235
   m_SortingLayer: 3
   m_SortingOrder: 1
-  m_Sprite: {fileID: 2995342013117430717, guid: 5a6549348e45e9547989f671a6c85250, type: 3}
+  m_Sprite: {fileID: 3847334802581811939, guid: d79760ef29637494096c90f16aafc24f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -175,3 +175,5 @@ MonoBehaviour:
   timer: 0
   dir: {x: 0, y: 0}
   tagName: 
+  currentPenetration: 0
+  maxPenetration: 0

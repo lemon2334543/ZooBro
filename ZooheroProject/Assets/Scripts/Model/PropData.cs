@@ -17,6 +17,7 @@ public class PropData : ItemData
     public float short_range = 1;     // 附加近战武器范围百分比
     public float long_range = 1;      // 附加远程武器范围百分比
     public float short_attackSpeed = 1; // 附加近战武器攻速百分比
+    public float short_short_attackSpeed = 1; //附加近战移动速度百分比
     public float long_attackSpeed = 1; // 附加远程武器攻速百分比
 
     // 移动相关

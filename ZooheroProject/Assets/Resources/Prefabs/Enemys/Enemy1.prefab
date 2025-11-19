@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 5456668406820466116}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.97, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -105,10 +105,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d004a3da52bf2a14abd3155e228cd8f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy1
-  attackTimer: 0
-  isContact: 0
-  isCooling: 0
-  money_prefab: {fileID: 0}
   EnemyDate:
     id: 0
     name: 
@@ -119,8 +115,17 @@ MonoBehaviour:
     provideExp: 0
     SkillTime: 0
     range: 0
-  skillTimer: 0
+  hp: 0
+  damage: 0
+  speed: 0
+  attackTime: 0
+  attackTimer: 0
+  isContact: 0
+  isCooling: 0
   skilling: 0
+  provideExp: 1
+  money_prefab: {fileID: 0}
+  skillTimer: 0
 --- !u!70 &7096545439590774843
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -155,8 +160,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.01507438, y: 0.27}
-  m_Size: {x: 0.73, y: 0.64}
+  m_Offset: {x: -0.015074351, y: 0.3223739}
+  m_Size: {x: 0.97387826, y: 0.97387826}
   m_Direction: 1
 --- !u!1 &8710668312547028019
 GameObject:
