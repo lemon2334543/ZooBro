@@ -22,7 +22,7 @@ public class GamePanel : MonoBehaviour
         Instance = this;
         // 查找UI组件并获取控制权
         _hpSlider = GameObject.Find("HpSlider").GetComponent<Slider>();
-        _expSlider = GameObject.Find("ExpSlider").GetComponent<Slider>();
+        //_expSlider = GameObject.Find("ExpSlider").GetComponent<Slider>();
         _moneyCount = GameObject.Find("MoneyCount").GetComponent<TMP_Text>();
         _hpCount = GameObject.Find("HpCount").GetComponent<TMP_Text>();
         _countDown = GameObject.Find("CountDown").GetComponent<TMP_Text>();
