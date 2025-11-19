@@ -1,19 +1,116 @@
-using NUnit.Framework;
 using UnityEngine;
+using System.Collections;
 
 public class WeaponShort : WeaponBase
 {
-    // µ±ÎäÆ÷Åö×²ÌåÓëÆäËûÅö×²Ìå½Ó´¥Ê±×Ô¶¯µ÷ÓÃ
+    private float moveSpeed = 10f; // è¿‘æˆ˜æ­¦å™¨ç§»åŠ¨é€Ÿåº¦
+
+    public void Awake()
+    {
+        base.Awake();
+        moveSpeed = 10f; // åˆå§‹åŒ–ç§»åŠ¨é€Ÿåº¦
+    }
+
+    /// <summary>
+    /// è¿‘æˆ˜æ”»å‡»é€»è¾‘ï¼ˆåç¨‹å®ç°å®Œæ•´æ”»å‡»æµç¨‹ï¼‰
+    /// </summary>
+    public override IEnumerator Fire()
+    {
+        // æ£€æŸ¥å†·å´çŠ¶æ€
+        if (isCooling) 
+            yield break;
+
+        isCooling = true;
+        
+        // å¯ç”¨ç¢°æ’ä½“æ£€æµ‹
+        CapsuleCollider2D collider = GetComponent<CapsuleCollider2D>();
+        collider.enabled = true;
+        isAiming = false; // æš‚åœç„å‡†
+
+        // æ‰§è¡Œæ”»å‡»åŠ¨ä½œ
+        yield return StartCoroutine(ExecuteAttack());
+
+        // æ”»å‡»å®Œæˆåç¦ç”¨ç¢°æ’ä½“
+        collider.enabled = false;
+        isAiming = true; // æ¢å¤ç„å‡†
+        isCooling = false; // ç»“æŸå†·å´
+    }
+
+    /// <summary>
+    /// æ‰§è¡Œå®Œæ•´çš„æ”»å‡»åŠ¨ä½œåºåˆ—
+    /// </summary>
+    private IEnumerator ExecuteAttack()
+    {
+        // ç§»åŠ¨åˆ°æ•Œäººä½ç½®
+        yield return StartCoroutine(Goposition());
+        
+        // æ”»å‡»é—´éš”
+        yield return new WaitForSeconds(0.3f);
+        
+        // è¿”å›åŸå§‹ä½ç½®
+        yield return StartCoroutine(ReturnPosition());
+    }
+
+    /// <summary>
+    /// ç¢°æ’æ£€æµ‹ï¼ˆå‡»ä¸­æ•Œäººæ—¶è§¦å‘ï¼‰
+    /// </summary>
     private void OnTriggerEnter2D(Collider2D col)
     {
-        // ¼ì²éÅö×²µ½µÄÎïÌåÊÇ·ñ±ê¼ÇÎª"Enemy"±êÇ©
         if (col.CompareTag("Enemy"))
         {
-            // ¶ÔµĞÈËÔì³ÉÉËº¦£º»ñÈ¡µĞÈË×é¼ş²¢µ÷ÓÃÊÜÉË·½·¨£¬´«ÈëÎäÆ÷ÉËº¦Öµ
-            col.GetComponent<EnemyBase>().Injured(data.damage);
-
-            // Á¢¼´¹Ø±ÕÎäÆ÷µÄÅö×²Ìå£¬·ÀÖ¹Í¬Ò»Ö¡ÄÚ¶à´Î´¥·¢ÉËº¦
-            gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
+            // æš´å‡»åˆ¤å®š
+            bool isCritical = CriticalHits();
+            float finalDamage = isCritical ? 
+                data.damage * data.critical_strikes_multiple : 
+                data.damage;
+            
+            // å¯¹æ•Œäººé€ æˆä¼¤å®³
+            col.GetComponent<EnemyBase>().Injured(finalDamage);
         }
+    }
+
+    /// <summary>
+    /// å‘æ•Œäººä½ç½®ç§»åŠ¨
+    /// </summary>
+    private IEnumerator Goposition()
+    {
+        // è®¡ç®—ç›®æ ‡ä½ç½®ï¼ˆæ•Œäººèº«ä½“ä¸­å¿ƒï¼‰
+        Vector3 targetPos = enemy.position + 
+            new Vector3(0, enemy.GetComponent<SpriteRenderer>().size.y / 2, 0);
+
+        // å¹³æ»‘ç§»åŠ¨åˆ°ç›®æ ‡ä½ç½®
+        while (Vector2.Distance(transform.position, targetPos) > 0.1f)
+        {
+            Vector3 direction = (targetPos - transform.position).normalized;
+            transform.position += direction * moveSpeed * Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    /// <summary>
+    /// è¿”å›åŸå§‹ä½ç½®
+    /// </summary>
+    private IEnumerator ReturnPosition()
+    {
+        Vector3 startPos = transform.localPosition;
+        
+        // å¹³æ»‘è¿”å›åŸå§‹ä½ç½®
+        while ((Vector3.zero - transform.localPosition).magnitude > 0.1f)
+        {
+            Vector3 direction = (Vector3.zero - transform.localPosition).normalized;
+            transform.localPosition += direction * moveSpeed * Time.deltaTime;
+            yield return null;
+        }
+        transform.localPosition = Vector3.zero; // ç¡®ä¿ç²¾ç¡®å½’ä½
+    }
+
+    /// <summary>
+    /// æš´å‡»æ¦‚ç‡è®¡ç®—
+    /// </summary>
+    protected virtual bool CriticalHits()
+    {
+        // æ ¹æ®è§’è‰²å±æ€§è®¡ç®—æš´å‡»æ¦‚ç‡
+        float criticalProbability = GameManager.Instance.propData.critical_strikes_probability / 100f;
+        return UnityEngine.Random.value < criticalProbability;
     }
 }

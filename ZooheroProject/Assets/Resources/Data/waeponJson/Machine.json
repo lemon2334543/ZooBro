@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "无人机器人Ver0.1",
+    "avatar": "Image/人物/小土狗",
+    "grade": 1,
+    "price": 11,
+    "damage" : 4,
+    "attackcount": 1,
+    "isLong": 0,
+    "range": 150,
+    "critical_strikes_multiple": 1.5,
+    "critical_strikes_probability": 0,
+    "cooling": 0.78,
+    "repel": 0,
+    "describe": "每隔10秒转换一个无人机器人",
+    "familyId": 2,
+    "affection": 1,
+    "rank": 1,
+    "familyname": "Machine",
+    "EnName": "puppy",
+    "Type": [
+      "召唤"
+    ]
+  }
+]

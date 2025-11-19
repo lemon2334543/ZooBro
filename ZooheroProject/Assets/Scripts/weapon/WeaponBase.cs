@@ -2,189 +2,197 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class WeaponBase : MonoBehaviour
 {
-    public WeaponData data;//ÎäÆ÷»ù±¾Êı¾İ
+    public WeaponData data; // æ­¦å™¨æ•°æ®
+    public float Attack; // æ”»å‡»åŠ›
+    public bool isAttack = false; // æ˜¯å¦æ”»å‡»ï¼ˆåœ¨æ”»å‡»èŒƒå›´å†…ï¼‰
+    public bool isCooling = false; // æ”»å‡»å†·å´
+    public bool isAiming = true; // æ˜¯å¦è‡ªåŠ¨ç„å‡†
+    public float AttackTimer = 0; // æ”»å‡»è®¡æ—¶å™¨
+    public float moveSpeed; // ç§»åŠ¨é€Ÿåº¦
+    public Transform enemy; // ç„å‡†çš„æ•Œäºº
+    public float originZ; // åˆå§‹Zè½´è§’åº¦
 
-    public bool isAttack = false;//ÊÇ·ñ¿ÉÒÔ¹¥»÷£¬±ØĞëÔÚ¹¥»÷·¶Î§ÄÚ
-    public bool isCooling = false;//¹¥»÷ÀäÈ´
-    public bool isAiming = true; //ÊÇ·ñ×Ô¶¯Ãé×¼
-    public float AttackTimer = 0;//¹¥»÷¼ÆÊ±Æ÷
-    public float moveSpeed;//ÒÆ¶¯ËÙ¶È
-    public Transform enemy;//¼ì²â¹¥»÷µĞÈË
-    public float originZ;
 
-    private void Awake()
+    public void Awake()
     {
         originZ = transform.eulerAngles.z;
     }
 
-    private void Start()
+    public void Start()
     {
+        // åº”ç”¨å±æ€§åŠ æˆ
+        data.critical_strikes_probability *= GameManager.Instance.propData.critical_strikes_probability;
         
+        if (data.isLong == 0)
+        {
+            // è¿‘æˆ˜æ­¦å™¨ï¼šåº”ç”¨è¿‘æˆ˜å±æ€§åŠ æˆ
+            data.range *= GameManager.Instance.propData.short_range;
+            data.damage *= GameManager.Instance.propData.short_damage;
+            data.cooling /= GameManager.Instance.propData.short_attackSpeed;
+        }
+        else if (data.isLong == 1)
+        {
+            // è¿œç¨‹æ­¦å™¨ï¼šåº”ç”¨è¿œç¨‹å±æ€§åŠ æˆ
+            data.range *= GameManager.Instance.propData.long_range;
+            data.damage *= GameManager.Instance.propData.long_damage;
+            data.cooling /= GameManager.Instance.propData.long_attackSpeed;
+        }
     }
 
     private void Update()
     {
         if (Player.Instance.isDead)
-        {
             return;
-        }
 
-        //×Ô¶¯Ãé×¼
+        // è‡ªåŠ¨ç„å‡†
         if (isAiming)
-        {
             Aiming();
-        }
 
-
-        //ÅĞ¶Ï¹¥»÷
+        // æ”»å‡»è§¦å‘ï¼ˆä¸åœ¨å†·å´æ—¶ï¼‰
         if (isAttack && !isCooling)
-        {
-            Fire();
-        }
+            StartCoroutine(Fire());
 
-
-        // ¹¥»÷ÀäÈ´´¦Àí
+        // æ”»å‡»å†·å´è®¡æ—¶
         if (isCooling)
         {
-            // ÀÛ¼ÆÀäÈ´¼ÆÊ±Æ÷£ºÃ¿Ö¡Ôö¼Ó¾­¹ıµÄÊ±¼ä
             AttackTimer += Time.deltaTime;
-
-            // ¼ì²éÊÇ·ñÒÑÍê³ÉÀäÈ´Ê±¼ä
             if (AttackTimer >= data.cooling)
             {
-                // ÖØÖÃÀäÈ´¼ÆÊ±Æ÷
                 AttackTimer = 0;
-                // ½«ÀäÈ´×´Ì¬ÉèÖÃÎªfalse£¬±íÊ¾¿ÉÒÔÔÙ´Î¹¥»÷
                 isCooling = false;
             }
         }
-
-
-
     }
 
     private void Aiming()
     {
-        // 1. ¼ì²â¹¥»÷·¶Î§ÄÚµÄËùÓĞµĞÈË
-        // Ê¹ÓÃÔ²ĞÎ¼ì²âÇøÓò£¬ÕÒ³öËùÓĞÔÚ·¶Î§ÄÚµÄµĞÈËÅö×²Ìå
+        // æ£€æµ‹èŒƒå›´å†…çš„æ•Œäºº
         Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(
-            transform.position,       // ¼ì²âÖĞĞÄµã£ºµ±Ç°ÎäÆ÷Î»ÖÃ
-            data.range,               // ¼ì²â°ë¾¶£º´ÓWeaponDataÖĞ»ñÈ¡¹¥»÷·¶Î§
-            LayerMask.GetMask("Enemy")// ¼ì²â²ã¼¶£ºÖ»¼ì²â±ê¼ÇÎª"Enemy"²ãµÄÎïÌå
+            transform.position,
+            data.range,
+            LayerMask.GetMask("Enemy")
         );
 
-        // 2. ÅĞ¶ÏÊÇ·ñ¼ì²âµ½µĞÈË
-        if (enemiesInRange.Length > 0) // Èç¹û·¶Î§ÄÚÖÁÉÙÓĞÒ»¸öµĞÈË
+        if (enemiesInRange.Length > 0)
         {
-            isAttack = true; // ÉèÖÃÎª¹¥»÷×´Ì¬£¬±íÊ¾ÓĞÄ¿±ê¿É¹¥»÷
+            isAttack = true;
 
-            // 3. ´Ó¼ì²âµ½µÄµĞÈËÖĞÕÒ³ö¾àÀë×î½üµÄÒ»¸ö
+            // æ‰¾åˆ°æœ€è¿‘çš„æ•Œäºº
             Collider2D nearestEnemy = enemiesInRange
-                // °´¾àÀëÅÅĞò£º¼ÆËãÃ¿¸öµĞÈËÓëÎäÆ÷µÄ¾àÀë£¬´ÓĞ¡µ½´óÅÅÁĞ
-                .OrderBy(enemy => Vector2.Distance(
-                    transform.position,              // ÎäÆ÷µ±Ç°Î»ÖÃ
-                    enemy.transform.position         // µĞÈËÎ»ÖÃ
-                ))
-                .First(); // È¡µÚÒ»¸ö£¨¼´¾àÀë×î½üµÄµĞÈË£©
+                .OrderBy(enemy => Vector2.Distance(transform.position, enemy.transform.position))
+                .First();
 
-            // 4. ±£´æ×î½üµĞÈËµÄTransformÒıÓÃ£¬ÓÃÓÚºóĞø¹¥»÷
             enemy = nearestEnemy.transform;
-
-            // 5. ¼ÆËãÎäÆ÷Ó¦¸ÃĞı×ªµÄ½Ç¶È£¬Ê¹ÆäÖ¸ÏòµĞÈË
-            Vector2 enemyPos = enemy.position;                    // µĞÈËÎ»ÖÃ
-            Vector2 direction = enemyPos - (Vector2)transform.position; // ·½ÏòÏòÁ¿£º´ÓÎäÆ÷Ö¸ÏòµĞÈË
-            float angleDegrees = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg; // ½«·½Ïò×ª»»Îª½Ç¶È
-
-            // 6. Ó¦ÓÃĞı×ª½Ç¶È£¬Ê¹ÎäÆ÷Ö¸ÏòµĞÈË£¨±£ÁôÔ­Ê¼ZÖáÆ«ÒÆ£©
-            transform.eulerAngles =
-                new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, angleDegrees + originZ);
+            // Debug.Log(enemy.position);
+            // è®¡ç®—ç„å‡†è§’åº¦å¹¶æ—‹è½¬æ­¦å™¨
+            Vector2 direction = (Vector2)enemy.position - (Vector2)transform.position;
+            float angleDegrees = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, angleDegrees + originZ);
         }
         else
         {
-            // 7. Èç¹ûÃ»ÓĞ¼ì²âµ½µĞÈË£¬ÖØÖÃ×´Ì¬
-            isAttack = false;    // ÉèÖÃÎª·Ç¹¥»÷×´Ì¬
-            enemy = null;        // Çå³ıµĞÈËÄ¿±êÒıÓÃ
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, originZ); // ÖØÖÃÎäÆ÷½Ç¶Èµ½Ô­Ê¼·½Ïò
+            isAttack = false;
+            enemy = null;
+            // é‡ç½®æ­¦å™¨è§’åº¦
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, originZ);
         }
     }
 
-    public void Fire()
+    /// <summary>
+    /// æ”»å‡»é€»è¾‘ï¼ˆå­ç±»å¯é‡å†™ï¼‰
+    /// </summary>
+    public virtual IEnumerator Fire()
     {
-        // ¼ì²éÎäÆ÷ÊÇ·ñÔÚÀäÈ´ÖĞ£¬Èç¹ûÊÇÔòÖ±½ÓÍË³ö£¬²»Ö´ĞĞ·¢Éä
-        if (isCooling)
-        {
-            return;
-        }
-
-        // ÆôÓÃÎäÆ÷µÄÅö×²Ìå£¬Ê¹ÆäÄÜ¹»ÓëµĞÈË·¢ÉúÅö×²¼ì²â
-        gameObject.GetComponent<CapsuleCollider2D>().enabled = true;
-
-        //¹Ø±ÕÃé×¼ÒÆ¶¯Ê±ºò²»¸Ä±ä³öÈ¥·½Ïò
-        isAiming = false;
-
-        // Æô¶¯Ğ­³Ì£ºÈÃÎäÆ÷ÏòµĞÈËÎ»ÖÃÒÆ¶¯
-        StartCoroutine(Goposition());
-
-        // ½«ÎäÆ÷×´Ì¬ÉèÖÃÎªÀäÈ´ÖĞ£¬·ÀÖ¹Á¬Ğø·¢Éä
-        isCooling = true;
+        yield break;
     }
 
-
-    IEnumerator Goposition()
+    /// <summary>
+    /// æš´å‡»åˆ¤å®š
+    /// </summary>
+    public bool CriicalHits()
     {
-        // ¼ÆËãÒªÒÆ¶¯µ½µÄÄ¿±êÎ»ÖÃ£º¹ÖÎïµ×²¿ÖĞĞÄ + ¹ÖÎï¸ß¶ÈµÄÒ»°ë = ¹ÖÎïÉíÌåÖĞĞÄµã
-        var enemyPos = enemy.position + new Vector3(0, enemy.GetComponent<SpriteRenderer>().size.y / 2, 0);
+        float randomvalue = Random.Range(0, 1f);
+        return randomvalue < data.critical_strikes_probability;
+    }
 
-        // Ö»Òªµ±Ç°ÎïÌå¾àÀëÄ¿±êµã»¹´óÓÚ0.1Ã×£¬¾Í¼ÌĞøÒÆ¶¯
+    /// <summary>
+    /// ç§»åŠ¨åˆ°æ•Œäººä½ç½®
+    /// </summary>
+    public IEnumerator Goposition()
+    {
+        if (enemy == null)
+            yield break;
+
+        // ç›®æ ‡ä½ç½®ï¼šæ•Œäººä¸­å¿ƒ + æ•Œäººé«˜åº¦çš„ä¸€åŠ
+        Vector3 enemyPos = enemy.position + new Vector3(0, enemy.GetComponent<SpriteRenderer>().size.y / 2, 0);
+
+        // ç§»åŠ¨åˆ°ç›®æ ‡ä½ç½®é™„è¿‘
         while (Vector2.Distance(transform.position, enemyPos) > 0.1f)
         {
-            // ¼ÆËãÒÆ¶¯·½Ïò£º´Óµ±Ç°Î»ÖÃÖ¸ÏòÄ¿±êÎ»ÖÃ£¬²¢±ê×¼»¯³É³¤¶ÈÎª1µÄÏòÁ¿
             Vector3 direction = (enemyPos - transform.position).normalized;
-
-            // ¼ÆËãÕâÒ»Ö¡ÒªÒÆ¶¯µÄ¾àÀë£º·½Ïò ¡Á ËÙ¶È ¡Á Ê±¼ä
-            Vector3 moveAmount = direction * moveSpeed * Time.deltaTime;
-
-            // Êµ¼ÊÒÆ¶¯£ºÈÃÎïÌåµ±Ç°Î»ÖÃ¼ÓÉÏÕâÒ»Ö¡ÒªÒÆ¶¯µÄ¾àÀë
-            transform.position += moveAmount;
-
-            // ÔİÍ£Ò»Ö¡£¬µÈ´ıÏÂÒ»Ö¡ÔÙ¼ÌĞøÖ´ĞĞÕâ¸öÑ­»·
+            transform.position += direction * moveSpeed * Time.deltaTime;
             yield return null;
         }
 
-        
-        // ¹Ø±ÕÎäÆ÷µÄÅö×²Ìå£¬Ê¹ÆäÄÜ¹»ÓëµĞÈË·¢ÉúÅö×²¼ì²â
-        gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
+        // å…³é—­ç¢°æ’ä½“
+        CapsuleCollider2D collider = GetComponent<CapsuleCollider2D>();
+        if (collider != null)
+            collider.enabled = false;
 
-        // µ½´ïÄ¿±êÎ»ÖÃºó£¬¿ªÊ¼Ö´ĞĞ·µ»ØÔ­Î»ÖÃµÄĞ­³Ì
-        StartCoroutine(ReturnPosition());
-
-        
+        // è¿”å›åˆå§‹ä½ç½®
+        yield return StartCoroutine(ReturnPosition());
     }
 
+    /// <summary>
+    /// è¿”å›åˆå§‹ä½ç½®
+    /// </summary>
     IEnumerator ReturnPosition()
     {
-        // Ñ­»·Ìõ¼ş£ºµ±ÎïÌå¾àÀë±¾µØ×ø±êÏµÔ­µã´óÓÚ0.1¸öµ¥Î»Ê±¼ÌĞøÒÆ¶¯
-        // Vector3.zero ÊÇ (0,0,0)£¬transform.localPosition ÊÇÏà¶ÔÓÚ¸¸ÎïÌåµÄÎ»ÖÃ
-        // Õâ¸öÑ­»·»áÈÃÎïÌå»Øµ½ËüµÄ³õÊ¼Î»ÖÃ£¨Ïà¶ÔÓÚ¸¸ÎïÌå£©
+        // ç§»åŠ¨åˆ°æœ¬åœ°åŸç‚¹é™„è¿‘
         while ((Vector3.zero - transform.localPosition).magnitude > 0.1f)
         {
-            // ¼ÆËãÒÆ¶¯·½Ïò£º´Óµ±Ç°Î»ÖÃÖ¸ÏòÔ­µã£¬²¢±ê×¼»¯Îª³¤¶ÈÎª1µÄÏòÁ¿
             Vector3 direction = (Vector3.zero - transform.localPosition).normalized;
-
-            // ÒÆ¶¯ÎïÌå£ºµ±Ç°Î»ÖÃ + ·½Ïò ¡Á ËÙ¶È ¡Á Ê±¼ä
-            // ÈÃÎïÌåÃ¿Ö¡ÏòÔ­µãÒÆ¶¯Ò»Ğ¡¶Î¾àÀë
             transform.localPosition += direction * moveSpeed * Time.deltaTime;
-
-            // ÔİÍ£Ò»Ö¡£¬µÈ´ıÏÂÒ»Ö¡¼ÌĞøÖ´ĞĞÒÆ¶¯
-            // ÕâÑù¿ÉÒÔÈÃÒÆ¶¯¹ı³ÌÆ½»¬·Ö²¼ÔÚ²»Í¬Ö¡ÖĞ
             yield return null;
         }
 
-        //»Ø¹éÔ­µã½øĞĞÃé×¼£¬·½Ê½¹¥»÷¹ı³Ì¸Ä±ä×ª¶¯
+        // æ¢å¤ç„å‡†çŠ¶æ€
         isAiming = true;
-
     }
+    
+    //æ”»å‡»æ•Œäººæ—¶
+    public void attckEnemy()
+    {
+        
+    }
+    
+    //å›åˆå¼€å§‹æ—¶
+    public void waveStart()
+    {
+        
+    }
+    
+    //å›åˆç»“æŸæ—¶
+    public void waveEnd()
+    {
+        
+    }
+    
+    //è¿›å…¥å•†åº—æ—¶
+    public void shopStar()
+    {
+        
+    }
+    
+    //ç¦»å¼€å•†åº—æ—¶
+    public void shopExit()
+    {
+        
+    }
+    
 }
+

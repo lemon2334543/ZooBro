@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "素食小鬼",
+    "avatar": "Image/人物/小土狗",
+    "grade": 1,
+    "price": 11,
+    "damage" : 4,
+    "attackcount": 1,
+    "isLong": 0,
+    "range": 150,
+    "critical_strikes_multiple": 2,
+    "critical_strikes_probability": 0.1,
+    "cooling": 0.78,
+    "repel": 0,
+    "describe": "10%造成2倍伤害",
+    "familyId": 2,
+    "affection": 1,
+    "rank": 1,
+    "familyname": "Demon",
+    "EnName": "puppy",
+    "Type": [
+        "暴击"
+    ]
+  }
+]
