@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:ZooheroProject/Assets/Animations/main.meta
 guid: 39746b28816c98d4eacf68191bf334a0
+========
+guid: e5165685471192f48b93d3628a434800
+>>>>>>>> 大鸡腿11-19:ZooheroProject/Assets/Animations/animation/main.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

@@ -127,8 +127,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.030275898, y: 0.0060455836}
-  m_Size: {x: 0.55135053, y: 0.32300404}
+  m_Offset: {x: -0.015922846, y: -0.010101742}
+  m_Size: {x: 0.5800572, y: 0.44141904}
   m_Direction: 1
 --- !u!50 &1739127373663699678
 Rigidbody2D:
@@ -175,3 +175,5 @@ MonoBehaviour:
   timer: 0
   dir: {x: 0, y: 0}
   tagName: 
+  penetrationCount: 0
+  maxPenetration: 0
