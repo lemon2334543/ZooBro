@@ -1,12 +1,87 @@
+using System.Collections.Generic;
+using Enemy;
+using model;
+using Newtonsoft.Json;
+using Resources.script.model;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public float currentWave ;
+    
+    public float currentWave;
+    
+    public RoleDate RoleDate;
+    public List<EnemyDate> EnemyDates = new List<EnemyDate>(); //敌人数据
+    public TextAsset enemytextAsset;
+    
+    public DifficultyDate DifficultyDate;
+    
+    // 统一游戏中不同难度和武器品质的颜色
+    public Color color_1 = new Color(0.204f, 0.204f, 0.204f);
+    public Color color0 = new Color(0.8f, 0.8f, 0.8f);
+    public Color color1 = new Color(0.6f, 0.9f, 0.6f);
+    public Color color2 = new Color(0.6f, 0.8f, 0.9f);
+    public Color color3 = new Color(0.8f, 0.6f, 0.9f);
+    public Color color4 = new Color(0.95f, 0.9f, 0.7f);
+    public Color color5 = new Color(0.95f, 0.7f, 0.75f);
+    
+    public List<FamilyDate> CurrentFamilyDates = new List<FamilyDate>();
+    public GameObject _PlayerVisual;
+    
+    public float hp;
+    public float money;
+    public float exp;
+    public float RankLevel = 1; // 当前等级
+    public float Armor;
+    
+    [SerializeField]
+    public PropData propData = new PropData();
+    public List<PropData> PropDatas = new List<PropData>();
+    
+    // 已经装备的武器列表
+    public List<WeaponData> currentWeapons = new List<WeaponData>();
+    
+    //未装备的武器列表
+    public List<WeaponData> NotEquippedcurrentWeapons = new List<WeaponData>();
+    
+    // 难度配置
+    public List<DifficultyDate> difficultyDates = new List<DifficultyDate>();
+    public TextAsset DifficultytextAsset;
+    // 家族配置
+    public List<FamilyDate> familyDates = new List<FamilyDate>();
+    public TextAsset FamilytextAsset;
+    // 角色配置
+    public List<RoleDate> RoleDates = new List<RoleDate>();
+    public TextAsset RoletextAsset;
+    
+    // 子弹预制体
+    public GameObject arrowBullet_prefab;
+    public GameObject medlcalBullet_prefab;
+    public GameObject postolBullet_prefab;
+    public GameObject enemyBullet_prefab;
+    
+    public List<WeaponData> WeaponDataOne = new List<WeaponData>();
+    public TextAsset textAssetOne;  
+    public List<WeaponData> WeaponDataTwo = new List<WeaponData>();
+    public TextAsset textAssetTwo; 
+    public List<WeaponData> WeaponDataThree = new List<WeaponData>();
+    public TextAsset textAssetThree; 
+    public List<WeaponData> NeuralWeaponData = new List<WeaponData>();
+    public TextAsset NeuraltextAsset;
 
-    void Awake()
+    public int ELO = 1; //动态难度平衡系数
+
+    public List<EnemyDate> EnemyTypeOrdinary = new List<EnemyDate>(); //普通敌人
+    public List<EnemyDate> EnemyTypeSkill = new List<EnemyDate>(); //技能敌人
+    public List<EnemyDate> EnemyTypeSpecial = new List<EnemyDate>(); //特殊敌人
+
+    public List<WeaponData> LockWeapons = new List<WeaponData>();
+
+
+    public void Awake()
     {
+        // Debug.Log("下一步");
         if (Instance == null)
         {
             Instance = this;
@@ -16,10 +91,119 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        // 加载配置文件
+        enemytextAsset = UnityEngine.Resources.Load<TextAsset>("Data/enemy");
+        EnemyDates = JsonConvert.DeserializeObject<List<EnemyDate>>(enemytextAsset.text);
+        enemyBullet_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/enemyBullet");
+
+        DifficultytextAsset = UnityEngine.Resources.Load<TextAsset>("Data/difficulty");
+        difficultyDates = JsonConvert.DeserializeObject<List<DifficultyDate>>(DifficultytextAsset.text);
+        FamilytextAsset = UnityEngine.Resources.Load<TextAsset>("Data/Family");
+        familyDates = JsonConvert.DeserializeObject<List<FamilyDate>>(FamilytextAsset.text);
+        RoletextAsset = UnityEngine.Resources.Load<TextAsset>("Data/role");
+        RoleDates = JsonConvert.DeserializeObject<List<RoleDate>>(RoletextAsset.text);
+       
+        // 加载子弹预制体
+        arrowBullet_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Bullet/ArrowBullet");
+        medlcalBullet_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Bullet/MedlcalBullet");
+        postolBullet_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Bullet/PostolBullet");
     }
 
     void Start()
     {
         currentWave = 0f;
+        CategorizeEnemies();
+ 
+    }
+
+    /// <summary>
+    /// 从列表中随机选择一个元素返回
+    /// </summary>
+    public T RandomOne<T>(List<T> list)
+    {
+        if (list == null || list.Count == 0)
+        {
+            return default(T);
+        }
+
+        int index = Random.Range(0, list.Count);
+        return list[index];
+    }
+    
+    //分类计算敌人
+    public void CategorizeEnemies()
+    {
+        foreach (EnemyDate enemyDate in EnemyDates)
+        {
+            if (enemyDate.type==1)
+            {
+                EnemyTypeOrdinary.Add(enemyDate);
+            }
+            else if(enemyDate.type==2)
+            {
+                EnemyTypeSkill.Add(enemyDate);
+            }else if(enemyDate.type==3)
+            {
+                EnemyTypeSpecial.Add(enemyDate);
+            }
+        }
+    }
+    
+    //显示GameObject
+    public void GameObjectShow(CanvasGroup canvasGroup)
+    {
+        canvasGroup.alpha = 1;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+    }
+    //隐藏GameObject
+    public void GameObjectHide(CanvasGroup canvasGroup)
+    {
+        canvasGroup.alpha = 0;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+    }
+
+    public void setFamilytext()
+    {
+        //加载选择的3个家族的武器信息 和中立家族武器信息
+        textAssetOne = UnityEngine.Resources.Load<TextAsset>("Data/waeponJson/"+ GameManager.Instance.CurrentFamilyDates[0].EnName);
+        WeaponDataOne = JsonConvert.DeserializeObject<List<WeaponData>>(GameManager.Instance.textAssetOne.text);
+        textAssetTwo = UnityEngine.Resources.Load<TextAsset>("Data/waeponJson/"+ GameManager.Instance.CurrentFamilyDates[1].EnName);
+        WeaponDataTwo = JsonConvert.DeserializeObject<List<WeaponData>>(GameManager.Instance.textAssetTwo.text);
+        textAssetThree = UnityEngine.Resources.Load<TextAsset>("Data/waeponJson/"+ GameManager.Instance.CurrentFamilyDates[2].EnName);
+        WeaponDataThree = JsonConvert.DeserializeObject<List<WeaponData>>(GameManager.Instance.textAssetThree.text);
+        NeuraltextAsset = UnityEngine.Resources.Load<TextAsset>("Data/waeponJson/Neutral");
+        NeuralWeaponData = JsonConvert.DeserializeObject<List<WeaponData>>(GameManager.Instance.NeuraltextAsset.text);
+    }
+
+
+    
+    /// <summary>
+    /// 初始化角色属性
+    /// </summary>
+    public void InitProp()
+    {
+        _PlayerVisual = GameObject.Find("PlayerVisual");
+        _PlayerVisual.GetComponent<SpriteRenderer>().sprite = UnityEngine.Resources.Load<Sprite>(RoleDate.avatar);
+        //重置玩家位置 大小
+        _PlayerVisual.transform.position = new Vector3(0, 0, 0);
+        _PlayerVisual.transform.localScale = new Vector3(0.05f, 0.05f, 0);       
+        
+        if (RoleDate.name == "培根.百夫长")
+        {
+            // 纯数值加成
+            propData.maxHp += 5;
+            money += 20;
+        }
+        else if (RoleDate.name == "其他角色")
+        {
+            // todo 后续扩展其他角色逻辑
+        }
+
+        money += 9999; // 默认开局30元
+        exp = 0;
+        hp = propData.maxHp;
     }
 }

@@ -2,189 +2,357 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
+/// <summary>
+/// æ‰€æœ‰æ­¦å™¨çš„åŸºç±»ï¼Œæä¾›é€šç”¨å±æ€§ï¼ˆå¦‚å†·å´ã€ç„å‡†ã€æ”»å‡»è§¦å‘ï¼‰ã€æ—‹è½¬æ§åˆ¶ã€é•œåƒç¿»è½¬ã€æš´å‡»è®¡ç®—ç­‰åŸºç¡€åŠŸèƒ½ã€‚
+/// å­ç±»éœ€é‡å†™ Fire() å®ç°å…·ä½“æ”»å‡»è¡Œä¸ºã€‚
+/// </summary>
 public class WeaponBase : MonoBehaviour
 {
-    public WeaponData data;//ÎäÆ÷»ù±¾Êı¾İ
+    // ========== å…¬å…±é…ç½®ä¸çŠ¶æ€ ==========
+    public WeaponData data;                     // æ­¦å™¨é…ç½®æ•°æ®ï¼ˆä¼¤å®³ã€èŒƒå›´ã€å†·å´ç­‰ï¼‰
+    public float Attack;                        // æœªä½¿ç”¨å­—æ®µï¼ˆå¯èƒ½é¢„ç•™ï¼‰
+    public bool isAttack = false;               // æ˜¯å¦è§¦å‘äº†æ”»å‡»è¯·æ±‚ï¼ˆç”±ç„å‡†ç³»ç»Ÿè®¾ç½®ï¼‰
+    public bool isCooling = false;              // æ˜¯å¦å¤„äºå†·å´ä¸­
+    public bool isAiming = true;                // æ˜¯å¦å¯ç”¨è‡ªåŠ¨ç„å‡†ï¼ˆå¯å…³é—­ç”¨äºæ‰‹åŠ¨æ§åˆ¶ï¼‰
+    public float AttackTimer = 0f;              // å†·å´å€’è®¡æ—¶è®¡æ—¶å™¨ï¼ˆå•ä½ï¼šç§’ï¼‰
+    public float moveSpeed;                     // ç”¨äº GoPosition çš„ç§»åŠ¨é€Ÿåº¦ï¼ˆè¿œç¨‹æ­¦å™¨ç”¨ï¼Ÿï¼‰
+    public Transform enemy;                     // å½“å‰é”å®šçš„ç›®æ ‡æ•Œäºº
+    public float originZ;                       // æ­¦å™¨åˆå§‹ Z è½´æ—‹è½¬ï¼ˆç”¨äºå¤ä½ï¼‰
 
-    public bool isAttack = false;//ÊÇ·ñ¿ÉÒÔ¹¥»÷£¬±ØĞëÔÚ¹¥»÷·¶Î§ÄÚ
-    public bool isCooling = false;//¹¥»÷ÀäÈ´
-    public bool isAiming = true; //ÊÇ·ñ×Ô¶¯Ãé×¼
-    public float AttackTimer = 0;//¹¥»÷¼ÆÊ±Æ÷
-    public float moveSpeed;//ÒÆ¶¯ËÙ¶È
-    public Transform enemy;//¼ì²â¹¥»÷µĞÈË
-    public float originZ;
+    // ====== æ–°å¢ï¼šé•œåƒç¿»è½¬ä¸é˜²æŠ–ç³»ç»Ÿ ======
+    protected SpriteRenderer _spriteRenderer;   // ç”¨äºæ§åˆ¶ flipX å®ç°é•œåƒ
+    protected bool _isFlipped = false;          // å½“å‰æ˜¯å¦å·²é•œåƒç¿»è½¬
+    protected float _lastStableAngle = 0f;      // ä¸Šä¸€æ¬¡â€œç¨³å®šâ€çš„æ—‹è½¬è§’åº¦ï¼ˆç”¨äºå¹³æ»‘è¿‡æ¸¡ï¼‰
+    protected bool _angleNeedsCorrection = false; // æ˜¯å¦éœ€è¦å¯¹å¤§è§’åº¦è·³å˜è¿›è¡Œå¹³æ»‘ä¿®æ­£
+    [SerializeField] protected float _angleHysteresis = 5f; // é•œåƒåˆ‡æ¢çš„æ»åé˜ˆå€¼ï¼ˆé˜²æŠ–ï¼‰
 
-    private void Awake()
+    #region ç”Ÿå‘½å‘¨æœŸ
+    /// <summary>
+    /// åˆå§‹åŒ–ç»„ä»¶å¼•ç”¨ï¼Œè®°å½•åˆå§‹æ—‹è½¬ï¼Œç¡®ä¿ SpriteRenderer å­˜åœ¨ã€‚
+    /// </summary>
+    public virtual void Awake()
     {
-        originZ = transform.eulerAngles.z;
+        originZ = transform.eulerAngles.z; // è®°å½•åˆå§‹ Z è§’ï¼ˆç”¨äºé»˜è®¤æœå‘ï¼‰
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        if (_spriteRenderer == null)
+        {
+            Debug.LogError("WeaponBase: Missing SpriteRenderer!");
+            enabled = false; // ç¼ºå°‘å¿…è¦ç»„ä»¶åˆ™ç¦ç”¨
+        }
+        _lastStableAngle = originZ; // åˆå§‹ç¨³å®šè§’åº¦è®¾ä¸ºåŸç‚¹
     }
 
-    private void Start()
+    /// <summary>
+    /// æ ¹æ® GameManager ä¸­çš„å…¨å±€å±æ€§ç¼©æ”¾æ­¦å™¨å‚æ•°ï¼ˆå¦‚çŸ­/é•¿æ­¦å™¨åŠ æˆï¼‰ã€‚
+    /// </summary>
+    public virtual void Start()
     {
-        
-    }
+        if (data == null) { enabled = false; return; } // æ•°æ®ç¼ºå¤±åˆ™ç¦ç”¨
 
+        // åº”ç”¨å…¨å±€æš´å‡»ç‡åŠ æˆ
+        data.critical_strikes_probability *= GameManager.Instance.propData.critical_strikes_probability;
+
+        // æ ¹æ®æ­¦å™¨ç±»å‹ï¼ˆçŸ­ or é•¿ï¼‰åº”ç”¨ä¸åŒçš„å…¨å±€å±æ€§å€ç‡
+        if (data.isLong == 0) // çŸ­æ­¦å™¨
+        {
+            data.range *= GameManager.Instance.propData.short_range;
+            data.damage *= GameManager.Instance.propData.short_damage;
+            data.cooling /= GameManager.Instance.propData.short_attackSpeed; // æ”»é€Ÿæå‡ â†’ å†·å´ç¼©çŸ­
+        }
+        else if (data.isLong == 1) // é•¿æ­¦å™¨
+        {
+            data.range *= GameManager.Instance.propData.long_range;
+            data.damage *= GameManager.Instance.propData.long_damage;
+            data.cooling /= GameManager.Instance.propData.long_attackSpeed;
+        }
+    }
+    #endregion
+
+    #region ä¸»å¾ªç¯é€»è¾‘
     private void Update()
     {
-        if (Player.Instance.isDead)
-        {
-            return;
-        }
+        // ç©å®¶æ­»äº¡æˆ–æœªåˆå§‹åŒ–åˆ™è·³è¿‡
+        if (Player.Instance?.isDead != false) return;
 
-        //×Ô¶¯Ãé×¼
+        // è‡ªåŠ¨ç„å‡†é€»è¾‘ï¼ˆè‹¥å¯ç”¨ï¼‰
         if (isAiming)
-        {
             Aiming();
-        }
 
-
-        //ÅĞ¶Ï¹¥»÷
+        // è‹¥æ”¶åˆ°æ”»å‡»è¯·æ±‚ä¸”ä¸åœ¨å†·å´ï¼Œåˆ™å¯åŠ¨æ”»å‡»åç¨‹
         if (isAttack && !isCooling)
         {
-            Fire();
+            isAttack = false; // æ¶ˆè´¹è¯·æ±‚
+            StartCoroutine(Fire());
         }
 
-
-        // ¹¥»÷ÀäÈ´´¦Àí
+        // âœ… ä¿®å¤ï¼šæ­£ç¡®å®ç°å†·å´å€’è®¡æ—¶
         if (isCooling)
         {
-            // ÀÛ¼ÆÀäÈ´¼ÆÊ±Æ÷£ºÃ¿Ö¡Ôö¼Ó¾­¹ıµÄÊ±¼ä
-            AttackTimer += Time.deltaTime;
-
-            // ¼ì²éÊÇ·ñÒÑÍê³ÉÀäÈ´Ê±¼ä
-            if (AttackTimer >= data.cooling)
+            AttackTimer -= Time.deltaTime;
+            if (AttackTimer <= 0f)
             {
-                // ÖØÖÃÀäÈ´¼ÆÊ±Æ÷
-                AttackTimer = 0;
-                // ½«ÀäÈ´×´Ì¬ÉèÖÃÎªfalse£¬±íÊ¾¿ÉÒÔÔÙ´Î¹¥»÷
-                isCooling = false;
+                AttackTimer = 0f;
+                isCooling = false; // å†·å´ç»“æŸ
+            }
+        }
+    }
+    #endregion
+
+    #region è‡ªåŠ¨ç„å‡†ç³»ç»Ÿ
+    /// <summary>
+    /// åœ¨ç©å®¶å‘¨å›´æœç´¢æœ€è¿‘çš„æœ‰æ•ˆæ•Œäººï¼Œè®¾ç½®ä¸ºæ”»å‡»ç›®æ ‡ã€‚
+    /// è‹¥æ‰¾åˆ°ç›®æ ‡ï¼Œåˆ™è§¦å‘ isAttackï¼›å¦åˆ™å–æ¶ˆæ”»å‡»ã€‚
+    /// </summary>
+    protected virtual void Aiming()
+    {
+        if (Player.Instance == null) return;
+
+        Vector2 center = Player.Instance.transform.position;
+        // åœ¨æ­¦å™¨èŒƒå›´å†…æŸ¥æ‰¾æ‰€æœ‰æ•Œäºº
+        Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(
+            center,
+            data.range,
+            LayerMask.GetMask("Enemy")
+        );
+
+        if (enemiesInRange.Length > 0)
+        {
+            isAttack = true; // æœ‰æ•Œäºº â†’ è§¦å‘æ”»å‡»
+
+            // æ‰¾å‡ºæœ€è¿‘çš„ã€æ¿€æ´»çš„ã€å­˜æ´»çš„æ•Œäºº
+            Collider2D nearestEnemy = enemiesInRange
+                .Where(col => col != null && col.gameObject.activeInHierarchy)
+                .OrderBy(col => Vector2.Distance(center, col.transform.position))
+                .FirstOrDefault();
+
+            if (nearestEnemy != null)
+            {
+                EnemyBase eb = nearestEnemy.GetComponent<EnemyBase>();
+                if (eb != null && eb.hp > 0)
+                {
+                    enemy = nearestEnemy.transform;
+                    UpdateWeaponFacing(); // æ›´æ–°æ­¦å™¨æœå‘
+                    return;
+                }
             }
         }
 
+        // æ— æœ‰æ•ˆç›®æ ‡ï¼šå–æ¶ˆæ”»å‡»å¹¶é‡ç½®æœå‘
+        isAttack = false;
+        enemy = null;
+        ResetWeaponFacing();
+    }
+    #endregion
 
+    #region æ­¦å™¨æœå‘æ§åˆ¶
+    /// <summary>
+    /// å°†æ­¦å™¨æœå‘å½“å‰é”å®šçš„æ•Œäººï¼ˆç›¸å¯¹äºç©å®¶ä½ç½®ï¼‰ã€‚
+    /// </summary>
+    protected virtual void UpdateWeaponFacing()
+    {
+        if (enemy == null || Player.Instance == null || _spriteRenderer == null) return;
 
+        // è®¡ç®—ä»ç©å®¶åˆ°æ•Œäººçš„æ–¹å‘
+        Vector2 direction = (Vector2)enemy.position - (Vector2)Player.Instance.transform.position;
+        float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + originZ;
+        ApplyControlledRotation(targetAngle); // åº”ç”¨å¸¦é˜²æŠ–çš„æ—‹è½¬
     }
 
-    private void Aiming()
+    /// <summary>
+    /// é‡ç½®æ­¦å™¨æœå‘ä¸ºé»˜è®¤æ–¹å‘ï¼ˆæ ¹æ®ç©å®¶é¢æœæ–¹å‘ï¼‰ã€‚
+    /// </summary>
+    protected virtual void ResetWeaponFacing()
     {
-        // 1. ¼ì²â¹¥»÷·¶Î§ÄÚµÄËùÓĞµĞÈË
-        // Ê¹ÓÃÔ²ĞÎ¼ì²âÇøÓò£¬ÕÒ³öËùÓĞÔÚ·¶Î§ÄÚµÄµĞÈËÅö×²Ìå
-        Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(
-            transform.position,       // ¼ì²âÖĞĞÄµã£ºµ±Ç°ÎäÆ÷Î»ÖÃ
-            data.range,               // ¼ì²â°ë¾¶£º´ÓWeaponDataÖĞ»ñÈ¡¹¥»÷·¶Î§
-            LayerMask.GetMask("Enemy")// ¼ì²â²ã¼¶£ºÖ»¼ì²â±ê¼ÇÎª"Enemy"²ãµÄÎïÌå
+        if (Player.Instance == null || _spriteRenderer == null) return;
+
+        bool playerFacingRight = Player.Instance.IsFacingRight;
+        // æ„é€ é»˜è®¤æœå‘å‘é‡ï¼ˆè€ƒè™‘ originZ åˆå§‹åç§»ï¼‰
+        Vector2 rightDir = new Vector2(
+            Mathf.Cos(originZ * Mathf.Deg2Rad),
+            Mathf.Sin(originZ * Mathf.Deg2Rad)
         );
+        Vector2 defaultDir = playerFacingRight 
+            ? rightDir 
+            : new Vector2(-rightDir.x, rightDir.y);
 
-        // 2. ÅĞ¶ÏÊÇ·ñ¼ì²âµ½µĞÈË
-        if (enemiesInRange.Length > 0) // Èç¹û·¶Î§ÄÚÖÁÉÙÓĞÒ»¸öµĞÈË
+        float defaultAngle = Mathf.Atan2(defaultDir.y, defaultDir.x) * Mathf.Rad2Deg;
+        ApplyControlledRotation(NormalizeAngle(defaultAngle));
+    }
+
+    /// <summary>
+    /// åº”ç”¨å—æ§æ—‹è½¬ï¼šé˜²æ­¢å¤§è§’åº¦è·³å˜ï¼Œæ”¯æŒé•œåƒç¿»è½¬ä¼˜åŒ–æ˜¾ç¤ºã€‚
+    /// </summary>
+    protected virtual void ApplyControlledRotation(float targetAngle)
+    {
+        float normalizedAngle = NormalizeAngle(targetAngle);
+
+        // è‹¥è§’åº¦çªå˜è¶…è¿‡ 45 åº¦ï¼Œå¯åŠ¨å¹³æ»‘ä¿®æ­£
+        if (Mathf.Abs(normalizedAngle - _lastStableAngle) > 45f)
         {
-            isAttack = true; // ÉèÖÃÎª¹¥»÷×´Ì¬£¬±íÊ¾ÓĞÄ¿±ê¿É¹¥»÷
+            _angleNeedsCorrection = true;
+        }
 
-            // 3. ´Ó¼ì²âµ½µÄµĞÈËÖĞÕÒ³ö¾àÀë×î½üµÄÒ»¸ö
-            Collider2D nearestEnemy = enemiesInRange
-                // °´¾àÀëÅÅĞò£º¼ÆËãÃ¿¸öµĞÈËÓëÎäÆ÷µÄ¾àÀë£¬´ÓĞ¡µ½´óÅÅÁĞ
-                .OrderBy(enemy => Vector2.Distance(
-                    transform.position,              // ÎäÆ÷µ±Ç°Î»ÖÃ
-                    enemy.transform.position         // µĞÈËÎ»ÖÃ
-                ))
-                .First(); // È¡µÚÒ»¸ö£¨¼´¾àÀë×î½üµÄµĞÈË£©
-
-            // 4. ±£´æ×î½üµĞÈËµÄTransformÒıÓÃ£¬ÓÃÓÚºóĞø¹¥»÷
-            enemy = nearestEnemy.transform;
-
-            // 5. ¼ÆËãÎäÆ÷Ó¦¸ÃĞı×ªµÄ½Ç¶È£¬Ê¹ÆäÖ¸ÏòµĞÈË
-            Vector2 enemyPos = enemy.position;                    // µĞÈËÎ»ÖÃ
-            Vector2 direction = enemyPos - (Vector2)transform.position; // ·½ÏòÏòÁ¿£º´ÓÎäÆ÷Ö¸ÏòµĞÈË
-            float angleDegrees = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg; // ½«·½Ïò×ª»»Îª½Ç¶È
-
-            // 6. Ó¦ÓÃĞı×ª½Ç¶È£¬Ê¹ÎäÆ÷Ö¸ÏòµĞÈË£¨±£ÁôÔ­Ê¼ZÖáÆ«ÒÆ£©
-            transform.eulerAngles =
-                new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, angleDegrees + originZ);
+        float finalAngle = normalizedAngle;
+        if (_angleNeedsCorrection)
+        {
+            // å¹³æ»‘æ’å€¼
+            float smoothed = Mathf.LerpAngle(_lastStableAngle, normalizedAngle, Time.deltaTime * 10f);
+            if (Mathf.Abs(smoothed - normalizedAngle) < 1f)
+            {
+                // æ¥è¿‘ç›®æ ‡ï¼Œç»“æŸä¿®æ­£
+                _angleNeedsCorrection = false;
+                _lastStableAngle = normalizedAngle;
+                finalAngle = normalizedAngle;
+            }
+            else
+            {
+                _lastStableAngle = smoothed;
+                finalAngle = smoothed;
+            }
         }
         else
         {
-            // 7. Èç¹ûÃ»ÓĞ¼ì²âµ½µĞÈË£¬ÖØÖÃ×´Ì¬
-            isAttack = false;    // ÉèÖÃÎª·Ç¹¥»÷×´Ì¬
-            enemy = null;        // Çå³ıµĞÈËÄ¿±êÒıÓÃ
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, originZ); // ÖØÖÃÎäÆ÷½Ç¶Èµ½Ô­Ê¼·½Ïò
+            _lastStableAngle = normalizedAngle;
         }
+
+        // æ›´æ–°é•œåƒçŠ¶æ€
+        UpdateFlipState(finalAngle);
+        // è·å–æœ€ç»ˆæ˜¾ç¤ºè§’åº¦ï¼ˆé•œåƒåå¯èƒ½éœ€è¦è°ƒæ•´è§†è§‰è§’åº¦ï¼‰
+        float displayAngle = _isFlipped ? GetFlippedDisplayAngle(finalAngle) : finalAngle;
+        transform.localEulerAngles = new Vector3(0, 0, displayAngle);
     }
 
-    public void Fire()
+    /// <summary>
+    /// æ ¹æ®å½“å‰è§’åº¦å†³å®šæ˜¯å¦éœ€è¦é•œåƒç¿»è½¬ï¼ˆflipXï¼‰ã€‚
+    /// ä½¿ç”¨æ»åé˜ˆå€¼ï¼ˆ_angleHysteresisï¼‰é˜²æ­¢åœ¨ä¸´ç•Œè§’é™„è¿‘é¢‘ç¹åˆ‡æ¢ã€‚
+    /// </summary>
+    protected virtual void UpdateFlipState(float currentAngle)
     {
-        // ¼ì²éÎäÆ÷ÊÇ·ñÔÚÀäÈ´ÖĞ£¬Èç¹ûÊÇÔòÖ±½ÓÍË³ö£¬²»Ö´ĞĞ·¢Éä
-        if (isCooling)
+        float norm = NormalizeAngle(currentAngle);
+        if (!_isFlipped)
         {
-            return;
+            // å½“å‰æœªç¿»è½¬ï¼Œä½†è§’åº¦è¶…å‡ºå³ä¾§èŒƒå›´ â†’ ç¿»è½¬
+            if (norm > (90f + _angleHysteresis) || norm < (-90f - _angleHysteresis))
+            {
+                _isFlipped = true;
+                if (_spriteRenderer != null) _spriteRenderer.flipX = true;
+            }
         }
-
-        // ÆôÓÃÎäÆ÷µÄÅö×²Ìå£¬Ê¹ÆäÄÜ¹»ÓëµĞÈË·¢ÉúÅö×²¼ì²â
-        gameObject.GetComponent<CapsuleCollider2D>().enabled = true;
-
-        //¹Ø±ÕÃé×¼ÒÆ¶¯Ê±ºò²»¸Ä±ä³öÈ¥·½Ïò
-        isAiming = false;
-
-        // Æô¶¯Ğ­³Ì£ºÈÃÎäÆ÷ÏòµĞÈËÎ»ÖÃÒÆ¶¯
-        StartCoroutine(Goposition());
-
-        // ½«ÎäÆ÷×´Ì¬ÉèÖÃÎªÀäÈ´ÖĞ£¬·ÀÖ¹Á¬Ğø·¢Éä
-        isCooling = true;
+        else
+        {
+            // å½“å‰å·²ç¿»è½¬ï¼Œä½†è§’åº¦å›åˆ°ä¸­é—´åŒºåŸŸ â†’ å–æ¶ˆç¿»è½¬
+            if (norm <= (90f - _angleHysteresis) && norm >= (-90f + _angleHysteresis))
+            {
+                _isFlipped = false;
+                if (_spriteRenderer != null) _spriteRenderer.flipX = false;
+            }
+        }
     }
 
-
-    IEnumerator Goposition()
+    /// <summary>
+    /// å½“æ­¦å™¨è¢«é•œåƒç¿»è½¬æ—¶ï¼Œè°ƒæ•´å…¶æ˜¾ç¤ºè§’åº¦ä»¥ä¿æŒè§†è§‰ä¸€è‡´æ€§ã€‚
+    /// ä¾‹å¦‚ï¼šåŸæœ¬æŒ‡å‘ 135Â°ï¼Œç¿»è½¬ååº”æ˜¾ç¤ºä¸º -45Â° å·¦å³ï¼Œé¿å…â€œåå‘ä¼¸å‡ºâ€ã€‚
+    /// </summary>
+    protected virtual float GetFlippedDisplayAngle(float originalAngle)
     {
-        // ¼ÆËãÒªÒÆ¶¯µ½µÄÄ¿±êÎ»ÖÃ£º¹ÖÎïµ×²¿ÖĞĞÄ + ¹ÖÎï¸ß¶ÈµÄÒ»°ë = ¹ÖÎïÉíÌåÖĞĞÄµã
-        var enemyPos = enemy.position + new Vector3(0, enemy.GetComponent<SpriteRenderer>().size.y / 2, 0);
+        float norm = NormalizeAngle(originalAngle);
+        if (norm > 90f)
+        {
+            // å³ä¸Šè±¡é™ â†’ æ˜ å°„åˆ°å·¦ä¸Š
+            float t = Mathf.InverseLerp(90f, 180f, norm);
+            return Mathf.Lerp(-90f, 0f, t);
+        }
+        else if (norm < -90f)
+        {
+            // å·¦ä¸‹è±¡é™ â†’ æ˜ å°„åˆ°å³ä¸‹
+            float t = Mathf.InverseLerp(-180f, -90f, norm);
+            return Mathf.Lerp(0f, 90f, t);
+        }
+        return originalAngle; // ä¸­é—´åŒºåŸŸæ— éœ€è°ƒæ•´
+    }
 
-        // Ö»Òªµ±Ç°ÎïÌå¾àÀëÄ¿±êµã»¹´óÓÚ0.1Ã×£¬¾Í¼ÌĞøÒÆ¶¯
+    /// <summary>
+    /// å°†ä»»æ„è§’åº¦æ ‡å‡†åŒ–åˆ° [-180, 180) åŒºé—´ï¼Œä¾¿äºæ¯”è¾ƒå’Œè®¡ç®—ã€‚
+    /// </summary>
+    protected virtual float NormalizeAngle(float angle)
+    {
+        angle %= 360f;
+        if (angle > 180f) angle -= 360f;
+        else if (angle < -180f) angle += 360f;
+        return angle;
+    }
+    #endregion
+
+    #region æ”»å‡»ä¸å·¥å…·æ–¹æ³•
+    /// <summary>
+    /// å­ç±»å¿…é¡»é‡å†™æ­¤æ–¹æ³•ï¼Œå®ç°å…·ä½“æ”»å‡»é€»è¾‘ï¼ˆå¦‚å‘å°„å­å¼¹ã€æŒ¥ç ç­‰ï¼‰ã€‚
+    /// </summary>
+    public virtual IEnumerator Fire() { yield break; }
+
+    /// <summary>
+    /// åˆ¤æ–­æœ¬æ¬¡æ”»å‡»æ˜¯å¦æš´å‡»ã€‚
+    /// </summary>
+    public bool CriticalHits()
+    {
+        return Random.value < data.critical_strikes_probability;
+    }
+
+    /// <summary>
+    /// ã€ç–‘ä¼¼é—ç•™ã€‘è®©æ­¦å™¨ç§»åŠ¨åˆ°æ•Œäººå¤´é¡¶ï¼ˆå¯èƒ½ç”¨äºæŠ•æ·ç±»ï¼Ÿï¼‰ï¼Œç„¶åè¿”å›ã€‚
+    /// æ³¨æ„ï¼šè¯¥é€»è¾‘ä¸ WeaponShort ä¸å…¼å®¹ï¼Œå¯èƒ½å±äºå…¶ä»–å­ç±»ã€‚
+    /// </summary>
+    public IEnumerator GoPosition()
+    {
+        if (enemy == null) yield break;
+
+        // ç›®æ ‡ä½ç½®ï¼šæ•Œäººé¡¶éƒ¨ï¼ˆåŸºäº SpriteRenderer é«˜åº¦ï¼‰
+        Vector3 enemyPos = enemy.position + new Vector3(0, enemy.GetComponent<SpriteRenderer>()?.size.y / 2f ?? 0, 0);
         while (Vector2.Distance(transform.position, enemyPos) > 0.1f)
         {
-            // ¼ÆËãÒÆ¶¯·½Ïò£º´Óµ±Ç°Î»ÖÃÖ¸ÏòÄ¿±êÎ»ÖÃ£¬²¢±ê×¼»¯³É³¤¶ÈÎª1µÄÏòÁ¿
-            Vector3 direction = (enemyPos - transform.position).normalized;
-
-            // ¼ÆËãÕâÒ»Ö¡ÒªÒÆ¶¯µÄ¾àÀë£º·½Ïò ¡Á ËÙ¶È ¡Á Ê±¼ä
-            Vector3 moveAmount = direction * moveSpeed * Time.deltaTime;
-
-            // Êµ¼ÊÒÆ¶¯£ºÈÃÎïÌåµ±Ç°Î»ÖÃ¼ÓÉÏÕâÒ»Ö¡ÒªÒÆ¶¯µÄ¾àÀë
-            transform.position += moveAmount;
-
-            // ÔİÍ£Ò»Ö¡£¬µÈ´ıÏÂÒ»Ö¡ÔÙ¼ÌĞøÖ´ĞĞÕâ¸öÑ­»·
+            Vector3 dir = (enemyPos - transform.position).normalized;
+            transform.position += dir * moveSpeed * Time.deltaTime;
             yield return null;
         }
 
-        
-        // ¹Ø±ÕÎäÆ÷µÄÅö×²Ìå£¬Ê¹ÆäÄÜ¹»ÓëµĞÈË·¢ÉúÅö×²¼ì²â
-        gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
+        // åˆ°è¾¾åç¦ç”¨ç¢°æ’ä½“ï¼ˆé˜²é‡å¤è§¦å‘ï¼Ÿï¼‰
+        CapsuleCollider2D collider = GetComponent<CapsuleCollider2D>();
+        if (collider != null) collider.enabled = false;
 
-        // µ½´ïÄ¿±êÎ»ÖÃºó£¬¿ªÊ¼Ö´ĞĞ·µ»ØÔ­Î»ÖÃµÄĞ­³Ì
-        StartCoroutine(ReturnPosition());
-
-        
+        yield return StartCoroutine(ReturnPosition());
     }
 
+    /// <summary>
+    /// å°†æ­¦å™¨å±€éƒ¨ä½ç½®å½’é›¶ï¼ˆè¿”å›ç©å®¶èº«è¾¹ï¼‰ã€‚
+    /// </summary>
     IEnumerator ReturnPosition()
     {
-        // Ñ­»·Ìõ¼ş£ºµ±ÎïÌå¾àÀë±¾µØ×ø±êÏµÔ­µã´óÓÚ0.1¸öµ¥Î»Ê±¼ÌĞøÒÆ¶¯
-        // Vector3.zero ÊÇ (0,0,0)£¬transform.localPosition ÊÇÏà¶ÔÓÚ¸¸ÎïÌåµÄÎ»ÖÃ
-        // Õâ¸öÑ­»·»áÈÃÎïÌå»Øµ½ËüµÄ³õÊ¼Î»ÖÃ£¨Ïà¶ÔÓÚ¸¸ÎïÌå£©
-        while ((Vector3.zero - transform.localPosition).magnitude > 0.1f)
+        while (transform.localPosition.magnitude > 0.1f)
         {
-            // ¼ÆËãÒÆ¶¯·½Ïò£º´Óµ±Ç°Î»ÖÃÖ¸ÏòÔ­µã£¬²¢±ê×¼»¯Îª³¤¶ÈÎª1µÄÏòÁ¿
-            Vector3 direction = (Vector3.zero - transform.localPosition).normalized;
-
-            // ÒÆ¶¯ÎïÌå£ºµ±Ç°Î»ÖÃ + ·½Ïò ¡Á ËÙ¶È ¡Á Ê±¼ä
-            // ÈÃÎïÌåÃ¿Ö¡ÏòÔ­µãÒÆ¶¯Ò»Ğ¡¶Î¾àÀë
-            transform.localPosition += direction * moveSpeed * Time.deltaTime;
-
-            // ÔİÍ£Ò»Ö¡£¬µÈ´ıÏÂÒ»Ö¡¼ÌĞøÖ´ĞĞÒÆ¶¯
-            // ÕâÑù¿ÉÒÔÈÃÒÆ¶¯¹ı³ÌÆ½»¬·Ö²¼ÔÚ²»Í¬Ö¡ÖĞ
+            Vector3 dir = -transform.localPosition.normalized;
+            transform.localPosition += dir * moveSpeed * Time.deltaTime;
             yield return null;
         }
-
-        //»Ø¹éÔ­µã½øĞĞÃé×¼£¬·½Ê½¹¥»÷¹ı³Ì¸Ä±ä×ª¶¯
-        isAiming = true;
-
+        isAiming = true; // è¿”å›åé‡æ–°å¯ç”¨ç„å‡†
     }
+
+    /// <summary>
+    /// ç»Ÿä¸€å¯åŠ¨å†·å´çš„æ–¹æ³•ï¼Œæ¨èå­ç±»è°ƒç”¨ä»¥ä¿è¯ä¸€è‡´æ€§ã€‚
+    /// </summary>
+    protected void StartCooldown()
+    {
+        isCooling = true;
+        AttackTimer = data.cooling;
+    }
+    #endregion
+
+    #region é¢„ç•™ç©ºæ–¹æ³•ï¼ˆå¯èƒ½ç”¨äºäº‹ä»¶å›è°ƒï¼‰
+    // è¿™äº›æ–¹æ³•ç›®å‰ä¸ºç©ºï¼Œå¯èƒ½æ˜¯ä¸ºåç»­æ‰©å±•é¢„ç•™çš„é’©å­ï¼ˆå¦‚ UI äº¤äº’ã€å…³å¡äº‹ä»¶ç­‰ï¼‰
+    public void attckEnemy() {}
+    public void waveStart() {}
+    public void waveEnd() {}
+    public void shopStar() {}
+    public void shopExit() {}
+    #endregion
 }

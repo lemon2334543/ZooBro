@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "近战机器人",
+    "avatar": "Image/武器/拳",
+    "damage": 8,
+    "attackcount": 1,
+    "penetrationcount": 1,
+    "range": 5,
+    "isLong": 0,
+    "effectType": 0,
+    "attackspeed": 15,
+    "cooling": 2,
+    "describe": "近战机器人",
+    "familyId": 7,
+    "affection": 2,
+    "maxSummons": 1,
+    "lifetime": 5,
+    "maxhp": 5,
+    "weaponId": 1
+  }
+]

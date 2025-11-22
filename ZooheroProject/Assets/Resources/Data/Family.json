@@ -1,0 +1,87 @@
+[
+  {
+    "id": 1,
+    "name": "中立",
+    "EnName": "Neutral",
+    "avatar": "Image/人物/全能",
+    "describe": "特性描述",
+    "slot": 6,
+    "record": -1,
+    "unlock": 1,
+    "unlockConditions": ""
+  },
+
+  {
+    "id": 2,
+    "name": "野兽",
+    "EnName": "Animal",
+    "avatar": "Image/人物/全能",
+    "describe": "特性描述",
+    "slot": 6,
+    "record": -1,
+    "unlock": 1,
+    "unlockConditions": ""
+
+  },
+
+  {
+    "id": 3,
+    "name": "机械",
+    "EnName": "Machine",
+    "avatar": "Image/人物/全能",
+    "describe": "特性描述",
+    "slot": 6,
+    "record": -1,
+    "unlock": 1,
+    "unlockConditions": ""
+
+  },
+  {
+    "id": 4,
+    "name": "恶魔",
+    "EnName": "Demon",
+    "avatar": "Image/人物/全能",
+    "describe": "特性描述",
+    "slot": 6,
+    "record": -1,
+    "unlock": 1, 
+    "unlockConditions": ""
+
+  },
+  {
+    "id": 5,
+    "name": "植物",
+    "EnName": "Plant",
+    "avatar": "Image/人物/全能",
+    "describe": "特性描述",
+    "slot": 6,
+    "record": -1,
+    "unlock": 0,
+    "unlockConditions": "解锁条件"
+
+  },
+  {
+    "id": 6,
+    "name": "宇宙",
+    "EnName": "野兽",
+    "avatar": "Image/人物/全能",
+    "describe": "特性描述",
+    "slot": 6,
+    "record": -1,
+    "unlock": 0,
+    "unlockConditions": "解锁条件"
+
+  },
+  {
+    "id": 7,
+    "name": "不知道",
+    "EnName": "野兽",
+    "avatar": "Image/人物/全能",
+    "describe": "特性描述",
+    "slot": 6,
+    "record": -1,
+    "unlock": 0,
+    "unlockConditions": "解锁条件"
+
+  }
+]

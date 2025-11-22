@@ -7,7 +7,8 @@
     "speed": 3,
     "attackTime": 1.5,
     "provideExp": 1,
-    "skillTime": -1, 
+    "skillTime": -1,
+    "type": 1,
     "range": -1
   },
   {
@@ -19,6 +20,7 @@
     "attackTime": 1.5,
     "provideExp": 1,
     "skillTime": -1,
+    "type": 1,
     "range": -1
   },
   {
@@ -30,6 +32,7 @@
     "attackTime": 1.5,
     "provideExp": 3,
     "skillTime": 2.5,
+    "type": 2,
     "range": 5.5
   },
   {
@@ -41,6 +44,7 @@
     "attackTime": 1.5,
     "provideExp": 3,
     "skillTime": 3.5,
+    "type": 3,
     "range": 3.5
   },
   {
@@ -52,6 +56,7 @@
     "attackTime": 1.5,
     "provideExp": 10,
     "skillTime": 4.5,
+    "type": 3,
     "range": 5
   }
 ]
