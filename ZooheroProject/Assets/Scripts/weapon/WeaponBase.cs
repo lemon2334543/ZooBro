@@ -87,7 +87,7 @@ public class WeaponBase : MonoBehaviour
             StartCoroutine(Fire());
         }
 
-        // ✅ 修复：正确实现冷却倒计时
+        // 正确实现冷却倒计时
         if (isCooling)
         {
             AttackTimer -= Time.deltaTime;
@@ -100,31 +100,30 @@ public class WeaponBase : MonoBehaviour
     }
     #endregion
 
-    #region 自动瞄准系统
+    #region 自动瞄准系统（✅ 仅以武器自身为中心）
     /// <summary>
-    /// 在玩家周围搜索最近的有效敌人，设置为攻击目标。
+    /// 仅在武器自身周围搜索最近的有效敌人。
     /// 若找到目标，则触发 isAttack；否则取消攻击。
     /// </summary>
     protected virtual void Aiming()
     {
-        if (Player.Instance == null) return;
+        if (Player.Instance == null || data == null) return;
 
-        Vector2 center = Player.Instance.transform.position;
-        // 在武器范围内查找所有敌人
         Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(
-            center,
+            transform.position,
             data.range,
             LayerMask.GetMask("Enemy")
         );
 
         if (enemiesInRange.Length > 0)
         {
-            isAttack = true; // 有敌人 → 触发攻击
+            isAttack = true;
 
-            // 找出最近的、激活的、存活的敌人
+            // 找出最近的、激活的、存活的敌人（相对于武器自身）
+            Vector2 weaponPos = transform.position;
             Collider2D nearestEnemy = enemiesInRange
                 .Where(col => col != null && col.gameObject.activeInHierarchy)
-                .OrderBy(col => Vector2.Distance(center, col.transform.position))
+                .OrderBy(col => Vector2.Distance(weaponPos, col.transform.position))
                 .FirstOrDefault();
 
             if (nearestEnemy != null)
@@ -133,7 +132,7 @@ public class WeaponBase : MonoBehaviour
                 if (eb != null && eb.hp > 0)
                 {
                     enemy = nearestEnemy.transform;
-                    UpdateWeaponFacing(); // 更新武器朝向
+                    UpdateWeaponFacing(); // 更新武器朝向（从武器指向敌人）
                     return;
                 }
             }
@@ -148,16 +147,15 @@ public class WeaponBase : MonoBehaviour
 
     #region 武器朝向控制
     /// <summary>
-    /// 将武器朝向当前锁定的敌人（相对于玩家位置）。
+    /// 将武器朝向当前锁定的敌人（从武器自身指向敌人）。
     /// </summary>
     protected virtual void UpdateWeaponFacing()
     {
-        if (enemy == null || Player.Instance == null || _spriteRenderer == null) return;
+        if (enemy == null || _spriteRenderer == null) return;
 
-        // 计算从玩家到敌人的方向
-        Vector2 direction = (Vector2)enemy.position - (Vector2)Player.Instance.transform.position;
+        Vector2 direction = (Vector2)enemy.position - (Vector2)transform.position;
         float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + originZ;
-        ApplyControlledRotation(targetAngle); // 应用带防抖的旋转
+        ApplyControlledRotation(targetAngle);
     }
 
     /// <summary>
@@ -168,7 +166,6 @@ public class WeaponBase : MonoBehaviour
         if (Player.Instance == null || _spriteRenderer == null) return;
 
         bool playerFacingRight = Player.Instance.IsFacingRight;
-        // 构造默认朝向向量（考虑 originZ 初始偏移）
         Vector2 rightDir = new Vector2(
             Mathf.Cos(originZ * Mathf.Deg2Rad),
             Mathf.Sin(originZ * Mathf.Deg2Rad)
@@ -188,7 +185,6 @@ public class WeaponBase : MonoBehaviour
     {
         float normalizedAngle = NormalizeAngle(targetAngle);
 
-        // 若角度突变超过 45 度，启动平滑修正
         if (Mathf.Abs(normalizedAngle - _lastStableAngle) > 45f)
         {
             _angleNeedsCorrection = true;
@@ -197,11 +193,9 @@ public class WeaponBase : MonoBehaviour
         float finalAngle = normalizedAngle;
         if (_angleNeedsCorrection)
         {
-            // 平滑插值
             float smoothed = Mathf.LerpAngle(_lastStableAngle, normalizedAngle, Time.deltaTime * 10f);
             if (Mathf.Abs(smoothed - normalizedAngle) < 1f)
             {
-                // 接近目标，结束修正
                 _angleNeedsCorrection = false;
                 _lastStableAngle = normalizedAngle;
                 finalAngle = normalizedAngle;
@@ -217,9 +211,7 @@ public class WeaponBase : MonoBehaviour
             _lastStableAngle = normalizedAngle;
         }
 
-        // 更新镜像状态
         UpdateFlipState(finalAngle);
-        // 获取最终显示角度（镜像后可能需要调整视觉角度）
         float displayAngle = _isFlipped ? GetFlippedDisplayAngle(finalAngle) : finalAngle;
         transform.localEulerAngles = new Vector3(0, 0, displayAngle);
     }
@@ -233,7 +225,6 @@ public class WeaponBase : MonoBehaviour
         float norm = NormalizeAngle(currentAngle);
         if (!_isFlipped)
         {
-            // 当前未翻转，但角度超出右侧范围 → 翻转
             if (norm > (90f + _angleHysteresis) || norm < (-90f - _angleHysteresis))
             {
                 _isFlipped = true;
@@ -242,7 +233,6 @@ public class WeaponBase : MonoBehaviour
         }
         else
         {
-            // 当前已翻转，但角度回到中间区域 → 取消翻转
             if (norm <= (90f - _angleHysteresis) && norm >= (-90f + _angleHysteresis))
             {
                 _isFlipped = false;
@@ -253,28 +243,25 @@ public class WeaponBase : MonoBehaviour
 
     /// <summary>
     /// 当武器被镜像翻转时，调整其显示角度以保持视觉一致性。
-    /// 例如：原本指向 135°，翻转后应显示为 -45° 左右，避免“反向伸出”。
     /// </summary>
     protected virtual float GetFlippedDisplayAngle(float originalAngle)
     {
         float norm = NormalizeAngle(originalAngle);
         if (norm > 90f)
         {
-            // 右上象限 → 映射到左上
             float t = Mathf.InverseLerp(90f, 180f, norm);
             return Mathf.Lerp(-90f, 0f, t);
         }
         else if (norm < -90f)
         {
-            // 左下象限 → 映射到右下
             float t = Mathf.InverseLerp(-180f, -90f, norm);
             return Mathf.Lerp(0f, 90f, t);
         }
-        return originalAngle; // 中间区域无需调整
+        return originalAngle;
     }
 
     /// <summary>
-    /// 将任意角度标准化到 [-180, 180) 区间，便于比较和计算。
+    /// 将任意角度标准化到 [-180, 180) 区间。
     /// </summary>
     protected virtual float NormalizeAngle(float angle)
     {
@@ -287,7 +274,7 @@ public class WeaponBase : MonoBehaviour
 
     #region 攻击与工具方法
     /// <summary>
-    /// 子类必须重写此方法，实现具体攻击逻辑（如发射子弹、挥砍等）。
+    /// 子类必须重写此方法，实现具体攻击逻辑。
     /// </summary>
     public virtual IEnumerator Fire() { yield break; }
 
@@ -300,44 +287,6 @@ public class WeaponBase : MonoBehaviour
     }
 
     /// <summary>
-    /// 【疑似遗留】让武器移动到敌人头顶（可能用于投掷类？），然后返回。
-    /// 注意：该逻辑与 WeaponShort 不兼容，可能属于其他子类。
-    /// </summary>
-    public IEnumerator GoPosition()
-    {
-        if (enemy == null) yield break;
-
-        // 目标位置：敌人顶部（基于 SpriteRenderer 高度）
-        Vector3 enemyPos = enemy.position + new Vector3(0, enemy.GetComponent<SpriteRenderer>()?.size.y / 2f ?? 0, 0);
-        while (Vector2.Distance(transform.position, enemyPos) > 0.1f)
-        {
-            Vector3 dir = (enemyPos - transform.position).normalized;
-            transform.position += dir * moveSpeed * Time.deltaTime;
-            yield return null;
-        }
-
-        // 到达后禁用碰撞体（防重复触发？）
-        CapsuleCollider2D collider = GetComponent<CapsuleCollider2D>();
-        if (collider != null) collider.enabled = false;
-
-        yield return StartCoroutine(ReturnPosition());
-    }
-
-    /// <summary>
-    /// 将武器局部位置归零（返回玩家身边）。
-    /// </summary>
-    IEnumerator ReturnPosition()
-    {
-        while (transform.localPosition.magnitude > 0.1f)
-        {
-            Vector3 dir = -transform.localPosition.normalized;
-            transform.localPosition += dir * moveSpeed * Time.deltaTime;
-            yield return null;
-        }
-        isAiming = true; // 返回后重新启用瞄准
-    }
-
-    /// <summary>
     /// 统一启动冷却的方法，推荐子类调用以保证一致性。
     /// </summary>
     protected void StartCooldown()
@@ -347,8 +296,7 @@ public class WeaponBase : MonoBehaviour
     }
     #endregion
 
-    #region 预留空方法（可能用于事件回调）
-    // 这些方法目前为空，可能是为后续扩展预留的钩子（如 UI 交互、关卡事件等）
+    #region 预留空方法
     public void attckEnemy() {}
     public void waveStart() {}
     public void waveEnd() {}

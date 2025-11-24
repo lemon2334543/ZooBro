@@ -82,7 +82,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 6
   m_Sprite: {fileID: 1985571067546274017, guid: fa979844317e2604b9b6d169bf83a76a, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.7764706}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -106,7 +106,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SwingEffect
   _effectDuration: 0.4
   _damageMultiplier: 1
-  _enableDebug: 1
 --- !u!60 &4473523330117127965
 PolygonCollider2D:
   m_ObjectHideFlags: 0

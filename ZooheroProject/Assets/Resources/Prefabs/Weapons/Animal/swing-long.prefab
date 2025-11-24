@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4951797479599678137}
   - component: {fileID: 9186314136141667873}
-  - component: {fileID: -3896185776183224103}
   - component: {fileID: -2542748887961261273}
+  - component: {fileID: -6003569847488445957}
   m_Layer: 0
   m_Name: swing-long
   m_TagString: Untagged
@@ -92,55 +92,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-3896185776183224103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1896527813055443549}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29c44a611d5e49688be5e21071dad4ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponSwing
-  data:
-    id: 0
-    name: 
-    EnName: 
-    Attack: 0
-    attackcount: 0
-    avatar: 
-    grade: 0
-    price: 0
-    damage: 0
-    isLong: 0
-    range: 0
-    critical_strikes_multiple: 0
-    critical_strikes_probability: 0
-    attackspeed: 0
-    cooling: 0
-    repel: 0
-    describe: 
-    familyname: 
-    affection: 0
-    rank: 0
-    Type: []
-    effectType: 0
-    penetrationcount: 0
-    summonType: 0
-    maxSummonCount: 0
-    summontime: 0
-  Attack: 0
-  isAttack: 0
-  isCooling: 0
-  isAiming: 1
-  AttackTimer: 0
-  moveSpeed: 0
-  enemy: {fileID: 0}
-  originZ: 0
-  _angleHysteresis: 5
-  aimAssistStrength: 0.2
 --- !u!70 &-2542748887961261273
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -178,3 +129,54 @@ CapsuleCollider2D:
   m_Offset: {x: -0.026377868, y: -0.03333477}
   m_Size: {x: 0.5831993, y: 0.5831994}
   m_Direction: 0
+--- !u!114 &-6003569847488445957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1896527813055443549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ecf607ac16fcaf44bbd24a60b9e63af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponLong
+  data:
+    id: 0
+    name: 
+    EnName: 
+    Attack: 0
+    attackcount: 0
+    avatar: 
+    grade: 0
+    price: 0
+    damage: 0
+    isLong: 0
+    range: 0
+    critical_strikes_multiple: 0
+    critical_strikes_probability: 0
+    attackspeed: 0
+    cooling: 0
+    repel: 0
+    describe: 
+    familyname: 
+    affection: 0
+    rank: 0
+    Type: []
+    effectType: 0
+    penetrationcount: 0
+    summonType: 0
+    maxSummonCount: 0
+    summontime: 0
+    reboundcount: 0
+    summonhp: 0
+    summonweaponid: 0
+  Attack: 0
+  isAttack: 0
+  isCooling: 0
+  isAiming: 1
+  AttackTimer: 0
+  moveSpeed: 0
+  enemy: {fileID: 0}
+  originZ: 0
+  _angleHysteresis: 5

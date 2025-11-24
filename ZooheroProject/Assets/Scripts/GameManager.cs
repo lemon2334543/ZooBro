@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
         // 加载配置文件
         enemytextAsset = UnityEngine.Resources.Load<TextAsset>("Data/enemy");
         EnemyDates = JsonConvert.DeserializeObject<List<EnemyDate>>(enemytextAsset.text);
-        enemyBullet_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/enemyBullet");
+        
 
         DifficultytextAsset = UnityEngine.Resources.Load<TextAsset>("Data/difficulty");
         difficultyDates = JsonConvert.DeserializeObject<List<DifficultyDate>>(DifficultytextAsset.text);
@@ -108,6 +108,7 @@ public class GameManager : MonoBehaviour
         arrowBullet_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Bullet/ArrowBullet");
         medlcalBullet_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Bullet/MedlcalBullet");
         postolBullet_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Bullet/PostolBullet");
+        enemyBullet_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Bullet/EnemyBullet");
     }
 
     void Start()

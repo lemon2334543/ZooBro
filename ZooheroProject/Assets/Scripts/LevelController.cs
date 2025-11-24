@@ -108,8 +108,53 @@ public class LevelController : MonoBehaviour
         
         GenerateEnemy();
         GenerateWeapons();
+// ===== 测试：强制生成 enemy =====
+        if (_gameManager.currentWave == 1)
+        {
+            // 手动查找 enemy4 的数据
+            EnemyDate enemy4Data = null;
+            foreach (var ed in _gameManager.EnemyDates)
+            {
+                if (ed.name == "enemy4")
+                {
+                    enemy4Data = ed;
+                    break;
+                }
+            }
+
+            if (enemy4Data != null)
+            {
+                Vector3 pos = GetRandomPosition(_map.GetComponent<SpriteRenderer>().bounds);
+                GameObject redfork = Instantiate(redfork_prefab, pos, Quaternion.identity);
+                StartCoroutine(SpawnSpecificEnemyAfterRedfork(redfork, pos, enemy4Data));
+            }
+        }
+// =================================
     }
 
+    //生成敌人测试=====================================
+    IEnumerator SpawnSpecificEnemyAfterRedfork(GameObject redfork, Vector3 spawnPoint, EnemyDate specificEnemy)
+    {
+        yield return new WaitForSeconds(1f);
+        Destroy(redfork);
+
+        if (waveTimer > 0 && !Player.Instance.isDead)
+        {
+            if (enemyDictionary.TryGetValue(specificEnemy.name, out GameObject prefab))
+            {
+                EnemyBase enemy = Instantiate(prefab, spawnPoint, Quaternion.identity).GetComponent<EnemyBase>();
+                enemy.transform.parent = enemyfahter;
+                enemy.EnemyDate = specificEnemy;
+                enemy_list.Add(enemy);
+            }
+            else
+            {
+                Debug.LogError("找不到预制体: " + specificEnemy.name);
+            }
+        }
+    }
+    //生成敌人测试=====================================
+    
     /// <summary>
     /// 生成武器
     /// </summary>
@@ -256,7 +301,7 @@ public class LevelController : MonoBehaviour
             else if(targetEnemyType==2)
             {
                 targetEnemy = _gameManager.RandomOne(_gameManager.EnemyTypeSkill);
-            }else if(targetEnemyType==2)
+            }else if(targetEnemyType==3)
             {
                 targetEnemy = _gameManager.RandomOne(_gameManager.EnemyTypeSpecial);
             }

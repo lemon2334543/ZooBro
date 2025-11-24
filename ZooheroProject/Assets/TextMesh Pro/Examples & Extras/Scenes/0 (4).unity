@@ -2632,7 +2632,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   speed: 5
   isDead: 0
-  hp: 15
+  hp: 1000
+  weaponsPos: {fileID: 0}
 --- !u!114 &1087286820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2853,8 +2854,27 @@ MonoBehaviour:
   _failPanel: {fileID: 0}
   _successPanel: {fileID: 0}
   enemy1_prefab: {fileID: 0}
+  enemy2_prefab: {fileID: 0}
+  enemy3_prefab: {fileID: 0}
+  enemy4_prefab: {fileID: 0}
+  enemy5_prefab: {fileID: 0}
   enemy_list: []
   _map: {fileID: 0}
+  redfork_prefab: {fileID: 0}
+  leveTestAsset: {fileID: 0}
+  enemyfahter: {fileID: 0}
+  WeaponDatas: []
+  textAsset: {fileID: 0}
+  BaseEnemyProbability:
+  - 0.9
+  - 0.1
+  - 0
+  HighLevelEnemyProbability:
+  - 0
+  - 0.95
+  - 0.05
+  _cumulativeWeights: []
+  _HighcumulativeWeights: []
 --- !u!1 &1279791884
 GameObject:
   m_ObjectHideFlags: 0
@@ -3153,11 +3173,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   _hpSlider: {fileID: 0}
   _expSlider: {fileID: 0}
+  _armorpSlider: {fileID: 0}
   _moneyCount: {fileID: 0}
-  _expCount: {fileID: 0}
   _hpCount: {fileID: 0}
+  _armorount: {fileID: 0}
   _countDown: {fileID: 0}
   _waveCount: {fileID: 0}
+  _expCount: {fileID: 0}
 --- !u!225 &1351457799
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4559,6 +4581,89 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   currentWave: 0
+  RoleDate:
+    id: 0
+    name: 
+    avatar: 
+    describe: 
+    slot: 0
+    record: 0
+    unlock: 0
+    unlockConditions: 
+  EnemyDates: []
+  enemytextAsset: {fileID: 0}
+  DifficultyDate:
+    id: 0
+    name: 
+    describe: 
+    levelName: 
+  color_1: {r: 0.204, g: 0.204, b: 0.204, a: 1}
+  color0: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+  color1: {r: 0.6, g: 0.9, b: 0.6, a: 1}
+  color2: {r: 0.6, g: 0.8, b: 0.9, a: 1}
+  color3: {r: 0.8, g: 0.6, b: 0.9, a: 1}
+  color4: {r: 0.95, g: 0.9, b: 0.7, a: 1}
+  color5: {r: 0.95, g: 0.7, b: 0.75, a: 1}
+  CurrentFamilyDates: []
+  _PlayerVisual: {fileID: 0}
+  hp: 0
+  money: 0
+  exp: 0
+  RankLevel: 1
+  Armor: 0
+  propData:
+    id: 0
+    name: 
+    avatar: 
+    grade: 0
+    price: 0
+    describe: 
+    maxHp: 15
+    revive: 0
+    Armor: 0
+    Defense: 1
+    short_damage: 1
+    long_damage: 1
+    short_range: 1
+    long_range: 1
+    short_attackSpeed: 1
+    long_attackSpeed: 1
+    speed: 5
+    speedPer: 1
+    harvest: 0
+    slot: 6
+    shopDiscount: 1
+    expMuti: 1
+    pickRange: 1
+    critical_strikes_probability: 0
+    Curse: 0
+    Monopoly: 1
+  PropDatas: []
+  currentWeapons: []
+  NotEquippedcurrentWeapons: []
+  difficultyDates: []
+  DifficultytextAsset: {fileID: 0}
+  familyDates: []
+  FamilytextAsset: {fileID: 0}
+  RoleDates: []
+  RoletextAsset: {fileID: 0}
+  arrowBullet_prefab: {fileID: 0}
+  medlcalBullet_prefab: {fileID: 0}
+  postolBullet_prefab: {fileID: 0}
+  enemyBullet_prefab: {fileID: 0}
+  WeaponDataOne: []
+  textAssetOne: {fileID: 0}
+  WeaponDataTwo: []
+  textAssetTwo: {fileID: 0}
+  WeaponDataThree: []
+  textAssetThree: {fileID: 0}
+  NeuralWeaponData: []
+  NeuraltextAsset: {fileID: 0}
+  ELO: 1
+  EnemyTypeOrdinary: []
+  EnemyTypeSkill: []
+  EnemyTypeSpecial: []
+  LockWeapons: []
 --- !u!4 &1926329769
 Transform:
   m_ObjectHideFlags: 0

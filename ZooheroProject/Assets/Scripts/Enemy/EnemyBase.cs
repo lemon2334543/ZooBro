@@ -1,6 +1,6 @@
-using Enemy;
 using UnityEngine;
 using System.Collections.Generic;
+using Enemy;
 
 public class EnemyBase : MonoBehaviour
 {
@@ -17,7 +17,7 @@ public class EnemyBase : MonoBehaviour
     public bool skilling = false;
     public int provideExp = 1;
 
-    public int type;//敌人类型 1普通 2技能 3特殊
+    public int type;
     public GameObject money_prefab;
     
     public float skillTimer = 0;
@@ -34,16 +34,15 @@ public class EnemyBase : MonoBehaviour
         money_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Money");
     }
 
-    private void Start()
+    protected virtual void Start()
     {
-        // 从配置数据初始化属性
         if (EnemyDate != null)
         {
             hp = EnemyDate.hp;
             damage = EnemyDate.damage;
             speed = EnemyDate.speed;
             attackTime = EnemyDate.attackTime;
-            provideExp = (int)EnemyDate.provideExp; // 显式类型转换
+            provideExp = (int)EnemyDate.provideExp;
         }
     }
 
@@ -124,15 +123,12 @@ public class EnemyBase : MonoBehaviour
 
     public void Attack()
     {
-        Debug.Log($"[EnemyBase] 开始攻击 - 目标类型: {_currentAttackTarget}, 接触玩家: {isContact}, 召唤物数量: {_contactSummons.Count}");
-        
         switch (_currentAttackTarget)
         {
             case AttackTarget.Player:
                 if (Player.Instance != null && !Player.Instance.isDead)
                 {
                     Player.Instance.Injured(damage);
-                    // Debug.Log($"[EnemyBase] ✅ 对玩家造成伤害: {damage}");
                 }
                 break;
                 
@@ -140,7 +136,6 @@ public class EnemyBase : MonoBehaviour
                 if (_contactSummons.Count > 0 && _contactSummons[0] != null && _contactSummons[0].IsAlive)
                 {
                     _contactSummons[0].TakeDamage(damage);
-                    Debug.Log($"[EnemyBase] ✅ 对召唤物造成伤害: {damage}");
                 }
                 else if (_contactSummons.Count > 0)
                 {
@@ -176,14 +171,16 @@ public class EnemyBase : MonoBehaviour
         }
     }
 
-    public void Move()
+    public virtual void Move()
     {
         if (skilling) return;
 
         Vector3 targetPosition = GetAdjustedTargetPosition();
         Vector2 direction = (targetPosition - transform.position).normalized;
         transform.Translate(direction * speed * Time.deltaTime);
-        TurnAround();
+        TurnAround(); // 默认朝向玩家（用于普通敌人）
+        
+
     }
 
     private Vector3 GetAdjustedTargetPosition()
@@ -193,20 +190,32 @@ public class EnemyBase : MonoBehaviour
         return new Vector3(playerPosition.x, playerPosition.y - 0.3f, playerPosition.z);
     }
 
-    public void TurnAround()
+    // ====== 新增：支持方向翻转 ======
+    protected virtual void TurnAround()
     {
         if (Player.Instance == null) return;
-        
-        float xDiff = Player.Instance.transform.position.x - transform.position.x;
-        if (xDiff >= 0.1f)
+        Vector3 playerPos = Player.Instance.transform.position;
+        Vector3 moveDir = playerPos - transform.position;
+        ApplyFlip(moveDir.x);
+    }
+
+    protected virtual void TurnAround(float horizontalDirection)
+    {
+        ApplyFlip(horizontalDirection);
+    }
+
+    private void ApplyFlip(float xDirection)
+    {
+        if (xDirection >= 0.1f)
         {
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
-        else if (xDiff <= -0.1f)
+        else if (xDirection <= -0.1f)
         {
             transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
     }
+    // ==============================
 
     public void Injured(float attack)
     {
@@ -233,7 +242,6 @@ public class EnemyBase : MonoBehaviour
             if (player != null && player == Player.Instance)
             {
                 isContact = true;
-                Debug.Log($"[EnemyBase] 确认接触玩家");
             }
         }
         else if (other.CompareTag("Summon"))
@@ -242,7 +250,6 @@ public class EnemyBase : MonoBehaviour
             if (summon != null && summon.IsAlive && !_contactSummons.Contains(summon))
             {
                 _contactSummons.Add(summon);
-                Debug.Log($"[EnemyBase] 确认接触召唤物");
             }
         }
     }

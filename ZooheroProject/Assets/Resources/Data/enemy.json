@@ -29,7 +29,7 @@
     "hp": 8,
     "damage": 1,
     "speed": 3,
-    "attackTime": 1.5,
+    "attackTime": 10,
     "provideExp": 3,
     "skillTime": 2.5,
     "type": 2,
@@ -38,14 +38,14 @@
   {
     "id": 4,
     "name": "enemy4",
-    "hp": 8,
+    "hp": 1000,
     "damage": 1,
     "speed": 3,
     "attackTime": 1.5,
     "provideExp": 3,
     "skillTime": 3.5,
     "type": 3,
-    "range": 3.5
+    "range": 10
   },
   {
     "id": 5,

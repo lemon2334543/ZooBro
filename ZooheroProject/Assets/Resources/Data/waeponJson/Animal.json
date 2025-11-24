@@ -42,7 +42,7 @@
     "penetrationcount": 0,
     "reboundcount": 10,
     "isLong": 1,
-    "effectType": 2,
+    "effectType": 101,
     "attackspeed": 15,
     "summonType": 1,
     "maxSummonCount": 3,
@@ -127,36 +127,5 @@
     "Type": [
   
     ]
-  },    {
-  "id": 1001,
-  "name": "swing-long",
-  "avatar": "Image/抠图/小黑猪",
-  "grade": 1,
-  "price": 11,
-  "damage" : 1,
-  "attackcount": 5,
-  "penetrationcount": 0,
-  "reboundcount": 10,
-  "isLong": 1,
-  "effectType": 2,
-  "attackspeed": 15,
-  "summonType": 1,
-  "maxSummonCount": 3,
-  "summonhp": 2,
-  "summontime": 10,
-  "range": 5,
-  "critical_strikes_multiple": 1.5,
-  "critical_strikes_probability": 0,
-  "cooling": 2,
-  "repel": 0,
-  "describe": "一只普通的小土狗，格外可爱",
-  "familyId": 2,
-  "affection": 1,
-  "rank": 1,
-  "familyname": "Animal",
-  "EnName": "swing-long",
-  "Type": [
-
-  ]
-}
+  }
 ]
