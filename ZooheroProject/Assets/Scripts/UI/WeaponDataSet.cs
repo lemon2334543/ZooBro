@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
+using weapon;
+using weapon.Animal;
 
 
 public class WeaponDataSet : MonoBehaviour
@@ -20,7 +22,11 @@ public class WeaponDataSet : MonoBehaviour
     public bool isBuy = false;
     public bool isSell = false;
     public bool isEquipbord = false;
+    public bool isUse = false;
+    public List<string> WeaponTypes = new List<string>();
     
+    public GameObject _WeaponType;
+    public Transform _Labels;
     
     public int num;
     private void Awake()
@@ -31,6 +37,7 @@ public class WeaponDataSet : MonoBehaviour
         _WeaponInfo = transform.Find("WeaponInfoBack").Find("WeaponInfo").GetComponent<TextMeshProUGUI>();
         _Pricetext = transform.Find("Price").Find("Pricetext").GetComponent<TextMeshProUGUI>();
 
+        
         _AttckspeedCirtext = transform.Find("AttacInfo").Find("AttckspeedCir").Find("attckspeedText").gameObject;
         _attckText = transform.Find("AttacInfo").Find("AttckCir").Find("attckText").gameObject;
         _attckText1 = transform.Find("AttacInfo").Find("AttckCir").Find("attckText (1)").gameObject;
@@ -38,7 +45,8 @@ public class WeaponDataSet : MonoBehaviour
         _WeaponImage = transform.Find("WeaponImageBack").Find("WeaponImage").GetComponent<Image>();
 
         _BackColor = transform.Find("BackColor").GetComponent<Image>();
-
+        _WeaponType = UnityEngine.Resources.Load<GameObject>("Prefabs/UIprefabs/Label");
+        _Labels = transform.Find("WeaponInfoBack").Find("Labels").transform;
     }
 
     void Start()
@@ -57,17 +65,8 @@ public class WeaponDataSet : MonoBehaviour
         this.num = num;
         int x = -510 + 344 * this.num;
         Instance.transform.localPosition = new Vector3(x, 0, 0);
-        
-        this.WeaponData = weaponData;
-        _WeaponName.text = weaponData.name;
-        _WeaponInfo.text = weaponData.describe;
-        _Pricetext.text = weaponData.price.ToString();
-        _WeaponImage.sprite = UnityEngine.Resources.Load<Sprite>(weaponData.avatar);
-
-        _AttckspeedCirtext.GetComponent<TextMeshProUGUI>().text = weaponData.cooling.ToString();
-        _attckText.GetComponent<TextMeshProUGUI>().text = weaponData.damage.ToString();
-
-        if (weaponData.attackcount==1)
+        setDates(weaponData);
+        if (weaponData.attackcount<=1)
         {
             GameManager.Instance.GameObjectHide(_attckText1.GetComponent<CanvasGroup>());
         }
@@ -102,9 +101,12 @@ public class WeaponDataSet : MonoBehaviour
             _BackColor.color = GameManager.Instance.color5;
         }
 
-        
+        setWeaponTypes(WeaponTypes);
+
 
     }
+
+
 
     public void setDateForProp(WeaponData weaponData,int num)
     {
@@ -115,16 +117,8 @@ public class WeaponDataSet : MonoBehaviour
         
         
         transform.rotation =  Quaternion.Euler(0.8f, 0.8f, GetRandomFloat());
-        this.WeaponData = weaponData;
-        _WeaponName.text = weaponData.name;
-        _WeaponInfo.text = weaponData.describe;
-        _Pricetext.text = weaponData.price.ToString();
-        _WeaponImage.sprite = UnityEngine.Resources.Load<Sprite>(weaponData.avatar);
-
-        _AttckspeedCirtext.GetComponent<TextMeshProUGUI>().text = weaponData.cooling.ToString();
-        _attckText.GetComponent<TextMeshProUGUI>().text = weaponData.damage.ToString();
-
-        if (weaponData.attackcount==1)
+        setDates(weaponData);
+        if (weaponData.attackcount<=1)
         {
             GameManager.Instance.GameObjectHide(_attckText1.GetComponent<CanvasGroup>());
         }
@@ -159,8 +153,102 @@ public class WeaponDataSet : MonoBehaviour
             _BackColor.color = GameManager.Instance.color5;
         }
 
+        setWeaponTypes(WeaponTypes);
+        magicShow(weaponData);
+    }
+
+    public void setDates(WeaponData weaponData)
+    {
+        this.WeaponData = weaponData;
+        _WeaponName.text = weaponData.name;
+        _WeaponInfo.text = weaponData.describe;
+        _Pricetext.text = weaponData.price.ToString();
+        _WeaponImage.sprite = UnityEngine.Resources.Load<Sprite>(weaponData.avatar);
+        
+        if (weaponData.familyname=="Animal")
+        {
+            WeaponTypes.Add("动物");
+        }else if (weaponData.familyname=="Demon")
+        {
+            WeaponTypes.Add("恶魔");
+        }else if (weaponData.familyname=="Machine")
+        {
+            WeaponTypes.Add("机械");
+        }else if (weaponData.familyname=="Neutral")
+        {
+            WeaponTypes.Add("中立");
+        }
+        
+        
+        
+        WeaponTypes.AddRange(weaponData.Type);
+        
+        
+        _AttckspeedCirtext.GetComponent<TextMeshProUGUI>().text = weaponData.cooling.ToString();
+        _attckText.GetComponent<TextMeshProUGUI>().text = weaponData.damage.ToString();
+
+        // string typeName = $"weapon.{weaponData.familyname}.{weaponData.EnName}";
+        //
+        // Type scriptType = Type.GetType($"{typeName}, Assembly-CSharp");
+        // if (scriptType == null)
+        // {
+        //     UnityEngine.Debug.Log("nofind "+ typeName);
+        // }
+        // transform.gameObject.AddComponent(scriptType);
+        
+        
+        isMagic(weaponData);
+        magicShow(weaponData);
 
     }
+
+    private void isMagic(WeaponData weaponData)
+    {
+        if (weaponData.isLong==11 || weaponData.isLong==12)
+        {
+            
+            Type scriptType = Type.GetType("weapon."+weaponData.familyname+"."+weaponData.EnName);
+            transform.gameObject.AddComponent(scriptType);
+            if (transform.GetComponent<WeaponMagicToOne>()!=null)
+            {
+                transform.GetComponent<WeaponMagicToOne>().magicName = weaponData.EnName;
+            }
+            
+        }
+        
+        
+    }
+
+    public void magicShow(WeaponData weaponData)
+    {
+        if (weaponData.isLong==11 || weaponData.isLong==12)
+        {
+            GameManager.Instance.GameObjectHide(transform.Find("AttacInfo").GetComponent<CanvasGroup>());
+        }
+    }
+
+    /// <summary>
+    /// 根据武器类型列表，动态创建并设置标签UI。
+    /// </summary>
+    /// <param name="weaponTypes">武器类型字符串列表</param>
+    private void setWeaponTypes(List<string> weaponTypes)
+    {
+        // 如果类型列表为空，则直接返回，无需创建任何标签
+        if (weaponTypes == null || weaponTypes.Count == 0)
+        {
+            return;
+        }
+        
+        // 3. 遍历类型列表，创建标签
+        for (int i = 0; i < weaponTypes.Count; i++)
+        {
+            // 实例化一个新的标签对象
+            GameObject newLabelObj = Instantiate(_WeaponType, _Labels);
+            newLabelObj.transform.Find("LabelText").GetComponent<TextMeshProUGUI>().text = weaponTypes[i];
+
+        }
+    }
+    
     
     public float GetRandomFloat()
     {

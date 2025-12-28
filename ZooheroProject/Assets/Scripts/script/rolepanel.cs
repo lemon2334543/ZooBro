@@ -21,6 +21,8 @@ public class rolepanel : MonoBehaviour
     public TextMeshProUGUI _RoleDes;//角色表述
 
     public GameObject _fistRole;
+
+    public int CurrentStatus = 1;
     private void Awake()
     {
         Instance = this;
@@ -42,7 +44,7 @@ public class rolepanel : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        
         foreach (RoleDate roleDate in GameManager.Instance.RoleDates)
         {
             //循环生成预制体

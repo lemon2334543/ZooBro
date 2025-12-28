@@ -12,6 +12,10 @@ GameObject:
   - component: {fileID: 6203903121744279887}
   - component: {fileID: 5364835364197951945}
   - component: {fileID: 7096545439590774843}
+  - component: {fileID: -585730390243885974}
+  - component: {fileID: -7173260346864516788}
+  - component: {fileID: 1144643738913251141}
+  - component: {fileID: 361076211901351448}
   m_Layer: 6
   m_Name: Enemy1
   m_TagString: Enemy
@@ -105,22 +109,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d004a3da52bf2a14abd3155e228cd8f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy1
-  attackTimer: 0
-  isContact: 0
-  isCooling: 0
-  money_prefab: {fileID: 0}
   EnemyDate:
     id: 0
     name: 
     hp: 0
+    type: 0
     damage: 0
     speed: 0
     attackTime: 0
     provideExp: 0
     SkillTime: 0
     range: 0
-  skillTimer: 0
+  hp: 0
+  damage: 0
+  speed: 0
+  attackTime: 0
+  attackTimer: 0
+  isContact: 0
+  isCooling: 0
   skilling: 0
+  provideExp: 1
+  type: 0
+  money_prefab: {fileID: 0}
+  skillTimer: 0
 --- !u!70 &7096545439590774843
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -158,6 +169,108 @@ CapsuleCollider2D:
   m_Offset: {x: -0.01507438, y: 0.27}
   m_Size: {x: 0.73, y: 0.64}
   m_Direction: 1
+--- !u!114 &-585730390243885974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5456668406820466116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7943ee0dd2b6d7144982d5c5d754ced6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OverlapOrderController
+  orderScale: 100
+  orderOffset: 0
+  reverseOrder: 1
+--- !u!114 &-7173260346864516788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5456668406820466116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 313adb7c641f8f141ba64b79ec892fa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  volumeRadius: 0.35
+  repelForce: 5
+  minDistance: 10
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  repelAfterMove: 1
+--- !u!114 &1144643738913251141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5456668406820466116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7943ee0dd2b6d7144982d5c5d754ced6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  orderScale: 100
+  orderOffset: 0
+  reverseOrder: 1
+--- !u!114 &361076211901351448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5456668406820466116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.ShadowCaster2D
+  m_ShadowGroup: 0
+  m_Priority: 0
+  m_ComponentVersion: 5
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_AlphaCutoff: 0.1
+  m_ApplyToSortingLayers: 00000000911416c995109e7b45f991b7a98acfe22f6d51ed85bfc090
+  m_ShapePath:
+  - {x: -0.4093567, y: -0.115532875, z: 0}
+  - {x: -0.4093567, y: 0.72284603, z: 0}
+  - {x: 0.40656126, y: 0.72284603, z: 0}
+  - {x: 0.40656126, y: -0.115532875, z: 0}
+  m_ShapePathHash: 0
+  m_InstanceId: 0
+  m_ShadowShape2DComponent: {fileID: 7096545439590774843}
+  m_ShadowShape2DProvider:
+    rid: 3952889805903233110
+  m_ShadowCastingSource: 2
+  m_ShadowMesh:
+    m_Mesh: {fileID: 0}
+    m_LocalBounds:
+      m_Center: {x: -0.015075684, y: 0.27000427, z: 0}
+      m_Extent: {x: 0.3242035, y: 0.27999878, z: 0}
+    m_EdgeProcessing: 1
+    m_TrimEdge: 0.04
+    m_FlipX: 0
+    m_FlipY: 0
+    m_InitialTrim: 0
+  m_CastingOption: 1
+  m_PreviousTrimEdge: 0.04
+  m_PreviousEdgeProcessing: 1
+  m_PreviousShadowCastingSource: 2
+  m_PreviousShadowShape2DSource: {fileID: 7096545439590774843}
+  references:
+    version: 2
+    RefIds:
+    - rid: 3952889805903233110
+      type: {class: ShadowShape2DProvider_Collider2D, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
+      data: 
 --- !u!1 &8710668312547028019
 GameObject:
   m_ObjectHideFlags: 0

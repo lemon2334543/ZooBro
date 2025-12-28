@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using Newtonsoft.Json;
 using Resources.script.model;
 using Enemy;
+using UnityEngine.UI;
 
 public class LevelController : MonoBehaviour
 {
@@ -53,6 +54,8 @@ public class LevelController : MonoBehaviour
     public double[] _HighcumulativeWeights;
     // 全局唯一的随机数生成器（避免重复初始化）
     public readonly System.Random _random = new System.Random();
+
+    public GameObject _Map;
     
     private void Awake()
     {
@@ -70,8 +73,6 @@ public class LevelController : MonoBehaviour
         //     _gameManager.NotEquippedcurrentWeapons.Add(JsonConvert.DeserializeObject<List<WeaponData>>(_gameManager.textAssetOne.text)[weaponID-1]);
         // }
 
-        
-        
         
         _failPanel = GameObject.Find("FailPanel");
         _successPanel = GameObject.Find("SuccessPanel");
@@ -96,6 +97,8 @@ public class LevelController : MonoBehaviour
         enemyfahter = GameObject.Find("Enemys").transform;
         
         _gameManager = GameManager.Instance;
+        
+        
     }
 
     void Start()
@@ -108,6 +111,21 @@ public class LevelController : MonoBehaviour
         
         GenerateEnemy();
         GenerateWeapons();
+
+        //todo后续需要添加其他地图在这里
+        SetMap();//设置地图 
+    }
+
+    private void SetMap()
+    {
+        
+        if (_gameManager.MapData.enName=="Animal")
+        {
+            _map.GetComponent<Image>().sprite = UnityEngine.Resources.Load<Sprite>("Image/地图/地图");
+        }else if (_gameManager.MapData.enName=="Machine")
+        {
+            _map.GetComponent<Image>().sprite = UnityEngine.Resources.Load<Sprite>("Image/地图/地图");
+        }
     }
 
     /// <summary>
@@ -410,7 +428,7 @@ public class LevelController : MonoBehaviour
         //todo 收获属性，但是感觉我们用不到
         // _gameManager.money += _gameManager.propData.harvest;
         SceneManager.LoadScene("shop");
-        _gameManager.currentWave += 1;
+        // _gameManager.currentWave += 1;
     }
 
     private void PrecomputeCumulativeWeights()

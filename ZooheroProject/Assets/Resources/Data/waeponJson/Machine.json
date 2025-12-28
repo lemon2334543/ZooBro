@@ -1,26 +1,37 @@
 [
   {
     "id": 1,
-    "name": "无人机器人Ver0.1",
-    "avatar": "Image/人物/小土狗",
+    "name": "无人机器人测试版",
+    "avatar": "Image/人物/全能",
     "grade": 1,
     "price": 11,
     "damage" : 4,
-    "attackcount": 1,
+    "attackcount": 2,
+    "IncreasedNumberOfAttacksRequired": 5,
+    "penetrationcount": 1,
+    "reboundcount": 1,
     "isLong": 0,
+    "effectType": 0,
+    "summonType": 1,
+    "summonweaponid": 1,
+    "maxSummonCount": 3,
+    "summonhp": 2,
+    "summontime": 10,
+    "summonspeed": 5,
+    "attackspeed": 10,
     "range": 150,
     "critical_strikes_multiple": 1.5,
     "critical_strikes_probability": 0,
-    "cooling": 0.78,
+    "cooling": 2,
     "repel": 0,
-    "describe": "每隔10秒转换一个无人机器人",
-    "familyId": 2,
+    "describe": "每10秒可以召唤无人机器人测试版 ,最大同时存在3个",
+    "familyId": 3,
     "affection": 1,
     "rank": 1,
     "familyname": "Machine",
-    "EnName": "puppy",
+    "EnName": "UnmannedRobotTestVersion",
     "Type": [
-      "召唤"
+
     ]
   }
 ]

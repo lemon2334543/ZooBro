@@ -9,11 +9,11 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private float speed = 5f; // 移动速度
-    public bool isDead = false; // 是否死亡
+    public bool isDead = false; // 是否死亡        
     internal int money = 30; // 当前金钱
-    public float hp = 15f; // 玩家血量
+    public float hp = 15f; // 玩家血量                          弃用  已移至GameManner
     internal float maxHp = 15f; // 最大血量
-    internal float exp = 0; // 经验值
+    internal float exp = 0; // 经验值                           弃用  已移至GameManner
     internal float maxExp = 12; // 升级需要的经验
     public Transform weaponsPos; // 武器位置
     

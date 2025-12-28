@@ -102,6 +102,7 @@ GameObject:
   - component: {fileID: 7213075408917364867}
   - component: {fileID: 3692877874415292255}
   - component: {fileID: 4913629924150615164}
+  - component: {fileID: -3111599952691841264}
   m_Layer: 6
   m_Name: Enemy5
   m_TagString: Enemy
@@ -232,19 +233,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c33aa577cf6344d189b42c3640d017a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy.Enemy5
-  attackTimer: 0
-  isContact: 0
-  isCooling: 0
-  money_prefab: {fileID: 0}
   EnemyDate:
     id: 0
     name: 
     hp: 0
+    type: 0
     damage: 0
     speed: 0
     attackTime: 0
     provideExp: 0
     SkillTime: 0
     range: 0
-  skillTimer: 0
+  hp: 0
+  damage: 0
+  speed: 0
+  attackTime: 0
+  attackTimer: 0
+  isContact: 0
+  isCooling: 0
   skilling: 0
+  provideExp: 1
+  type: 0
+  money_prefab: {fileID: 0}
+  skillTimer: 0
+--- !u!114 &-3111599952691841264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3569724059319395036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7943ee0dd2b6d7144982d5c5d754ced6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OverlapOrderController
+  orderScale: 100
+  orderOffset: 0
+  reverseOrder: 1

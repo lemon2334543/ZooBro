@@ -124,7 +124,7 @@ public class EnemyBase : MonoBehaviour
 
     public void Attack()
     {
-        Debug.Log($"[EnemyBase] 开始攻击 - 目标类型: {_currentAttackTarget}, 接触玩家: {isContact}, 召唤物数量: {_contactSummons.Count}");
+        // Debug.Log($"[EnemyBase] 开始攻击 - 目标类型: {_currentAttackTarget}, 接触玩家: {isContact}, 召唤物数量: {_contactSummons.Count}");
         
         switch (_currentAttackTarget)
         {
@@ -140,7 +140,7 @@ public class EnemyBase : MonoBehaviour
                 if (_contactSummons.Count > 0 && _contactSummons[0] != null && _contactSummons[0].IsAlive)
                 {
                     _contactSummons[0].TakeDamage(damage);
-                    Debug.Log($"[EnemyBase] ✅ 对召唤物造成伤害: {damage}");
+                    // Debug.Log($"[EnemyBase] ✅ 对召唤物造成伤害: {damage}");
                 }
                 else if (_contactSummons.Count > 0)
                 {
@@ -184,6 +184,13 @@ public class EnemyBase : MonoBehaviour
         Vector2 direction = (targetPosition - transform.position).normalized;
         transform.Translate(direction * speed * Time.deltaTime);
         TurnAround();
+
+        // 新增：移动后立即执行排斥
+        EnemyVolumeRepel repel = GetComponent<EnemyVolumeRepel>();
+        if (repel != null)
+        {
+            repel.HandleEnemyRepel();
+        }
     }
 
     private Vector3 GetAdjustedTargetPosition()

@@ -36,6 +36,8 @@ public class shopPanel : MonoBehaviour
     public GameObject _CurrentWeaponList;//已装备武器
 
     public List<WeaponData> shopWeapons = new List<WeaponData>();
+
+    public bool IsOutOfMatchEvent = false;//是否有事件
     private void Awake()
     {
         Instence = this;
@@ -54,14 +56,17 @@ public class shopPanel : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _shopInfo.text = "商店（第" + (GameManager.Instance.currentWave-1) + "波)";
-        _StartButton.transform.GetChild(0).GetComponent<TMP_Text>().text = "出发（第" + (GameManager.Instance.currentWave) + "波)";
+        _shopInfo.text = "商店";
+        _StartButton.transform.GetChild(0).GetComponent<TMP_Text>().text = "出发（第" + (GameManager.Instance.currentWave+1) + "波)";
         
         _StartButton.GetComponent<Button>().onClick.AddListener(() =>
         {
-            GameManager.Instance.currentWave += 1;
-            // Debug.Log("click");
-            SceneManager.LoadScene("GamePlay");
+            if (IsOutOfMatchEvent!=true)
+            {
+                NextWave();
+
+            }
+            
         });
         
         _RefreshButton.GetComponent<Button>().onClick.AddListener(() =>
@@ -108,6 +113,13 @@ public class shopPanel : MonoBehaviour
 
     }
 
+    private void NextWave()
+    {
+        GameManager.Instance.currentWave += 1;
+        GameManager.Instance.hp = GameManager.Instance.propData.maxHp;
+        SceneManager.LoadScene("GamePlay");
+    }
+
     public void SetCurrentWeapons()
     {
         _CurrentWeaponList.transform.GetComponent<WeaponList>().SetCurrentWeapons();
@@ -133,6 +145,8 @@ public class shopPanel : MonoBehaviour
             WeaponDataSet r = GameObject.Instantiate(WeaponCard_Prefab,_PropsList.transform).GetComponent<WeaponDataSet>();
             r.setDateForProp(weaponData,index);
         }
+        
+        
     }
 
 

@@ -17,8 +17,13 @@ public class Check2DOverlap : MonoBehaviour
     public bool isBuy = false;
     public bool isSell = false;
     public bool isEquipbord = false;
+    public bool isUse = false;
+    public bool parentIsProps = false;
     public Image Image;
     Color baseColor = new Color32(0xFF, 0xFE, 0xC9, 0xFF);
+
+    public Image _markImage;
+    public GameObject _markImageGameObject;
     private void Awake()
     {
         // _weaponName = transform.Find("WeaponNameBack").gameObject;
@@ -28,44 +33,49 @@ public class Check2DOverlap : MonoBehaviour
         // _buyPanelCol = _buyPanel.GetComponent<BoxCollider2D>();
         _WaeponCard = transform.parent.gameObject;
         Image = transform.parent.Find("CardStatus").GetComponent<Image>();
+        _markImage = transform.parent.Find("MarkImage").GetComponent<Image>();
+        _markImageGameObject = transform.parent.Find("MarkImage").gameObject;
     }
 
     void Update()
     {
-
-        
+        if (parentIsPropsList())
+        {
+            parentIsProps = true;
+        }
+        else
+        {
+            parentIsProps = false;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // _markImageGameObject.GetComponent<CanvasGroup>().alpha = 1;
+        
         //名字栏接触到了购买窗口
         if (other.gameObject.name=="Buybord")
         {
             isBuy = true;
             transform.parent.GetComponent<WeaponDataSet>().isBuy = true;
-            
-            // baseColor = new Color32(0xFF, 0xFE, 0xC9, 0xFF);
-            // baseColor.a = 0.3f;
-            // Image.color = baseColor;
-
-        }else if (other.gameObject.name == "Sellbord")
+        }else if (other.gameObject.name == "Sellbord"&&transform.parent.GetComponent<WeaponDataSet>().WeaponData.isLong!=12)
         {
             isSell = true;
             transform.parent.GetComponent<WeaponDataSet>().isSell = true;
-            
-            // baseColor = new Color32(0xFF, 0xFE, 0xC9, 0xFF);
-            // baseColor.a = 0.3f;
-            // Image.color = baseColor;
-            
-        }else if (other.gameObject.name == "Equipbord")
+        }else if (other.gameObject.name == "Equipbord"&&transform.parent.GetComponent<WeaponDataSet>().WeaponData.isLong!=12)
         {
+
             isEquipbord = true;
             transform.parent.GetComponent<WeaponDataSet>().isEquipbord = true;
-            
-            // baseColor = new  Color32(0x00, 0x9D, 0xFF, 0xFF);
-            // baseColor.a = 0.3f;
-            // Image.color = baseColor;
+        }else if (other.gameObject.name == "Usebord"&&transform.parent.GetComponent<WeaponDataSet>().WeaponData.isLong==12)
+        {
+            isUse = true;
+            transform.parent.GetComponent<WeaponDataSet>().isUse = true;
         }
+
+     
+        
+        
     }
     
     private void OnTriggerExit2D(Collider2D other)
@@ -75,19 +85,43 @@ public class Check2DOverlap : MonoBehaviour
         {
             isBuy = false;
             transform.parent.GetComponent<WeaponDataSet>().isBuy = false;
-        }else if (other.gameObject.name == "Sellbord")
+            
+            // _markImageGameObject.GetComponent<CanvasGroup>().alpha = 0;
+        }else if (other.gameObject.name == "Sellbord"&&transform.parent.GetComponent<WeaponDataSet>().WeaponData.isLong!=12)
         {
             isSell = false;
             transform.parent.GetComponent<WeaponDataSet>().isSell = false;
-        }else if (other.gameObject.name == "Equipbord")
+            
+            // _markImageGameObject.GetComponent<CanvasGroup>().alpha = 0;
+        }else if (other.gameObject.name == "Equipbord"&&transform.parent.GetComponent<WeaponDataSet>().WeaponData.isLong!=12)
         {
             isEquipbord = false;
             transform.parent.GetComponent<WeaponDataSet>().isEquipbord = false;
+            
+            // _markImageGameObject.GetComponent<CanvasGroup>().alpha = 0;
+        }else if (other.gameObject.name == "Usebord"&&transform.parent.GetComponent<WeaponDataSet>().WeaponData.isLong==12)
+        {
+            isUse = false;
+            transform.parent.GetComponent<WeaponDataSet>().isUse = false;
+            
+            // _markImageGameObject.GetComponent<CanvasGroup>().alpha = 0;
         }
-        
-        // baseColor = new  Color32(0x00, 0x9D, 0xFF, 0xFF);
-        // baseColor.a = 0f;
-        // Image.color = baseColor;
+
+
+
     }
 
+    
+    public bool parentIsPropsList()
+    {
+
+        if (transform.parent.parent.name == "PropsList")
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

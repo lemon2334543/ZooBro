@@ -1,0 +1,38 @@
+﻿[
+  {
+    "id": 1,
+    "title": "事件标题1",
+    "Image": "Image/人物/全能",
+    "Text": "事件文本内容1",
+    "optCount": 2,
+    "optTexts": [
+      "选项1文字（这里的数量要和OptCount对上）",
+      "选项2文字（这里的数量要和OptCount对上）"
+    ],
+    "EnName": "testEvent1",
+    "WaveOccurrenceMin": 0,
+    "WaveOccurrenceMax": 20,
+    "familyName": "Animal",
+    "unlock": 1,
+    "unlockConditions": "Animal"
+  },
+  {
+    "id": 2,
+    "title": "事件标题2",
+    "Image": "Image/人物/全能",
+    "Text": "事件文本内容2",
+    "optCount": 4,
+    "optTexts": [
+      "选项1文字（这里的数量要和OptCount对上）",
+      "选项2文字（这里的数量要和OptCount对上）",
+      "选项3文字（这里的数量要和OptCount对上）",
+      "选项4文字（这里的数量要和OptCount对上）"
+    ],
+    "EnName": "testEvent2",
+    "WaveOccurrenceMin": 0,
+    "WaveOccurrenceMax": 20,
+    "familyName": "Neutral",
+    "unlock": 1,
+    "unlockConditions": "Neutral"
+  }
+]

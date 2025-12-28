@@ -1,0 +1,60 @@
+﻿[
+  {
+    "id": 1,
+    "name": "草原",
+    "EnName": "Animal",
+    "describe": "特性描述",
+    "unlock": 1,
+    "unlockConditions": "解锁条件"
+  },
+
+  {
+    "id": 2,
+    "name": "机械城市",
+    "EnName": "Machine",
+    "describe": "特性描述",
+    "unlock": 1,
+    "unlockConditions": "解锁条件"
+  },
+
+  {
+    "id": 3,
+    "name": "地狱",
+    "EnName": "Animal",
+    "describe": "特性描述",
+    "unlock": 0,
+    "unlockConditions": "解锁条件"
+  },
+  {
+    "id": 4,
+    "name": "草原",
+    "EnName": "Animal",
+    "describe": "特性描述",
+    "unlock": 0,
+    "unlockConditions": "解锁条件"
+  },
+  {
+    "id": 5,
+    "name": "草原",
+    "EnName": "Animal",
+    "describe": "特性描述",
+    "unlock": 0,
+    "unlockConditions": "解锁条件"
+  },
+  {
+    "id": 6,
+    "name": "草原",
+    "EnName": "Animal",
+    "describe": "特性描述",
+    "unlock": 0,
+    "unlockConditions": "解锁条件"
+  },
+  {
+    "id": 7,
+    "name": "草原",
+    "EnName": "Animal",
+    "describe": "特性描述",
+    "unlock": 0,
+    "unlockConditions": "解锁条件"
+  }
+]
