@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7549e8615dc34f10a094ee7a231eba04, type: 3}
+  m_Name: MyDigitConfig
+  m_EditorClassIdentifier: Assembly-CSharp::DigitDisplayConfig
+  digitSprites:
+  - {fileID: 21300000, guid: 7ce455daf5d4f1342b9ee82641fb3ec3, type: 3}
+  - {fileID: 21300000, guid: 97d280d760336804aa681b2573edc3ca, type: 3}
+  - {fileID: 21300000, guid: 892be708055ada040a4ff794ef757cfc, type: 3}
+  - {fileID: 21300000, guid: fdc97a62638bcd1438747dbb506819aa, type: 3}
+  - {fileID: 21300000, guid: 1008c2daa32cc1940a17e928b92fdb96, type: 3}
+  - {fileID: 21300000, guid: 70f2c01f5d335414f9abeb9cf94798fb, type: 3}
+  - {fileID: 21300000, guid: a5deb391238fe884093112889fcfbdf0, type: 3}
+  - {fileID: 21300000, guid: 4199f90b30700714d8c837cceb417b38, type: 3}
+  - {fileID: 21300000, guid: f1d991008a7cd2948b11746d1fa85307, type: 3}
+  - {fileID: 21300000, guid: ad15df4271795e449805ed05cf725ed5, type: 3}
+  dotSprite: {fileID: 21300000, guid: e685a009915e67c4da3794f841c2342e, type: 3}
+  intTensPrefab: {fileID: 7215915616458338395, guid: 013724decb1adbb4f88a2f84fb27d6c3, type: 3}
+  intOnesPrefab: {fileID: 7215915616458338395, guid: d6a3a9b9583a67946b2f1741a5d5132e, type: 3}
+  dotPrefab: {fileID: 7956926413460377048, guid: 54fa7b9aa8757904795f40049020638f, type: 3}
+  decTenthsPrefab: {fileID: 8095169338440663658, guid: 16a89c9f8d4e67547b5e29af3fbec07d, type: 3}
+  decHundredthsPrefab: {fileID: 1347576668719121762, guid: 21718d508d4d4454dad16b3d62b7ea9e, type: 3}
+  showTensDigit: 1
+  autoCenter: 1

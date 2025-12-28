@@ -32,7 +32,14 @@ public class GameManager : MonoBehaviour
     public float hp;
     public float money;
     public float exp;
-    public float RankLevel = 1; // 当前等级
+    
+    // ===== 新增：本局未拾取资源的缓存 =====
+// ===== 存储资源（仅限当前局）=====
+    public float storedMoney = 0f;
+    public float storedExp = 0f;
+    
+    public float maxExp => 12f * Mathf.Pow(2, RankLevel - 1); //指数上涨
+    public int  RankLevel = 1; // 当前等级
     public float Armor;
     
     [SerializeField]
@@ -117,7 +124,37 @@ public class GameManager : MonoBehaviour
         CategorizeEnemies();
  
     }
+    
+    #region 升级有什么操作
+    /// <summary>
+    /// 增加经验并尝试升级
+    /// </summary>
+    public void AddExp(float amount)
+    {
+        exp += amount;
 
+        // 持续检查是否可以升级（支持多级连升）
+        while (exp >= maxExp && RankLevel < 10) // 可设上限，比如10级
+        {
+            exp -= maxExp; // 扣除当前等级所需经验
+            RankLevel++;   // 升级
+
+            // 可选：触发升级事件（如播放音效、弹窗等）
+            OnLevelUp();
+        }
+
+        // 更新 UI
+        GamePanel.Instance?.RenewExp();
+    }
+
+    private void OnLevelUp()
+    {
+        // 未来可扩展：比如加属性、解锁技能等
+        Debug.Log($"升级！当前等级：{RankLevel}");
+    }
+    #endregion
+
+    
     /// <summary>
     /// 从列表中随机选择一个元素返回
     /// </summary>
@@ -131,6 +168,8 @@ public class GameManager : MonoBehaviour
         int index = Random.Range(0, list.Count);
         return list[index];
     }
+
+    
     
     //分类计算敌人
     public void CategorizeEnemies()
@@ -190,7 +229,10 @@ public class GameManager : MonoBehaviour
         _PlayerVisual.GetComponent<SpriteRenderer>().sprite = UnityEngine.Resources.Load<Sprite>(RoleDate.avatar);
         //重置玩家位置 大小
         _PlayerVisual.transform.position = new Vector3(0, 0, 0);
-        _PlayerVisual.transform.localScale = new Vector3(0.05f, 0.05f, 0);       
+        _PlayerVisual.transform.localScale = new Vector3(0.05f, 0.05f, 0);    
+        
+        storedMoney = 0f;
+        storedExp = 0f;
         
         if (RoleDate.name == "培根.百夫长")
         {
@@ -203,8 +245,12 @@ public class GameManager : MonoBehaviour
             // todo 后续扩展其他角色逻辑
         }
 
-        money += 9999; // 默认开局30元
+        
+        // 重置等级和经验
+        RankLevel = 1;
         exp = 0;
+        
+        money += 9999; // 默认开局30元
         hp = propData.maxHp;
     }
 }

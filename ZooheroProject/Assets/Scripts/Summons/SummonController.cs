@@ -1,321 +1,255 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using Enemy;
 using UnityEngine;
+using Enemy;
 
-/// <summary>
-/// 召唤物控制器 - 召唤物本身不攻击，由挂载的武器进行攻击
-/// </summary>
 public class SummonController : MonoBehaviour
 {
-    [Header("召唤物状态")]
-    public bool IsAlive { get; private set; } = true;
-    public float CurrentHealth { get; private set; }
-    
-    [Header("召唤物属性")]
-    private float _maxHealth;
-    private float _lifeTime;
-    private float _moveSpeed;
-    private float _detectionRange = 8f;
-    
-    private float _lifeTimer = 0f;
-    private Transform _currentTarget;
-    
-    // 武器引用
-    private WeaponBase _equippedWeapon;
-    
-    // 组件引用
-    private SpriteRenderer _spriteRenderer;
-    private Animator _animator;
-    
-    #region Unity生命周期
-    private void Awake()
+    private int maxHp;
+    private float lifetime;
+    private int summonWeaponId;
+    private int _ownerWeaponType = -1; // -1: 未知, 0: 短, 1: 长
+
+    public bool IsAlive => currentHp > 0;
+
+    private float currentHp;
+    private Transform weaponsParent;
+    private WeaponBase equippedWeapon;
+
+    // 移动相关
+    public float moveSpeed = 2f; // 可在 Inspector 调整，或从配置读取
+    private EnemyBase _targetEnemy;
+
+    void Awake()
     {
-        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        _animator = GetComponentInChildren<Animator>();
-    }
-    
-    private void Start()
-    {
-        // 初始化完成后查找武器
-        StartCoroutine(FindEquippedWeapon());
-    }
-    
-    private void Update()
-    {
-        if (!IsAlive) return;
-        
-        UpdateLifeTimer();
-        UpdateBehavior();
-    }
-    #endregion
-    
-    #region 初始化
-    /// <summary>
-    /// 初始化召唤物
-    /// </summary>
-    public void Initialize(float health, float lifeTime, float moveSpeed)
-    {
-        _maxHealth = health;
-        CurrentHealth = health;
-        _lifeTime = lifeTime;
-        _moveSpeed = moveSpeed;
-        
-        IsAlive = true;
-        _lifeTimer = 0f;
-    }
-    
-    /// <summary>
-    /// 查找装备的武器
-    /// </summary>
-    private IEnumerator FindEquippedWeapon()
-    {
-        // 等待一帧确保武器已经挂载完成
-        yield return null;
-        
-        // 查找WeaponsPos/w1下的武器
-        Transform weaponsPos = transform.Find("WeaponsPos");
-        if (weaponsPos != null)
+        weaponsParent = transform.Find("WeaponsPos");
+        if (weaponsParent == null)
         {
-            Transform w1Position = weaponsPos.Find("w1");
-            if (w1Position != null && w1Position.childCount > 0)
-            {
-                _equippedWeapon = w1Position.GetChild(0).GetComponent<WeaponBase>();
-                if (_equippedWeapon != null)
-                {
-                    Debug.Log($"[SummonController] 找到装备武器: {_equippedWeapon.data.name}");
-                    
-                    // 启用武器的自动攻击
-                    _equippedWeapon.enabled = true;
-                }
-                else
-                {
-                    Debug.LogError("[SummonController] w1位置下的对象没有WeaponBase组件");
-                }
-            }
-            else
-            {
-                Debug.LogError("[SummonController] 未找到w1位置或w1下没有子对象");
-            }
-        }
-        else
-        {
-            Debug.LogError("[SummonController] 未找到WeaponsPos");
-        }
-    }
-    #endregion
-    
-    #region 行为管理
-    /// <summary>
-    /// 更新存在时间
-    /// </summary>
-    private void UpdateLifeTimer()
-    {
-        _lifeTimer += Time.deltaTime;
-        if (_lifeTimer >= _lifeTime)
-        {
-            Die(); // 时间到，死亡
-        }
-    }
-    
-    /// <summary>
-    /// 更新行为
-    /// </summary>
-    private void UpdateBehavior()
-    {
-        if (!FindNearestEnemy())
-        {
-            FollowPlayer();
+            Debug.LogError("[Summon] WeaponsPos NOT FOUND as direct child of " + gameObject.name);
             return;
         }
-        
-        ApproachTarget();
-    }
-    
-    /// <summary>
-    /// 寻找最近敌人 - 修复层级检测问题
-    /// </summary>
-    private bool FindNearestEnemy()
-    {
-        if (Player.Instance == null) return false;
-        
-        // 🔥 修复：使用所有层检测，然后通过标签过滤
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, _detectionRange, ~0); // ~0 表示所有层
-        
-        Transform nearestEnemy = null;
-        float minDistance = float.MaxValue;
-        
-        foreach (var col in hitColliders)
+
+        if (weaponsParent.Find("w1") == null)
         {
-            if (col == null) continue;
-            
-            // 通过标签验证敌人，不依赖层级
-            if (col.CompareTag("Enemy"))
+            Debug.LogError("[Summon] w1 NOT FOUND under WeaponsPos");
+            return;
+        }
+
+        // 确保有 Collider + Rigidbody2D（用于触发）
+        if (GetComponent<Collider2D>() == null)
+        {
+            Debug.LogWarning("[Summon] Missing Collider2D on " + name);
+        }
+        if (GetComponent<Rigidbody2D>() == null)
+        {
+            gameObject.AddComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+            GetComponent<Rigidbody2D>().freezeRotation = true;
+        }
+    }
+
+    public void SetSummonData(int maxHp, float lifetime, int weaponId)
+    {
+        this.maxHp = maxHp;
+        this.lifetime = lifetime;
+        this.summonWeaponId = weaponId;
+    }
+
+    public void SetOwnerWeaponType(int type)
+    {
+        _ownerWeaponType = type;
+    }
+
+    void Start()
+    {
+        if (maxHp <= 0 || lifetime <= 0)
+        {
+            Debug.LogError("[Summon] Summon data not set! Call SetSummonData() before Start.");
+            Destroy(gameObject);
+            return;
+        }
+
+        currentHp = maxHp;
+        StartCoroutine(DestroyAfterLifetime());
+        ApplySummonStatsBonus();
+        EquipWeapon();
+    }
+
+    void ApplySummonStatsBonus()
+    {
+        // 示例：未来可扩展移速加成
+        // moveSpeed *= (_ownerWeaponType == 0) ? GameManager.Instance.propData.short_moveSpeed : GameManager.Instance.propData.long_moveSpeed;
+    }
+
+    IEnumerator DestroyAfterLifetime()
+    {
+        yield return new WaitForSeconds(lifetime);
+        Dead();
+    }
+
+    void Update()
+    {
+        if (!IsAlive) return;
+
+        FindAndMoveToClosestEnemy();
+    }
+
+    void FindAndMoveToClosestEnemy()
+    {
+        EnemyBase closest = null;
+        float minDist = Mathf.Infinity;
+
+        // 获取所有活跃敌人（假设敌人挂在 LevelController 或通过标签获取）
+        var enemies = FindObjectsOfType<EnemyBase>();
+        Vector3 myPos = transform.position;
+
+        foreach (var enemy in enemies)
+        {
+            if (enemy == null || enemy.hp <= 0) continue;
+
+            float dist = Vector2.Distance(myPos, enemy.transform.position);
+            if (dist < minDist)
             {
-                EnemyBase enemy = col.GetComponent<EnemyBase>();
-                if (enemy != null && enemy.hp > 0)
-                {
-                    float distance = Vector3.Distance(transform.position, col.transform.position);
-                    if (distance < minDistance)
-                    {
-                        minDistance = distance;
-                        nearestEnemy = col.transform;
-                    }
-                }
+                minDist = dist;
+                closest = enemy;
             }
         }
-        
-        _currentTarget = nearestEnemy;
-        
-        // 设置武器目标
-        if (_equippedWeapon != null)
+
+        _targetEnemy = closest;
+
+        if (_targetEnemy != null)
         {
-            _equippedWeapon.enemy = _currentTarget;
-            _equippedWeapon.isAttack = _currentTarget != null;
+            Vector2 direction = (_targetEnemy.transform.position - myPos).normalized;
+            transform.Translate(direction * moveSpeed * Time.deltaTime);
+
+            // 可选：翻转朝向（如果召唤物有 SpriteRenderer）
+            TurnAround(direction.x);
         }
-        
-        return _currentTarget != null;
     }
-    
-    /// <summary>
-    /// 跟随玩家
-    /// </summary>
-    private void FollowPlayer()
+
+    protected virtual void TurnAround(float horizontalDirection)
     {
-        if (Player.Instance == null) return;
-        
-        Vector3 directionToPlayer = (Player.Instance.transform.position - transform.position).normalized;
-        float distanceToPlayer = Vector3.Distance(transform.position, Player.Instance.transform.position);
-        
-        // 保持与玩家一定距离
-        if (distanceToPlayer > 3f)
-        {
-            transform.position += directionToPlayer * _moveSpeed * Time.deltaTime;
-            UpdateFacingDirection(directionToPlayer);
-        }
+        var sr = GetComponent<SpriteRenderer>();
+        if (sr == null) return;
+
+        if (horizontalDirection >= 0.1f)
+            sr.flipX = false;
+        else if (horizontalDirection <= -0.1f)
+            sr.flipX = true;
     }
-    
-    /// <summary>
-    /// 接近目标
-    /// </summary>
-    private void ApproachTarget()
-    {
-        if (_currentTarget == null) return;
-        
-        Vector3 direction = (_currentTarget.position - transform.position).normalized;
-        float distance = Vector3.Distance(transform.position, _currentTarget.position);
-        
-        // 如果不在武器攻击范围内，继续移动
-        if (_equippedWeapon != null && _equippedWeapon.data != null)
-        {
-            if (distance > _equippedWeapon.data.range)
-            {
-                transform.position += direction * _moveSpeed * Time.deltaTime;
-            }
-        }
-        else
-        {
-            // 如果没有武器，保持一定距离
-            if (distance > 2f)
-            {
-                transform.position += direction * _moveSpeed * Time.deltaTime;
-            }
-        }
-        
-        UpdateFacingDirection(direction);
-    }
-    
-    /// <summary>
-    /// 更新面向方向
-    /// </summary>
-    private void UpdateFacingDirection(Vector3 direction)
-    {
-        if (_spriteRenderer != null)
-        {
-            _spriteRenderer.flipX = direction.x < 0;
-        }
-    }
-    #endregion
-    
-    #region 伤害和死亡处理
-    /// <summary>
-    /// 受到伤害
-    /// </summary>
+
+    // === 受伤与死亡 ===
     public void TakeDamage(float damage)
     {
         if (!IsAlive) return;
-        
-        CurrentHealth -= damage;
-        
-        if (_animator != null)
-        {
-            _animator.SetTrigger("Hit");
-        }
-        
-        if (CurrentHealth <= 0)
-        {
-            Die();
-        }
+        currentHp -= damage;
+        if (currentHp <= 0) Dead();
     }
-    
-    /// <summary>
-    /// 死亡处理
-    /// </summary>
-    public void Die()
+
+    public void Dead()
     {
-        if (!IsAlive) return;
-        
-        IsAlive = false;
-        
-        // 禁用武器
-        if (_equippedWeapon != null)
+        if (equippedWeapon != null)
         {
-            _equippedWeapon.enabled = false;
+            Destroy(equippedWeapon.gameObject);
         }
-        
-        if (_animator != null)
-        {
-            _animator.SetTrigger("Die");
-        }
-        
-        StartCoroutine(DestroyAfterDeath());
-    }
-    
-    private IEnumerator DestroyAfterDeath()
-    {
-        yield return new WaitForSeconds(0.5f);
-        
-        // 销毁武器
-        if (_equippedWeapon != null)
-        {
-            Destroy(_equippedWeapon.gameObject);
-        }
-        
-        // 销毁召唤物
         Destroy(gameObject);
     }
-    #endregion
-    
-    #region 调试工具
-    private void OnDrawGizmosSelected()
+
+    // === 武器装备 ===
+    void EquipWeapon()
     {
-        // 绘制检测范围
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, _detectionRange);
-        
-        // 绘制武器攻击范围（如果有武器）
-        if (_equippedWeapon != null && _equippedWeapon.data != null)
+        if (GameManager.Instance == null)
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, _equippedWeapon.data.range);
+            Debug.LogError("[Summon] GameManager is NULL!");
+            return;
         }
-        
-        // 绘制目标连线
-        if (_currentTarget != null)
+
+        if (weaponsParent == null)
         {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(transform.position, _currentTarget.position);
+            Debug.LogError("[Summon] weaponsParent is NULL! Did Awake fail?");
+            return;
+        }
+
+        WeaponData originalData = null;
+        var allLists = new[] {
+            GameManager.Instance.WeaponDataOne,
+            GameManager.Instance.WeaponDataTwo,
+            GameManager.Instance.WeaponDataThree,
+            GameManager.Instance.NeuralWeaponData
+        };
+
+        foreach (var list in allLists)
+        {
+            if (list == null) continue;
+            foreach (var item in list)
+            {
+                if (item != null && item.id == summonWeaponId)
+                {
+                    originalData = item;
+                    break;
+                }
+            }
+            if (originalData != null) break;
+        }
+
+        if (originalData == null)
+        {
+            Debug.LogError($"[Summon] Weapon with ID {summonWeaponId} NOT FOUND!");
+            return;
+        }
+
+        // ⚠️ 关键修改：不再对 bonusData 做任何加成！
+        // 武器挂载后，其 Start() 会自动应用全局加成（通过 WeaponBase）
+        WeaponData weaponDataToUse = originalData.Clone(); // 克隆是为了避免共享引用
+
+        string path = $"Prefabs/Weapons/{weaponDataToUse.familyname}/{weaponDataToUse.EnName}";
+        GameObject weaponPrefab = UnityEngine.Resources.Load<GameObject>(path);
+        if (weaponPrefab == null)
+        {
+            Debug.LogError($"[Summon] Weapon prefab NOT FOUND at: {path}");
+            return;
+        }
+
+        Transform slot = weaponsParent.Find("w1");
+        if (slot == null)
+        {
+            Debug.LogError("[Summon] w1 missing during EquipWeapon!");
+            return;
+        }
+
+        GameObject weaponObj = Instantiate(weaponPrefab, slot.position, slot.rotation, slot);
+        equippedWeapon = weaponObj.GetComponent<WeaponBase>();
+        if (equippedWeapon == null)
+        {
+            Debug.LogError("[Summon] WeaponBase component NOT FOUND on instantiated weapon!");
+            return;
+        }
+
+        equippedWeapon.data = weaponDataToUse;
+        equippedWeapon.enabled = true;
+    }
+
+    // === 碰撞：被敌人攻击 ===
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        HandleEnemyContact(other);
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        HandleEnemyContact(other);
+    }
+
+    private void HandleEnemyContact(Collider2D other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            var enemy = other.GetComponent<EnemyBase>();
+            if (enemy != null && enemy.hp > 0)
+            {
+                // 敌人每帧对召唤物造成微量伤害（模拟“接触伤害”）
+                // 或者你可以改为：只在第一次接触时记录，由敌人主动攻击（更推荐）
+                // 这里采用简单方案：召唤物被敌人碰到就受伤
+                TakeDamage(enemy.damage * Time.deltaTime); // 每秒受到 enemy.damage 点伤害
+            }
         }
     }
-    #endregion
 }

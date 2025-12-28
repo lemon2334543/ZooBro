@@ -1,4 +1,8 @@
-﻿using System.Collections;
+﻿// Enemy4.cs
+// 技能型敌人：蓄力冲锋，修复了左右翻转丢失问题
+// ✨ 优化：保存完整 localScale（含符号），确保翻转正确
+
+using System.Collections;
 using UnityEngine;
 using Enemy;
 
@@ -13,10 +17,9 @@ namespace Enemy
         private bool _isCharging = false;
         private static readonly float MaxRedIntensity = 0.9f;
 
-        // 防止重复伤害（仅用于普通攻击）
         private float lastDamageTime = -10f;
         private const float invincibilityDuration = 0.5f;
-        private Vector3 _chargeStartScale; // 新增：包含翻转信息的完整 scale
+        private Vector3 _chargeStartScale;
 
         protected override void Start()
         {
@@ -35,27 +38,25 @@ namespace Enemy
 
             UpdateSkillCooldownVisual();
             base.Move();
-            // 不走出地图边界
-            transform.position = ClampToBounds(transform.position);
+            ClampToMap();
         }
 
         private void UpdateSkillCooldownVisual()
         {
-            if (EnemyDate.SkillTime <= 0) return;
+            if (EnemyDate?.SkillTime <= 0) return;
 
-            float timeUntilReady = skillTimer;
-            if (timeUntilReady <= 1f && timeUntilReady > 0f)
+            if (skillTimer > 0 && skillTimer <= 1f)
             {
-                float progress = 1f - Mathf.Clamp01(timeUntilReady / 1f);
-                float redFactor = Mathf.Min(1f, progress * MaxRedIntensity);
+                float progress = 1f - (skillTimer / 1f);
+                float red = Mathf.Min(1f, progress * MaxRedIntensity);
                 _spriteRenderer.color = new Color(
-                    Mathf.Lerp(_originalColor.r, 1f, redFactor),
-                    Mathf.Lerp(_originalColor.g, 0f, redFactor),
-                    Mathf.Lerp(_originalColor.b, 0f, redFactor),
+                    Mathf.Lerp(_originalColor.r, 1f, red),
+                    Mathf.Lerp(_originalColor.g, 0f, red),
+                    Mathf.Lerp(_originalColor.b, 0f, red),
                     _originalColor.a
                 );
             }
-            else if (skillTimer <= 0f)
+            else if (skillTimer <= 0)
             {
                 _spriteRenderer.color = _originalColor;
             }
@@ -63,40 +64,31 @@ namespace Enemy
 
         public override void LaunchSkill(Vector2 direction)
         {
-            if (Player.Instance == null) return;
+            if (!IsValidPlayer()) return;
 
-            Vector3 playerPosition = Player.Instance.transform.position;
-            Vector3 enemyPosition = transform.position;
-            Vector2 dirToPlayer = (playerPosition - enemyPosition).normalized;
-            float chargeDistance = EnemyDate.range;
-            Vector3 chargeEnd = enemyPosition + (Vector3)dirToPlayer * chargeDistance;
-
-            StartCoroutine(ChargeRoutine(chargeEnd));
+            Vector3 playerPos = Player.Instance.transform.position;
+            Vector3 endPos = transform.position + (Vector3)direction * EnemyDate.range;
+            StartCoroutine(ChargeRoutine(endPos));
         }
 
         private IEnumerator ChargeRoutine(Vector3 targetPosition)
         {
             _isCharging = true;
             skilling = true;
+            _chargeStartScale = transform.localScale; // 👈 保留 x 符号！
 
-            // 👇 保存冲锋开始时的完整 localScale（含左右翻转）
-            _chargeStartScale = transform.localScale;
+            Vector3 startPos = ClampToMap(transform.position);
+            targetPosition = ClampToMap(targetPosition);
 
-            // 限制冲锋终点在地图内
-            targetPosition = ClampToBounds(targetPosition);
-            Vector3 startPosition = ClampToBounds(transform.position);
-
-            // ===== 阶段1: 蓄力变红 & 缩小（保持原有朝向）=====
-            float prepareDuration = 0.4f;
+            // 蓄力
+            float prepare = 0.4f;
             float elapsed = 0f;
             Color startColor = _spriteRenderer.color;
-
-            while (elapsed < prepareDuration)
+            while (elapsed < prepare)
             {
                 elapsed += Time.deltaTime;
-                float t = elapsed / prepareDuration;
+                float t = elapsed / prepare;
                 float scale = Mathf.Lerp(1f, 0.7f, t * t);
-                // 👇 使用 _chargeStartScale 而非 _originalScale，保留 x 符号
                 transform.localScale = new Vector3(
                     _chargeStartScale.x * scale,
                     _chargeStartScale.y * scale,
@@ -106,7 +98,7 @@ namespace Enemy
                 yield return null;
             }
 
-            // ===== 阶段2: 爆发冲锋 =====
+            // 冲锋
             transform.localScale = new Vector3(
                 _chargeStartScale.x * 1.3f,
                 _chargeStartScale.y * 1.3f,
@@ -115,25 +107,23 @@ namespace Enemy
             _spriteRenderer.color = new Color(1f, 0.8f, 0.8f, startColor.a);
             yield return null;
 
+            float chargeTime = 0.3f;
             float chargeElapsed = 0f;
-            while (chargeElapsed < 0.3f)
+            while (chargeElapsed < chargeTime)
             {
                 chargeElapsed += Time.deltaTime;
-                float t = Mathf.Min(1f, chargeElapsed / 0.3f);
-                Vector3 newPos = Vector3.Lerp(startPosition, targetPosition, t);
-                transform.position = ClampToBounds(newPos);
+                float t = Mathf.Min(1f, chargeElapsed / chargeTime);
+                transform.position = Vector3.Lerp(startPos, targetPosition, t);
                 yield return null;
             }
 
-            transform.position = ClampToBounds(targetPosition);
-
-            // ===== 阶段3: 恢复 =====
+            // 恢复
             elapsed = 0f;
-            float recoveryDuration = 0.2f;
-            while (elapsed < recoveryDuration)
+            float recovery = 0.2f;
+            while (elapsed < recovery)
             {
                 elapsed += Time.deltaTime;
-                float t = elapsed / recoveryDuration;
+                float t = elapsed / recovery;
                 transform.localScale = Vector3.Lerp(
                     new Vector3(_chargeStartScale.x * 1.3f, _chargeStartScale.y * 1.3f, _chargeStartScale.z),
                     _chargeStartScale,
@@ -143,7 +133,6 @@ namespace Enemy
                 yield return null;
             }
 
-            // 👇 完全恢复冲锋开始时的 scale（包括朝向）
             transform.localScale = _chargeStartScale;
             _spriteRenderer.color = _originalColor;
 
@@ -154,28 +143,24 @@ namespace Enemy
             skillTimer = EnemyDate.SkillTime;
         }
 
-        private void DealDamageIfHitPlayer(bool ignoreInvincibility = false)
+        private void DealDamageIfHitPlayer(bool ignoreInvincibility)
         {
-            if (Player.Instance == null || Player.Instance.isDead) return;
-
-            if (!ignoreInvincibility && (Time.time - lastDamageTime < invincibilityDuration))
-                return;
+            if (!IsValidPlayer()) return;
+            if (!ignoreInvincibility && Time.time - lastDamageTime < invincibilityDuration) return;
 
             Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 0.8f);
-            foreach (Collider2D hit in hits)
+            foreach (var hit in hits)
             {
                 if (hit.CompareTag("Player"))
                 {
-                    Player.Instance.Injured(EnemyDate.damage);
-                    if (!ignoreInvincibility)
-                        lastDamageTime = Time.time;
+                    Player.Instance.Injured(damage);
+                    if (!ignoreInvincibility) lastDamageTime = Time.time;
                     break;
                 }
             }
         }
 
-        // 地图边界限制辅助方法
-        private Vector3 ClampToBounds(Vector3 pos)
+        private Vector3 ClampToMap(Vector3 pos)
         {
             return new Vector3(
                 Mathf.Clamp(pos.x, -16.5f, 16.5f),
@@ -184,10 +169,9 @@ namespace Enemy
             );
         }
 
-        // 注意：普通接触伤害由 EnemyBase 的 Attack() 处理，此处不重复实现
-        private void OnTriggerEnter2D(Collider2D col)
+        private void ClampToMap()
         {
-            // 保留空实现以允许基类处理 isContact 等逻辑
+            transform.position = ClampToMap(transform.position);
         }
     }
 }

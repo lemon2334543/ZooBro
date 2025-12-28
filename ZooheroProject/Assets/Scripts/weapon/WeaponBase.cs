@@ -59,7 +59,7 @@ public class WeaponBase : MonoBehaviour
         {
             data.range *= GameManager.Instance.propData.short_range;
             data.damage *= GameManager.Instance.propData.short_damage;
-            data.cooling /= GameManager.Instance.propData.short_attackSpeed; // 攻速提升 → 冷却缩短
+            data.cooling /= GameManager.Instance.propData.short_attackSpeed; 
         }
         else if (data.isLong == 1) // 长武器
         {
@@ -159,23 +159,24 @@ public class WeaponBase : MonoBehaviour
     }
 
     /// <summary>
-    /// 重置武器朝向为默认方向（根据玩家面朝方向）。
+    /// 无敌人时，武器直接跟随玩家面朝方向（仅 flipX，不旋转角度）
     /// </summary>
     protected virtual void ResetWeaponFacing()
     {
         if (Player.Instance == null || _spriteRenderer == null) return;
 
         bool playerFacingRight = Player.Instance.IsFacingRight;
-        Vector2 rightDir = new Vector2(
-            Mathf.Cos(originZ * Mathf.Deg2Rad),
-            Mathf.Sin(originZ * Mathf.Deg2Rad)
-        );
-        Vector2 defaultDir = playerFacingRight 
-            ? rightDir 
-            : new Vector2(-rightDir.x, rightDir.y);
+        
+        // 直接设置镜像：flipX = true 表示向左，因此与 facingRight 相反
+        _isFlipped = !playerFacingRight;
+        _spriteRenderer.flipX = _isFlipped;
 
-        float defaultAngle = Mathf.Atan2(defaultDir.y, defaultDir.x) * Mathf.Rad2Deg;
-        ApplyControlledRotation(NormalizeAngle(defaultAngle));
+        // 重置旋转为初始设计角度（如 0°、90° 等）
+        transform.localEulerAngles = new Vector3(0, 0, originZ);
+
+        // 重置内部状态，避免下次瞄准时误判大角度跳变
+        _lastStableAngle = originZ;
+        _angleNeedsCorrection = false;
     }
 
     /// <summary>

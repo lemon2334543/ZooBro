@@ -58,5 +58,29 @@
     "skillTime": 4.5,
     "type": 3,
     "range": 5
+  },
+  {
+    "id": 6,
+    "name": "enemyboss1",
+    "hp": 10000,
+    "damage": 1,
+    "speed": 3,
+    "attackTime": 5,
+    "provideExp": 0,
+    "skillTime": 4.5,
+    "type": 4,
+    "range": 8
+  },
+  {
+    "id": 7,
+    "name": "chestenemy",
+    "hp": 200,
+    "damage": 1,
+    "speed": 3,
+    "attackTime": 5,
+    "provideExp": 0,
+    "skillTime": 4.5,
+    "type": 1,
+    "range": 8
   }
 ]

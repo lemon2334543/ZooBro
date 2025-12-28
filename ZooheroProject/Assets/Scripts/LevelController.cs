@@ -1,10 +1,8 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Newtonsoft.Json;
 using Resources.script.model;
 using Enemy;
 
@@ -12,304 +10,243 @@ public class LevelController : MonoBehaviour
 {
     public static LevelController Instance;
 
-    public float waveTimer; // 波次计时器
-
-    public GameObject _failPanel;    // 失败面板
-    public GameObject _successPanel; // 胜利面板
-
-    public GameObject enemy1_prefab; // 敌人预制体
+    public float waveTimer;
+    public GameObject _failPanel;
+    public GameObject _successPanel;
+    public GameObject enemy1_prefab;
     public GameObject enemy2_prefab;
     public GameObject enemy3_prefab;
     public GameObject enemy4_prefab;
     public GameObject enemy5_prefab;
-    public List<EnemyBase> enemy_list = new List<EnemyBase>(); // 敌人列表
-    public Transform _map;            // 地图对象
+    public GameObject enemyboss1_prefab;
+    public GameObject chestenemy_prefab;
+    public List<EnemyBase> enemy_list = new List<EnemyBase>();
+    public Transform _map;
+    public GameObject redfork_prefab;
+    public TextAsset leveTestAsset;
+    public List<LevelDate> LevelDates = new List<LevelDate>();
+    public LevelDate CurrentLevelDate;
+    public Transform enemyfahter;
 
-    public GameObject redfork_prefab; // 红叉提示预制体
-    
-    public TextAsset leveTestAsset;  // 关卡配置资源
-    public List<LevelDate> LevelDates = new List<LevelDate>(); // 关卡配置列表
-    
-    public LevelDate CurrentLevelDate; // 当前关卡配置
-
-    public Transform enemyfahter;    // 敌人父对象
-    
-    // 武器生成测试：修改weaponID可生成指定武器
     public List<WeaponData> WeaponDatas = new List<WeaponData>();
-    public TextAsset textAsset;     // 武器配置资源
-    
-    private Dictionary<string, GameObject> enemyDictionary = new Dictionary<string, GameObject>(); // 敌人字典
+    public TextAsset textAsset;
+    public Dictionary<string, GameObject> enemyDictionary = new Dictionary<string, GameObject>();
+    internal GameManager _gameManager;
 
-    private GameManager _gameManager;
-    
-    
+    // ===== 局内事件 =====
+    private static readonly string[] InGameEventPrefabPaths = new[]
+    {
+        "Prefabs/Event/RapidClickEvent",
+        //"Prefabs/Event/QteEvent",
+        //"Prefabs/Event/StayInCircleEvent",
+        //"Prefabs/Event/KillInCircleEvent"
+    };
 
-    // 基础权重（0.6→1，0.35→2，0.05→3）//基础敌人概率
+    //箭头
+    private InGameEventBase _activeEvent;
+    private bool _eventTriggered = false;
+    internal ArrowIndicatorController _arrowIndicator;
+
+    // ===== 敌人死亡事件广播 =====
+    public delegate void EnemyKilledHandler(EnemyBase enemy);
+    public event EnemyKilledHandler OnEnemyKilledEvent;
+
+    public bool isBossWave = false;
+
     public double[] BaseEnemyProbability = { 0.90, 0.10, 0 };
-    //高级敌人概率
-    public double[] HighLevelEnemyProbability = {0,0.95,0.05}; //高级敌人概率
-    // 预计算的累计权重（只初始化一次）
+    public double[] HighLevelEnemyProbability = { 0, 0.95, 0.05 };
     public double[] _cumulativeWeights;
     public double[] _HighcumulativeWeights;
-    // 全局唯一的随机数生成器（避免重复初始化）
     public readonly System.Random _random = new System.Random();
-    
+
+    // ===== 新增：暂停控制 =====
+    private bool _isPaused = false;
+    private float _pausedWaveTimer = 0f;
+
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
-    
-        
-        // 武器生成测试逻辑
-        // int weaponID = 1;
-        // _gameManager.currentWeapons.Add(JsonConvert.DeserializeObject<List<WeaponData>>(_gameManager.textAssetOne.text)[weaponID-1]); 
-        
-        // 已购买（未装备）武器生成测试逻辑
-        // for (int i = 0; i < 5; i++)
-        // {
-        //     int weaponID = 1;
-        //     _gameManager.NotEquippedcurrentWeapons.Add(JsonConvert.DeserializeObject<List<WeaponData>>(_gameManager.textAssetOne.text)[weaponID-1]);
-        // }
 
-        
-        
-        
         _failPanel = GameObject.Find("FailPanel");
         _successPanel = GameObject.Find("SuccessPanel");
-        
+
         enemy1_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemys/Enemy1");
         enemy2_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemys/Enemy2");
         enemy3_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemys/Enemy3");
         enemy4_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemys/Enemy4");
         enemy5_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemys/Enemy5");
-        
+        enemyboss1_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemys/EnemyBoss1");
+        chestenemy_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/Enemys/ChestEnemy");
         redfork_prefab = UnityEngine.Resources.Load<GameObject>("Prefabs/RedFork");
 
         _map = GameObject.Find("Map").transform;
-        
-        // 初始化敌人字典
-        enemyDictionary.Add("enemy1",enemy1_prefab);
-        enemyDictionary.Add("enemy2",enemy2_prefab);
-        enemyDictionary.Add("enemy3",enemy3_prefab);
-        enemyDictionary.Add("enemy4",enemy4_prefab);
-        enemyDictionary.Add("enemy5",enemy5_prefab);
+
+        enemyDictionary.Add("enemy1", enemy1_prefab);
+        enemyDictionary.Add("enemy2", enemy2_prefab);
+        enemyDictionary.Add("enemy3", enemy3_prefab);
+        enemyDictionary.Add("enemy4", enemy4_prefab);
+        enemyDictionary.Add("enemy5", enemy5_prefab);
+        enemyDictionary.Add("enemyboss1", enemyboss1_prefab);
+        enemyDictionary.Add("chestenemy", chestenemy_prefab);
 
         enemyfahter = GameObject.Find("Enemys").transform;
-        
         _gameManager = GameManager.Instance;
+        
+        // 获取箭头控制器
+        _arrowIndicator = FindObjectOfType<ArrowIndicatorController>();
     }
 
     void Start()
-    {   
+    {
+        // ✅ 关键：确保新波次开始时敌人列表干净（防止单例跨场景残留）
+        enemy_list.Clear();
+
         PrecomputeCumulativeWeights();
-        // CurrentLevelDate = LevelDates[(int)_gameManager.currentWave-1];
-        
-        // Debug.Log(_gameManager);
+
+        // ✅ 初始化显示
+        GamePanel.Instance?.RenewStoredMoney();
+        GamePanel.Instance?.RenewStoredExp();
+
+        if (_gameManager.currentWave == 5 || _gameManager.currentWave == 10 ||
+            _gameManager.currentWave == 15 || _gameManager.currentWave == 20)
+        {
+            isBossWave = true;
+            GenerateWeapons();
+            StartCoroutine(SpawnBossAfterDelay());
+            return;
+        }
+
+        isBossWave = false;
         waveTimer = GetWaveDuration(_gameManager.currentWave);
-        
         GenerateEnemy();
         GenerateWeapons();
-// ===== 测试：强制生成 enemy =====
-        if (_gameManager.currentWave == 1)
-        {
-            // 手动查找 enemy4 的数据
-            EnemyDate enemy4Data = null;
-            foreach (var ed in _gameManager.EnemyDates)
-            {
-                if (ed.name == "enemy4")
-                {
-                    enemy4Data = ed;
-                    break;
-                }
-            }
 
-            if (enemy4Data != null)
-            {
-                Vector3 pos = GetRandomPosition(_map.GetComponent<SpriteRenderer>().bounds);
-                GameObject redfork = Instantiate(redfork_prefab, pos, Quaternion.identity);
-                StartCoroutine(SpawnSpecificEnemyAfterRedfork(redfork, pos, enemy4Data));
-            }
-        }
-// =================================
+        StartCoroutine(TriggerInGameEventAfterDelay(waveTimer * 0.2f));
     }
 
-    //生成敌人测试=====================================
-    IEnumerator SpawnSpecificEnemyAfterRedfork(GameObject redfork, Vector3 spawnPoint, EnemyDate specificEnemy)
+    IEnumerator SpawnBossAfterDelay()
     {
-        yield return new WaitForSeconds(1f);
-        Destroy(redfork);
-
-        if (waveTimer > 0 && !Player.Instance.isDead)
+        yield return new WaitForSeconds(2f);
+        EnemyDate bossData = _gameManager.EnemyDates.Find(ed => ed.name == "enemyboss1");
+        if (bossData == null)
         {
-            if (enemyDictionary.TryGetValue(specificEnemy.name, out GameObject prefab))
-            {
-                EnemyBase enemy = Instantiate(prefab, spawnPoint, Quaternion.identity).GetComponent<EnemyBase>();
-                enemy.transform.parent = enemyfahter;
-                enemy.EnemyDate = specificEnemy;
-                enemy_list.Add(enemy);
-            }
-            else
-            {
-                Debug.LogError("找不到预制体: " + specificEnemy.name);
-            }
+            Debug.LogError("未找到 Boss 数据: enemyboss1");
+            yield break;
+        }
+        Vector3 spawnPos = Vector3.zero;
+        if (enemyDictionary.TryGetValue(bossData.name, out GameObject prefab))
+        {
+            EnemyBase boss = Instantiate(prefab, spawnPos, Quaternion.identity).GetComponent<EnemyBase>();
+            boss.transform.parent = enemyfahter;
+            boss.EnemyDate = bossData;
+            enemy_list.Add(boss);
+        }
+        else
+        {
+            Debug.LogError("找不到 Boss 预制体: " + bossData.name);
         }
     }
-    //生成敌人测试=====================================
-    
-    /// <summary>
-    /// 生成武器
-    /// </summary>
+
     private void GenerateWeapons()
     {
-        // Debug.Log("开始生成武器");
-        
         int i = 0;
         foreach (WeaponData weapon in _gameManager.currentWeapons)
         {
-            // Debug.Log("Prefabs/Weapons/"+ weapon.familyname +"/"+ weapon.name);
-            GameObject gameObject = UnityEngine.Resources.Load<GameObject>("Prefabs/Weapons/"+ weapon.familyname +"/"+ weapon.EnName);
-            WeaponBase WeaponBase = Instantiate(gameObject, Player.Instance.weaponsPos.GetChild(i)).GetComponent<WeaponBase>();
-            WeaponBase.data = weapon;
+            GameObject gameObject = UnityEngine.Resources.Load<GameObject>("Prefabs/Weapons/" + weapon.familyname + "/" + weapon.EnName);
+            if (gameObject == null)
+            {
+                Debug.LogWarning($"武器预制体未找到: Weapons/{weapon.familyname}/{weapon.EnName}");
+                continue;
+            }
+            WeaponBase weaponBase = Instantiate(gameObject, Player.Instance.weaponsPos.GetChild(i)).GetComponent<WeaponBase>();
+            weaponBase.data = weapon;
             i++;
         }
-        
-        // Debug.Log("武器生成完成");
     }
 
-    /// <summary>
-    /// 生成敌人
-    /// </summary>
     private void GenerateEnemy()
     {
-        // 生成敌人
-        
         StartCoroutine(SpawnBaseEnemies());
         StartCoroutine(SpawnHighEnemies());
-       
     }
 
-
-
-     IEnumerator SpawnBaseEnemies()
+    IEnumerator SpawnBaseEnemies()
     {
-        //每次判定要生成的敌人数量
-        int totalEnemiesPerBatch = 4 + (int)(_gameManager.DifficultyDate.id * 0.5) + _gameManager.ELO * (int)
-            (_gameManager.currentWave * 0.2);
-        
+        int totalEnemiesPerBatch = 4 + (int)(_gameManager.DifficultyDate.id * 0.5) + _gameManager.ELO * (int)(_gameManager.currentWave * 0.2);
         while (waveTimer > 0 && !Player.Instance.isDead)
         {
-            // 每批生成前等待0.5秒（控制批次间隔）
-            yield return new WaitForSeconds(2f); 
-            if (waveTimer <= 0 || Player.Instance.isDead)
-                break;
+            yield return new WaitForSeconds(2f);
+            if (waveTimer <= 0 || Player.Instance.isDead) break;
 
-            Vector3 CenterPoint = GetRandomPosition(_map.GetComponent<SpriteRenderer>().bounds); //本次敌人生成的中心点
-            // 批量生成该批次的所有红叉，每个红叉单独处理“1秒后生成敌人”
+            Vector3 CenterPoint = GetRandomPosition(_map.GetComponent<SpriteRenderer>().bounds);
             for (int i = 0; i < totalEnemiesPerBatch; i++)
             {
-                //计算敌人类型 
                 int targetEnemyType = GetEnemyIndexByWeight();
-                
-                // 1. 计算当前敌人的生成点
-                Vector3 spawnPoint = GetRandomPositionNearby(CenterPoint,3);
-                
-                // 2. 生成红叉提示
+                Vector3 spawnPoint = GetRandomPositionNearby(CenterPoint, 3);
                 GameObject redfork = Instantiate(redfork_prefab, spawnPoint, Quaternion.identity);
-                
-                // 3. 为当前红叉启动独立协程：等待1秒后销毁红叉并生成敌人
-                // 传入当前红叉、生成点，确保一一对应
-                StartCoroutine(SpawnEnemyAfterRedfork(redfork, spawnPoint,targetEnemyType));
-
-                // 可选：每生成一个红叉间隔0.1秒，避免红叉扎堆（可调整或删除）
+                StartCoroutine(SpawnEnemyAfterRedfork(redfork, spawnPoint, targetEnemyType));
                 yield return new WaitForSeconds(0.1f);
             }
         }
     }
+
     IEnumerator SpawnHighEnemies()
     {
         while (waveTimer > 0 && !Player.Instance.isDead)
         {
-            // 1. 计算本次生成的概率（范围随波次/难度/ELO提升）
-            float spawnProbability = 
-                (float)(_gameManager.currentWave * 0.02) +          // 波次贡献（波次越高概率越高）
-                (float)(_gameManager.DifficultyDate.id * 0.02) +    // 难度贡献
-                (float)(_gameManager.ELO * 0.05);                   // ELO贡献
-
-            // 概率上限限制在90%（避免后期几乎必生成，保留随机性）
+            float spawnProbability = (float)(_gameManager.currentWave * 0.02) +
+                                     (float)(_gameManager.DifficultyDate.id * 0.02) +
+                                     (float)(_gameManager.ELO * 0.05);
             spawnProbability = Mathf.Min(spawnProbability, 0.9f);
-
-            // 2. 生成0~1的随机数，小于概率则执行本次生成，否则跳过
             float randomValue = UnityEngine.Random.Range(0f, 1f);
             if (randomValue < spawnProbability)
             {
-                // 计算本批次生成的高等级敌人数量
-                int totalEnemiesPerBatch = 1 + 
-                                           (int)(_gameManager.DifficultyDate.id * 0.5) + 
-                                           _gameManager.ELO * (int)(_gameManager.currentWave * 0.2);
-
-                // 批量生成该批次的所有红叉和敌人
+                int totalEnemiesPerBatch = 1 + (int)(_gameManager.DifficultyDate.id * 0.5) + _gameManager.ELO * (int)(_gameManager.currentWave * 0.2);
                 for (int i = 0; i < totalEnemiesPerBatch; i++)
                 {
-                    // 计算敌人类型（高等级敌人的权重逻辑）
-                    int targetEnemyType = GetHighEnemyIndexByWeight(); // 注意：建议区分高等级敌人的权重方法
-
-                    // 1. 随机生成点
+                    int targetEnemyType = GetHighEnemyIndexByWeight();
                     Vector3 spawnPoint = GetRandomPosition(_map.GetComponent<SpriteRenderer>().bounds);
-
-                    // 2. 生成红叉提示
                     GameObject redfork = Instantiate(redfork_prefab, spawnPoint, Quaternion.identity);
-
-                    // 3. 红叉显示1秒后生成敌人
                     StartCoroutine(SpawnEnemyAfterRedfork(redfork, spawnPoint, targetEnemyType));
-
-                    // 批内红叉间隔0.1秒，避免扎堆
                     yield return new WaitForSeconds(0.1f);
                 }
             }
-            else
-            {
-                // 未满足概率，本次不生成敌人（仅打印日志，可选）
-                // Debug.Log($"高等级敌人生成判定失败（概率：{spawnProbability:0.00}，随机值：{randomValue:0.00}）");
-            }
-
-            // 3. 无论是否生成，都等待1秒后进入下一次判定（保持每秒一次检查）
             yield return new WaitForSeconds(1f);
-
-            // 再次检查波次状态（避免等待期间波次结束）
-            if (waveTimer <= 0 || Player.Instance.isDead)
-                break;
+            if (waveTimer <= 0 || Player.Instance.isDead) break;
         }
     }
 
-    // 独立协程：处理单个红叉的“显示1秒→销毁→生成敌人”逻辑
-    IEnumerator SpawnEnemyAfterRedfork(GameObject redfork, Vector3 spawnPoint,int targetEnemyType)
+    IEnumerator SpawnEnemyAfterRedfork(GameObject redfork, Vector3 spawnPoint, int targetEnemyType)
     {
-        // 等待1秒（红叉显示时间）
         yield return new WaitForSeconds(1f);
-        
-        // 销毁红叉
         Destroy(redfork);
-        
-        // 检查是否仍需要生成敌人（波次未结束且玩家存活）
         if (waveTimer > 0 && !Player.Instance.isDead)
         {
-            EnemyDate targetEnemy = new EnemyDate();
-            // 生成敌人（与红叉位置完全一致）
-            if (targetEnemyType == 1)
-            { 
-                targetEnemy = _gameManager.RandomOne(_gameManager.EnemyTypeOrdinary);
-            }
-            else if(targetEnemyType==2)
+            EnemyDate targetEnemy = null;
+            switch (targetEnemyType)
             {
-                targetEnemy = _gameManager.RandomOne(_gameManager.EnemyTypeSkill);
-            }else if(targetEnemyType==3)
-            {
-                targetEnemy = _gameManager.RandomOne(_gameManager.EnemyTypeSpecial);
+                case 1:
+                    targetEnemy = _gameManager.RandomOne(_gameManager.EnemyTypeOrdinary);
+                    break;
+                case 2:
+                    targetEnemy = _gameManager.RandomOne(_gameManager.EnemyTypeSkill);
+                    break;
+                case 3:
+                    targetEnemy = _gameManager.RandomOne(_gameManager.EnemyTypeSpecial);
+                    break;
+                default:
+                    Debug.LogError("无效的敌人类型索引: " + targetEnemyType);
+                    yield break;
             }
-            
-            
+
             if (targetEnemy == null)
             {
-                Debug.LogError("未找到普通敌人数据！");
+                Debug.LogError("未找到敌人数据！");
                 yield break;
             }
 
@@ -327,40 +264,31 @@ public class LevelController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 获取地图内随机位置
-    /// </summary>
     private Vector3 GetRandomPosition(Bounds bounds)
     {
         float safeDistance = 3.5f;
         float randomX = UnityEngine.Random.Range(bounds.min.x + safeDistance, bounds.max.x - safeDistance);
         float randomY = UnityEngine.Random.Range(bounds.min.y + safeDistance, bounds.max.y - safeDistance);
-        float randomZ = 0f;
-        return new Vector3(randomX, randomY, randomZ);
+        return new Vector3(randomX, randomY, 0f);
     }
 
     public static Vector3 GetRandomPositionNearby(Vector3 center, float radius)
     {
-        // 确保半径为正数（避免无效范围）
         radius = Mathf.Max(0.01f, radius);
-        
-        // 在半径范围内生成随机偏移量（球形范围）
-        // 若需要2D平面随机（忽略Y轴），可注释掉yOffset的随机生成，直接设为0
         float xOffset = UnityEngine.Random.Range(-radius, radius);
-        float yOffset = UnityEngine.Random.Range(-radius, radius); // 2D场景可改为0
-        float zOffset = UnityEngine.Random.Range(-radius, radius);
-        
-        // 计算并返回附近的随机位置
-        return new Vector3(
-            center.x + xOffset,
-            center.y + yOffset,
-            center.z + zOffset
-        );
+        float yOffset = UnityEngine.Random.Range(-radius, radius);
+        return new Vector3(center.x + xOffset, center.y + yOffset, center.z);
     }
-    
+
     void Update()
     {
-        if (waveTimer > 0)
+        if (_isPaused)
+        {
+            GamePanel.Instance?.RenewCountDown(_pausedWaveTimer);
+            return;
+        }
+
+        if (!isBossWave && waveTimer > 0)
         {
             waveTimer -= Time.deltaTime;
             if (waveTimer <= 0)
@@ -368,7 +296,7 @@ public class LevelController : MonoBehaviour
                 waveTimer = 0;
                 if (_gameManager.currentWave < 20)
                 {
-                    NextWave();
+                    CompleteCurrentWave();
                 }
                 else
                 {
@@ -376,91 +304,65 @@ public class LevelController : MonoBehaviour
                 }
             }
         }
-        GamePanel.Instance.RenewCountDown(waveTimer);
+        GamePanel.Instance?.RenewCountDown(waveTimer);
     }
-    
-    /// <summary>
-    /// 根据波次获取该波的持续时间（秒），支持小数波次
-    /// </summary>
-    /// <param name="waveNumber">波次（1-20，支持小数）</param>
-    /// <returns>该波持续时间（秒），若波次无效返回-1</returns>
+
     public float GetWaveDuration(float waveNumber)
     {
-        // 处理无效波次（小于1或大于20）
         if (waveNumber < 1f || waveNumber > 20f)
         {
             Debug.LogError("无效波次：" + waveNumber + "，请输入1-20之间的波次");
             return -1f;
         }
-
-        // 取整数部分判断所属波次（小数部分不影响持续时间，仅用于标识波次内进度）
         int waveInt = Mathf.FloorToInt(waveNumber);
-
-        // 第1-9波：时间随波次递增（20,25,30...60秒）
         if (waveInt >= 1 && waveInt <= 9)
         {
             return 20f + (waveInt - 1) * 5f;
         }
-        // 第10-19波：固定60秒
         else if (waveInt >= 10 && waveInt <= 19)
         {
             return 60f;
         }
-        // 第20波：90秒
-        else // waveInt == 20
+        else
         {
             return 90f;
         }
     }
-    
-    // 高性能获取结果（1-3）
-    public int GetEnemyIndexByWeight() //根据权重返回各个敌人的概率
-    {
-        double randomValue = _random.NextDouble(); // 复用Random实例
 
-        // 直接遍历预计算的累计权重，无需每次累加
+    public int GetEnemyIndexByWeight()
+    {
+        double randomValue = _random.NextDouble();
         for (int i = 0; i < _cumulativeWeights.Length; i++)
         {
             if (randomValue < _cumulativeWeights[i])
             {
-                return i + 1; // 返回1-3
+                return i + 1;
             }
         }
-
-        return _cumulativeWeights.Length; // 兜底（理论不会触发）
+        return _cumulativeWeights.Length;
     }
-    
-    // 高性能高级敌人获取结果（1-3）
-    public int GetHighEnemyIndexByWeight() //根据权重返回各个敌人的概率
-    {
-        double randomValue = _random.NextDouble(); // 复用Random实例
 
-        // 直接遍历预计算的累计权重，无需每次累加
+    public int GetHighEnemyIndexByWeight()
+    {
+        double randomValue = _random.NextDouble();
         for (int i = 0; i < HighLevelEnemyProbability.Length; i++)
         {
             if (randomValue < HighLevelEnemyProbability[i])
             {
-                return i + 1; // 返回1-3
+                return i + 1;
             }
         }
-
-        return HighLevelEnemyProbability.Length; // 兜底（理论不会触发）
+        return HighLevelEnemyProbability.Length;
     }
-    
-    /// <summary>
-    /// 下一波（跳转商店）
-    /// </summary>
+
     private void NextWave()
     {
-        //todo 收获属性，但是感觉我们用不到
-        // _gameManager.money += _gameManager.propData.harvest;
-        SceneManager.LoadScene("shop");
         _gameManager.currentWave += 1;
+        SceneManager.LoadScene("shop");
     }
 
     private void PrecomputeCumulativeWeights()
     {
-        //基础敌人线
         _cumulativeWeights = new double[BaseEnemyProbability.Length];
         double sum = 0;
         for (int i = 0; i < BaseEnemyProbability.Length; i++)
@@ -468,7 +370,7 @@ public class LevelController : MonoBehaviour
             sum += BaseEnemyProbability[i];
             _cumulativeWeights[i] = sum;
         }
-        //高级基础敌人线
+
         _HighcumulativeWeights = new double[HighLevelEnemyProbability.Length];
         double highsum = 0;
         for (int i = 0; i < HighLevelEnemyProbability.Length; i++)
@@ -476,52 +378,171 @@ public class LevelController : MonoBehaviour
             highsum += HighLevelEnemyProbability[i];
             _HighcumulativeWeights[i] = highsum;
         }
-        
-
     }
-    
-    /// <summary>
-    /// 游戏胜利
-    /// </summary>
-    public void GoodGame() 
+
+    public void GoodGame()
     {
+        CollectUnpickedLoot(); // 👈
         _successPanel.GetComponent<CanvasGroup>().alpha = 1;
         StartCoroutine(GoMenu());
-
-        // 清除所有敌人
-        for (int i = 0; i < enemy_list.Count; i++)
-        {
-            if (enemy_list[i])
-            {
-                enemy_list[i].Dead();
-            }
-        }
     }
 
-    /// <summary>
-    /// 游戏失败
-    /// </summary>
-    public void BadGame() 
+    public void BadGame()
     {
+        CollectUnpickedLoot(); // 👈
         _failPanel.GetComponent<CanvasGroup>().alpha = 1;
         StartCoroutine(GoMenu());
+    }
 
-        // 清除所有敌人
-        for (int i = 0; i < enemy_list.Count; i++)
+    public void CompleteCurrentWave()
+    {
+        CollectUnpickedLoot(); // 👈 波次结束也结算（虽然通常波次结束时没敌人了，但保险）
+        if (_gameManager.currentWave < 20)
         {
-            if (enemy_list[i])
-            {
-                enemy_list[i].Dead();
-            }
+            NextWave();
+        }
+        else
+        {
+            GoodGame();
         }
     }
 
-    /// <summary>
-    /// 返回主菜单
-    /// </summary>
     IEnumerator GoMenu()
     {
         yield return new WaitForSeconds(3);
         SceneManager.LoadScene(0);
     }
+    
+
+    // 保留方法但不再被调用（未来扩展用）
+    private void ClearAllEnemies()
+    {
+        for (int i = enemy_list.Count - 1; i >= 0; i--)
+        {
+            if (enemy_list[i] != null)
+            {
+                enemy_list[i].Dead();
+            }
+        }
+        enemy_list.Clear();
+    }
+
+    public void OnEnemyKilled(EnemyBase enemy)
+    {
+        if (enemy == null) return;
+
+        OnEnemyKilledEvent?.Invoke(enemy);
+
+        if (enemy_list.Contains(enemy))
+        {
+            enemy_list.Remove(enemy); // ✅ 保留运行时列表同步（用于UI/逻辑判断）
+        }
+    }
+
+    IEnumerator TriggerInGameEventAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (isBossWave || Player.Instance == null || Player.Instance.isDead || _eventTriggered)
+            yield break;
+
+        _eventTriggered = true;
+
+        var mapRenderer = _map?.GetComponent<SpriteRenderer>();
+        if (mapRenderer == null)
+        {
+            Debug.LogError("【局内事件】找不到 Map 的 SpriteRenderer！");
+            yield break;
+        }
+
+        for (int i = 0; i < 1; i++)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, InGameEventPrefabPaths.Length);
+            string prefabPath = InGameEventPrefabPaths[randomIndex];
+
+            GameObject prefab = UnityEngine.Resources.Load<GameObject>(prefabPath);
+            if (prefab == null)
+            {
+                Debug.LogError($"【局内事件】找不到预制体：{prefabPath}");
+                continue;
+            }
+
+            Vector3 center = GetRandomPosition(mapRenderer.bounds);
+            Vector3 offset = new Vector3(
+                UnityEngine.Random.Range(-3f, 3f),
+                UnityEngine.Random.Range(-3f, 3f),
+                0f
+            );
+            Vector3 spawnPos = center + offset;
+
+            GameObject eventObj = Instantiate(prefab, spawnPos, Quaternion.identity);
+            var eventComponent = eventObj.GetComponent<InGameEventBase>();
+
+            if (eventComponent != null)
+            {
+                eventComponent.StartEvent();
+
+                // 👈 关键：设置箭头目标
+                if (_arrowIndicator != null)
+                {
+                    _arrowIndicator.SetTarget(eventComponent);
+                }
+            }
+            else
+            {
+                Debug.LogError($"【局内事件】预制体 {prefabPath} 缺少 InGameEventBase 组件！");
+            }
+
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    // ===== 暂停/恢复接口 =====
+    public void PauseGame()
+    {
+        if (_isPaused) return;
+        _isPaused = true;
+        _pausedWaveTimer = waveTimer;
+    }
+
+    public void ResumeGame()
+    {
+        if (!_isPaused) return;
+        _isPaused = false;
+        waveTimer = _pausedWaveTimer;
+    }
+    
+    //存储金币和经验
+    private void CollectUnpickedLoot()
+    {
+        // 收集所有未被拾取的 Money
+        var moneyObjects = FindObjectsOfType<Money>();
+        foreach (var money in moneyObjects)
+        {
+            if (money != null && !money.GetComponent<Money>().isPickedUp)
+            {
+                GameManager.Instance.storedMoney += 1f;
+                Destroy(money.gameObject);
+            }
+        }
+
+        // 收集所有未被拾取的 ExpPickup
+        var expObjects = FindObjectsOfType<ExpPickup>();
+        foreach (var exp in expObjects)
+        {
+            if (exp != null)
+            {
+                GameManager.Instance.storedExp += exp.amount;
+                Destroy(exp.gameObject);
+            }
+        }
+
+        // ✅ 调用 UI 更新
+        GamePanel.Instance?.RenewStoredMoney();
+        GamePanel.Instance?.RenewStoredExp();
+
+
+    }
+
+    public bool IsPaused() => _isPaused;
 }

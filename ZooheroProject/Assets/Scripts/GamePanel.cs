@@ -16,20 +16,26 @@ public class GamePanel : MonoBehaviour
     public TMP_Text _countDown;    // 关卡倒计时显示
     public TMP_Text _waveCount;    // 波次显示
     public TMP_Text _expCount;     // 等级显示
+    // 新增：存储金币和经验的文本显示
+    public TMP_Text StoredMoneyText;// 存储金币文本显示
+    public TMP_Text StoredExpText;// 存储经验的文本显示
 
     private void Awake()
     {
         Instance = this;
-        // 查找UI组件并获取控制权
+
+        // 原来的UI组件
         _hpSlider = GameObject.Find("HpSlider").GetComponent<Slider>();
-        //_expSlider = GameObject.Find("ExpSlider").GetComponent<Slider>();
+        _expSlider = GameObject.Find("ExpSlider").GetComponent<Slider>();
         _moneyCount = GameObject.Find("MoneyCount").GetComponent<TMP_Text>();
         _hpCount = GameObject.Find("HpCount").GetComponent<TMP_Text>();
         _countDown = GameObject.Find("CountDown").GetComponent<TMP_Text>();
         _waveCount = GameObject.Find("WaveCount").GetComponent<TMP_Text>();
         _armorpSlider = GameObject.Find("ArmorSlider").GetComponent<Slider>();
         _armorount = GameObject.Find("ArmorCount").GetComponent<TMP_Text>();
-        // _expCount = GameObject.Find("ExpCount").GetComponent<TMP_Text>();
+        _expCount = GameObject.Find("ExpCount").GetComponent<TMP_Text>();
+        StoredMoneyText = GameObject.Find("StoredMoneyText").GetComponent<TMP_Text>();
+        StoredExpText = GameObject.Find("StoredExpText").GetComponent<TMP_Text>();
     }
 
     void Start()
@@ -74,9 +80,21 @@ public class GamePanel : MonoBehaviour
     /// </summary>
     public void RenewExp()
     {
-        // 计算经验条进度（取余数后除以12）
-        // _expSlider.value = GameManager.Instance.exp % 12 / 12;
-        // _expCount.text = "LV." + (GameManager.Instance.exp / 12).ToString("F0");
+        float currentExp = GameManager.Instance.exp;
+        float maxExp = GameManager.Instance.maxExp; // 注意：这里要用 GameManager 的 maxExp，不是 Player 的
+        
+
+        // 计算当前经验在本等级内的百分比（用于滑块）
+        float expInCurrentLevel = currentExp % maxExp;
+
+        // 更新滑块
+        _expSlider.value = expInCurrentLevel / maxExp;
+
+        // 更新文本：LV. + 当前等级
+        _expCount.text = "LV." + GameManager.Instance.RankLevel.ToString();
+
+        // （可选）更新经验数值显示
+        // _expCount.text = $"LV.{currentLevel} ({expInCurrentLevel}/{maxExp})";
     }
 
     /// <summary>
@@ -157,5 +175,24 @@ public class GamePanel : MonoBehaviour
         }
 
         return maxWidth;
+    }
+    
+
+    /// 刷新存储金币
+    public void RenewStoredMoney()
+    {
+        if (StoredMoneyText != null)
+        {
+            StoredMoneyText.text = GameManager.Instance.storedMoney.ToString("F0");
+        }
+    }
+    
+    /// 刷新存储经验
+    public void RenewStoredExp()
+    {
+        if (StoredExpText != null)
+        {
+            StoredExpText.text = GameManager.Instance.storedExp.ToString("F0");
+        }
     }
 }

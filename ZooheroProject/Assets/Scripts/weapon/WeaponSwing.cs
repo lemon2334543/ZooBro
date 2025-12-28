@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 /// <summary>
 /// 近战挥砍类武器控制器，继承自 WeaponBase。
@@ -32,6 +31,9 @@ public class WeaponSwing : WeaponBase
         {0, "Prefabs/Effects/SwingEffect"},
         {1, "Prefabs/Effects/BeamEffect"},
     };
+
+    // 记录本次攻击的实际世界角度（用于无敌人时保持方向）
+    private float _currentAttackAngle = 0f;
 
     #region 初始化
     public override void Awake()
@@ -83,6 +85,8 @@ public class WeaponSwing : WeaponBase
     private IEnumerator MeleeAttackSequence(Player player)
     {
         Vector3 attackDir = GetAttackDirectionWithAssist(player);
+        _currentAttackAngle = Mathf.Atan2(attackDir.y, attackDir.x) * Mathf.Rad2Deg;
+
         Vector3 targetPos = transform.position + attackDir * _moveDistance;
 
         yield return MoveToPosition(targetPos, _swingDuration);
@@ -95,21 +99,31 @@ public class WeaponSwing : WeaponBase
 
     private Vector3 GetAttackDirectionWithAssist(Player player)
     {
-        if (enemy == null)
+        // 提前获取输入，避免重复声明
+        float moveInputX = player.MoveInputX;
+
+        Transform currentTarget = FindClosestEnemyInRange();
+
+        if (currentTarget == null)
         {
-            // 无目标时，沿武器当前朝向攻击
-            float currentAngle = transform.eulerAngles.z - originZ;
-            Vector2 forward = new Vector2(
-                Mathf.Cos(currentAngle * Mathf.Deg2Rad),
-                Mathf.Sin(currentAngle * Mathf.Deg2Rad)
-            );
-            return forward.normalized;
+            // 无目标：使用输入或当前朝向
+            if (Mathf.Abs(moveInputX) > 0.01f)
+            {
+                return new Vector3(Mathf.Sign(moveInputX), 0f, 0f).normalized;
+            }
+            else
+            {
+                float currentAngle = transform.eulerAngles.z - originZ;
+                return new Vector2(
+                    Mathf.Cos(currentAngle * Mathf.Deg2Rad),
+                    Mathf.Sin(currentAngle * Mathf.Deg2Rad)
+                ).normalized;
+            }
         }
 
-        // 从武器指向敌人
-        Vector3 baseDir = (enemy.position - transform.position).normalized;
+        // 有目标：从武器指向敌人，并应用辅助瞄准
+        Vector3 baseDir = (currentTarget.position - transform.position).normalized;
 
-        float moveInputX = player.MoveInputX;
         if (Mathf.Abs(moveInputX) > 0.01f)
         {
             Vector3 assistDir = new Vector3(Mathf.Sign(moveInputX), 0f, 0f);
@@ -117,6 +131,34 @@ public class WeaponSwing : WeaponBase
         }
 
         return baseDir;
+    }
+
+    private Transform FindClosestEnemyInRange()
+    {
+        int count = Physics2D.OverlapCircleNonAlloc(
+            transform.position,
+            data.range,
+            _overlapBuffer,
+            LayerMask.GetMask("Enemy")
+        );
+
+        Transform closest = null;
+        float closestSqr = float.MaxValue;
+
+        for (int i = 0; i < count; i++)
+        {
+            var col = _overlapBuffer[i];
+            if (col == null) continue;
+
+            float distSqr = (col.transform.position - transform.position).sqrMagnitude;
+            if (distSqr < closestSqr)
+            {
+                closestSqr = distSqr;
+                closest = col.transform;
+            }
+        }
+
+        return closest;
     }
 
     private IEnumerator MoveToPosition(Vector3 target, float duration)
@@ -134,6 +176,7 @@ public class WeaponSwing : WeaponBase
 
     private IEnumerator ReturnToOriginalPosition()
     {
+        // 移动回原始世界位置
         Vector3 targetWorld = _originalParent.TransformPoint(_originalLocalPosition);
         Vector3 start = transform.position;
         float elapsed = 0f;
@@ -143,10 +186,38 @@ public class WeaponSwing : WeaponBase
             transform.position = Vector3.Lerp(start, targetWorld, elapsed / _swingDuration);
             yield return null;
         }
+
+        // 恢复父子关系和局部位置
         transform.SetParent(_originalParent, false);
         transform.localPosition = _originalLocalPosition;
-        transform.localEulerAngles = new Vector3(0, 0, originZ);
-        if (_spriteRenderer != null) _spriteRenderer.flipX = false;
+
+        // === 关键逻辑：收回时重新检测敌人并决定朝向 ===
+        Transform closestEnemy = FindClosestEnemyInRange();
+
+        float finalWorldAngle;
+        if (closestEnemy != null)
+        {
+            // 有敌人：面向最近的敌人
+            Vector3 toEnemy = closestEnemy.position - transform.position;
+            finalWorldAngle = Mathf.Atan2(toEnemy.y, toEnemy.x) * Mathf.Rad2Deg;
+        }
+        else
+        {
+            // 无敌人：保持攻击时的方向
+            finalWorldAngle = _currentAttackAngle;
+        }
+
+        // 转为本地角度
+        float localAngle = finalWorldAngle - _originalParent.eulerAngles.z;
+        transform.localEulerAngles = new Vector3(0, 0, localAngle);
+
+        // 更新 Sprite 翻转（正面朝右为 0°）
+        if (_spriteRenderer != null)
+        {
+            float localZ = transform.localEulerAngles.z;
+            if (localZ > 180f) localZ -= 360f;
+            _spriteRenderer.flipX = localZ < -90f || localZ > 90f;
+        }
     }
 
     private IEnumerator ExecuteMeleeCombo(Vector3 direction)
