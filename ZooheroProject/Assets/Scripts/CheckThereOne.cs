@@ -19,7 +19,15 @@ public class CheckThereOne : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public GameObject _ViewWeaponName;
     public Button _button;
     public int NumberOfCardsWithTheSameName;
-
+    public GameObject _ViewWeaponImageBack;
+    public GameObject _ViewWeaponImageBackAvter;
+    public GameObject _price;
+    public GameObject _ViewWeaponInfo;
+    public GameObject _Details;
+    public GameObject _WeaponCardDetails;
+    public Transform _ViewWeaponInfoTypes;
+    public GameObject _WeaponType;
+    public List<string> WeaponTypes = new List<string>();
     private void Awake()
     {
         Instance = this;
@@ -31,6 +39,16 @@ public class CheckThereOne : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         _button = transform.GetComponent<Button>();
         _ThreeInOneButton = GameObject.Find("ThereInOneButton");
         _ViewWeaponName = GameObject.Find("ViewWeaponName");
+        
+        _ViewWeaponImageBack = GameObject.Find("ViewWeaponImageBack");
+        _ViewWeaponInfoTypes = GameObject.Find("ViewWeaponInfoTypes").transform;
+        _ViewWeaponImageBackAvter = GameObject.Find("ViewWeaponImage");
+        _price = GameObject.Find("Pricetext11");
+        _ViewWeaponInfo = GameObject.Find("ViewWeaponInfo");
+        _Details = GameObject.Find("Details");
+        _WeaponCardDetails = GameObject.Find("WeaponCardDetails");
+        
+        _WeaponType = UnityEngine.Resources.Load<GameObject>("Prefabs/UIprefabs/Label");
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -42,7 +60,7 @@ public class CheckThereOne : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 _button.onClick.AddListener((() =>
                 {
                     showThreeInOneInfo(WeaponData);
-                    Debug.Log(this.NumberOfCardsWithTheSameName);
+                    // Debug.Log(this.NumberOfCardsWithTheSameName);
                     _ThreeInOneButton.GetComponent<ThreeInOne>().NumberOfCardsWithTheSameName =
                         this.NumberOfCardsWithTheSameName;
                     _ThreeInOneButton.GetComponent<ThreeInOne>().CardSource = "WaepomList";
@@ -58,18 +76,89 @@ public class CheckThereOne : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                         this.NumberOfCardsWithTheSameName;
                     _ThreeInOneButton.GetComponent<ThreeInOne>().CardSource = "PropsList";
                 }));
+            }else if (transform.parent.name == "SelectAttr")
+            {
+                _button.onClick.AddListener((() =>
+                {
+                    this.WeaponData = transform.GetComponent<WeaponDataSet>().WeaponData;
+                    _ThreeInOneButton.GetComponent<ThreeInOne>().NumberOfCardsWithTheSameName = 0;
+                    showThreeInOneInfo(WeaponData);
+          
+                }));
             }
             
             _button.onClick.AddListener((() =>
             {
-                _ViewWeaponName.GetComponent<TMP_Text>().text = WeaponData.name;
-                _ThreeInOneButton.GetComponent<ThreeInOne>().synthesizedWeaponCard = this.WeaponData;
+                setViewData();
+                
             }));
             
         
         
     }
 
+
+    public void setViewData()
+    {
+        _ViewWeaponName.GetComponent<TMP_Text>().text = WeaponData.name;
+        _ViewWeaponImageBack.GetComponent<Image>().color = GameManager.Instance.setColor(WeaponData.rank);
+        _ViewWeaponImageBackAvter.GetComponent<Image>().sprite =
+            UnityEngine.Resources.Load<Sprite>(WeaponData.avatar);
+        _ViewWeaponImageBackAvter.GetComponent<Image>().color = Color.white;
+        _price.GetComponent<TMP_Text>().text = WeaponData.price.ToString();
+        _ThreeInOneButton.GetComponent<ThreeInOne>().synthesizedWeaponCard = this.WeaponData;
+        _ViewWeaponInfo.GetComponent<TextMeshProUGUI>().text = WeaponData.describe;
+        _Details.GetComponent<showDetails>().WeaponData = WeaponData;
+        if (_WeaponCardDetails.GetComponent<CanvasGroup>().alpha==1)
+        {
+            _Details.GetComponent<showDetails>().button.onClick.Invoke();
+        }
+
+        setWeaponTypes();
+    }
+    
+    
+    
+    private void setWeaponTypes()
+    {
+        GameManager.Instance.DestroyAllChildren(_ViewWeaponInfoTypes.gameObject);
+        WeaponTypes.Clear();
+        
+        if (WeaponData.familyname=="Animal")
+        {
+            WeaponTypes.Add("动物");
+        }else if (WeaponData.familyname=="Demon")
+        {
+            WeaponTypes.Add("恶魔");
+        }else if (WeaponData.familyname=="Machine")
+        {
+            WeaponTypes.Add("机械");
+        }else if (WeaponData.familyname=="Neutral")
+        {
+            WeaponTypes.Add("中立");
+        }
+        
+        
+        WeaponTypes.AddRange(WeaponData.Type);
+        
+        // 如果类型列表为空，则直接返回，无需创建任何标签
+        if (WeaponTypes == null || WeaponTypes.Count == 0)
+        {
+            return;
+        }
+        
+        // 3. 遍历类型列表，创建标签
+        for (int i = 0; i < WeaponTypes.Count; i++)
+        {
+            // 实例化一个新的标签对象
+            GameObject newLabelObj = Instantiate(_WeaponType, _ViewWeaponInfoTypes);
+            newLabelObj.transform.Find("LabelText").GetComponent<TextMeshProUGUI>().text = WeaponTypes[i];
+
+        }
+    }
+    
+    
+    
     // Update is called once per frame
     void Update()
     {
@@ -88,10 +177,14 @@ public class CheckThereOne : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void showThreeInOneInfo(WeaponData weaponData)
     {
-        NumberOfCardsWithTheSameName = CountMatchingWeapons(weaponData, CurrentWeapons, NotEquippedcurrentWeapons);
-        // GameManager.Instance.GameObjectShow(_WeaponCardInfo.GetComponent<CanvasGroup>());
-        
-        // Debug.Log(num);
+        if (weaponData.isLong==11||weaponData.isLong==12)
+        {
+            NumberOfCardsWithTheSameName = -1;
+        }
+        else
+        {
+            NumberOfCardsWithTheSameName = CountMatchingWeapons(weaponData, CurrentWeapons, NotEquippedcurrentWeapons);
+        }
     }
     
     public static int CountMatchingWeapons(WeaponData targetWeapon, List<WeaponData> list1, List<WeaponData> list2)

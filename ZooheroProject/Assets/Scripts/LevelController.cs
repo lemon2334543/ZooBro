@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Resources.script.model;
 using Enemy;
+using UnityEngine.UI;
 
 public class LevelController : MonoBehaviour
 {
@@ -63,6 +64,8 @@ public class LevelController : MonoBehaviour
     private bool _isPaused = false;
     private float _pausedWaveTimer = 0f;
 
+    public GameObject _Map;
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -126,6 +129,9 @@ public class LevelController : MonoBehaviour
         GenerateEnemy();
         GenerateWeapons();
 
+        //todo后续需要添加其他地图在这里
+        SetMap();//设置地图 
+
         StartCoroutine(TriggerInGameEventAfterDelay(waveTimer * 0.2f));
     }
 
@@ -149,6 +155,18 @@ public class LevelController : MonoBehaviour
         else
         {
             Debug.LogError("找不到 Boss 预制体: " + bossData.name);
+        }
+    }
+
+    private void SetMap()
+    {
+        if (_gameManager.MapData.enName == "Animal")
+        {
+            _map.GetComponent<Image>().sprite = UnityEngine.Resources.Load<Sprite>("Image/地图/地图");
+        }
+        else if (_gameManager.MapData.enName == "Machine")
+        {
+            _map.GetComponent<Image>().sprite = UnityEngine.Resources.Load<Sprite>("Image/地图/地图");
         }
     }
 
@@ -357,8 +375,10 @@ public class LevelController : MonoBehaviour
 
     private void NextWave()
     {
-        _gameManager.currentWave += 1;
+        //todo 收获属性，但是感觉我们用不到
+        // _gameManager.money += _gameManager.propData.harvest;
         SceneManager.LoadScene("shop");
+        // _gameManager.currentWave += 1;
     }
 
     private void PrecomputeCumulativeWeights()
@@ -540,8 +560,6 @@ public class LevelController : MonoBehaviour
         // ✅ 调用 UI 更新
         GamePanel.Instance?.RenewStoredMoney();
         GamePanel.Instance?.RenewStoredExp();
-
-
     }
 
     public bool IsPaused() => _isPaused;

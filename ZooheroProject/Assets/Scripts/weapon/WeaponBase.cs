@@ -20,7 +20,7 @@ public class WeaponBase : MonoBehaviour
     public float moveSpeed;                     // 用于 GoPosition 的移动速度（远程武器用？）
     public Transform enemy;                     // 当前锁定的目标敌人
     public float originZ;                       // 武器初始 Z 轴旋转（用于复位）
-
+    
     // ====== 新增：镜像翻转与防抖系统 ======
     protected SpriteRenderer _spriteRenderer;   // 用于控制 flipX 实现镜像
     protected bool _isFlipped = false;          // 当前是否已镜像翻转
@@ -34,6 +34,10 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     public virtual void Awake()
     {
+        if (this.data.IncreasedNumberOfAttacksRequired == null || this.data.IncreasedNumberOfAttacksRequired == 0)
+        {
+            this.data.IncreasedNumberOfAttacksRequired = 8;
+        }
         originZ = transform.eulerAngles.z; // 记录初始 Z 角（用于默认朝向）
         _spriteRenderer = GetComponent<SpriteRenderer>();
         if (_spriteRenderer == null)
@@ -297,11 +301,12 @@ public class WeaponBase : MonoBehaviour
     }
     #endregion
 
-    #region 预留空方法
-    public void attckEnemy() {}
-    public void waveStart() {}
-    public void waveEnd() {}
-    public void shopStar() {}
-    public void shopExit() {}
+    #region 预留空方法（保持兼容性）
+    public virtual void attckEnemy() {}  // 注意：保留原始拼写 "attckEnemy"
+    public virtual void waveStart() {}
+    public virtual void waveEnd() {}
+    public virtual void shopStar() {}
+    public virtual void shopExit() {}
+    public virtual void takeStage() {}
     #endregion
 }

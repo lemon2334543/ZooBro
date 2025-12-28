@@ -102,6 +102,9 @@ GameObject:
   - component: {fileID: 5088797841862996658}
   - component: {fileID: 8018735036864016611}
   - component: {fileID: 5960106931139912811}
+  - component: {fileID: -647910792232236232}
+  - component: {fileID: 4784697501480309215}
+  - component: {fileID: 4400071126696238936}
   m_Layer: 6
   m_Name: Enemy4
   m_TagString: Enemy
@@ -232,19 +235,114 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5125a66ef61646bea0e3e04ebadccbd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy.Enemy4
-  attackTimer: 0
-  isContact: 0
-  isCooling: 0
-  money_prefab: {fileID: 0}
   EnemyDate:
     id: 0
     name: 
     hp: 0
+    type: 0
     damage: 0
     speed: 0
     attackTime: 0
     provideExp: 0
     SkillTime: 0
     range: 0
-  skillTimer: 0
+  hp: 0
+  damage: 0
+  speed: 0
+  attackTime: 0
+  attackTimer: 0
+  isContact: 0
+  isCooling: 0
   skilling: 0
+  provideExp: 1
+  type: 0
+  money_prefab: {fileID: 0}
+  skillTimer: 0
+  timer: 0
+--- !u!114 &-647910792232236232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7395589887624290242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7943ee0dd2b6d7144982d5c5d754ced6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OverlapOrderController
+  orderScale: 100
+  orderOffset: 0
+  reverseOrder: 1
+--- !u!114 &4784697501480309215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7395589887624290242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 313adb7c641f8f141ba64b79ec892fa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyVolumeRepel
+  volumeRadius: 0.5
+  repelForce: 5
+  minDistance: 10
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  repelAfterMove: 1
+--- !u!114 &4400071126696238936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7395589887624290242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.ShadowCaster2D
+  m_ShadowGroup: 0
+  m_Priority: 0
+  m_ComponentVersion: 5
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_AlphaCutoff: 0.1
+  m_ApplyToSortingLayers: 00000000911416c995109e7b45f991b7a98acfe22f6d51ed85bfc090
+  m_ShapePath:
+  - {x: -0.845, y: -0.13800454, z: 0}
+  - {x: -0.845, y: 1.4319954, z: 0}
+  - {x: 0.845, y: 1.4319954, z: 0}
+  - {x: 0.845, y: -0.13800454, z: 0}
+  m_ShapePathHash: 0
+  m_InstanceId: 0
+  m_ShadowShape2DComponent: {fileID: 8018735036864016611}
+  m_ShadowShape2DProvider:
+    rid: 3952889805903233108
+  m_ShadowCastingSource: 2
+  m_ShadowMesh:
+    m_Mesh: {fileID: 0}
+    m_LocalBounds:
+      m_Center: {x: -0.015075684, y: 0.61087036, z: 0}
+      m_Extent: {x: 0.59194946, y: 0.5899811, z: 0}
+    m_EdgeProcessing: 1
+    m_TrimEdge: 0.07
+    m_FlipX: 0
+    m_FlipY: 0
+    m_InitialTrim: 0
+  m_CastingOption: 1
+  m_PreviousTrimEdge: 0.07
+  m_PreviousEdgeProcessing: 1
+  m_PreviousShadowCastingSource: 2
+  m_PreviousShadowShape2DSource: {fileID: 8018735036864016611}
+  references:
+    version: 2
+    RefIds:
+    - rid: 3952889805903233108
+      type: {class: ShadowShape2DProvider_Collider2D, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
+      data: 

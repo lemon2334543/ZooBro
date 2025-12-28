@@ -7,6 +7,7 @@
     "price": 11,
     "damage" : 8,
     "attackcount": 2,
+    "IncreasedNumberOfAttacksRequired": 5,
     "penetrationcount": 1,
     "reboundcount": 1,
     "isLong": 0,
@@ -27,9 +28,9 @@
     "affection": 1,
     "rank": 1,
     "familyname": "Animal",
-    "EnName": "puppy",
+    "EnName": "Puppy",
     "Type": [
-   
+        
     ]
   },
   {
@@ -40,6 +41,7 @@
     "price": 11,
     "damage" : 8,
     "attackcount": 5,
+    "IncreasedNumberOfAttacksRequired": 5,
     "penetrationcount": 0,
     "reboundcount": 10,
     "isLong": 1,
@@ -62,7 +64,7 @@
     "familyname": "Animal",
     "EnName": "swing-long",
     "Type": [
-
+        "射弹"
     ]
   },
   {
@@ -72,6 +74,7 @@
     "grade": 1,
     "price": 11,
     "damage" : 4,
+    "IncreasedNumberOfAttacksRequired": 5,
     "attackcount": 2,
     "penetrationcount": 0,
     "reboundcount": 1,
@@ -95,20 +98,21 @@
     "familyname": "Animal",
     "EnName": "swing-short",
     "Type": [
-
+        "近战"
     ]
-  },  
+  },
   {
     "id": 4,
-    "name": "summos",
-    "avatar": "Image/人物/全能",
+    "name": "基础训练",
+    "avatar": "Image/抠图/正义猫抠图",
     "grade": 1,
-    "price": 11,
+    "price": 50,
     "damage" : 4,
-    "attackcount": 2,
-    "penetrationcount": 1,
-    "reboundcount": 1,
-    "isLong": 0,
+    "attackcount": 0,
+    "IncreasedNumberOfAttacksRequired": 5,
+    "penetrationcount": 0,
+    "reboundcount": 0,
+    "isLong": 11,
     "effectType": 0,
     "summonType": 1,
     "summonweaponid": 1,
@@ -119,16 +123,82 @@
     "range": 150,
     "critical_strikes_multiple": 1.5,
     "critical_strikes_probability": 0,
-    "cooling": 2,
+    "cooling": 0,
     "repel": 0,
-    "describe": "召唤武器",
+    "describe": "选择一名伙伴增加一次攻击次数",
     "familyId": 2,
     "affection": 1,
     "rank": 1,
     "familyname": "Animal",
-    "EnName": "summos",
+    "EnName": "BasicTraining",
     "Type": [
-  
+      "魔法"
     ]
-  }
+  },
+  {
+    "id": 5,
+    "name": "小小大训练",
+    "avatar": "Image/抠图/正义猫抠图",
+    "grade": 1,
+    "price": 10,
+    "damage" : 4,
+    "attackcount": 0,
+    "IncreasedNumberOfAttacksRequired": 5,
+    "penetrationcount": 0,
+    "reboundcount": 0,
+    "isLong": 12,
+    "effectType": 0,
+    "attackspeed": 0,
+    "summonType": 0,
+    "maxSummonCount": 0,
+    "summonhp": 0,
+    "summontime": 0,
+    "range": 0,
+    "critical_strikes_multiple": 0,
+    "critical_strikes_probability": 0,
+    "cooling": 0,
+    "repel": 0,
+    "describe": "随机增加上场伙伴的攻击次数需求，重复3次",
+    "familyId": 2,
+    "affection": 1,
+    "rank": 1,
+    "familyname": "Animal",
+    "EnName": "LittleLittleBigTraining",
+    "Type": [
+      "魔法"
+    ]
+  },
+  {
+  "id": 1001,
+  "name": "swing-long",
+  "avatar": "Image/抠图/小黑猪",
+  "grade": 1,
+  "price": 11,
+  "damage" : 1,
+  "attackcount": 5,
+  "penetrationcount": 0,
+    "IncreasedNumberOfAttacksRequired": 5,
+  "reboundcount": 10,
+  "isLong": 1,
+  "effectType": 2,
+  "attackspeed": 15,
+  "summonType": 1,
+  "maxSummonCount": 3,
+  "summonhp": 2,
+  "summontime": 10,
+  "range": 5,
+  "critical_strikes_multiple": 1.5,
+  "critical_strikes_probability": 0,
+  "cooling": 2,
+  "repel": 0,
+  "describe": "一只普通的小土狗，格外可爱",
+  "familyId": 2,
+  "affection": 1,
+  "rank": 1,
+  "familyname": "Animal",
+  "EnName": "swing-long",
+  "Type": [
+
+  ]
+}
 ]

@@ -190,6 +190,13 @@ public class EnemyBase : MonoBehaviour
         Vector2 dir = (targetPos - transform.position).normalized;
         transform.Translate(dir * speed * Time.deltaTime);
         TurnAround(dir.x); // 根据实际移动方向翻转
+
+        // 新增：移动后立即执行排斥（来自大牙狸12-28）
+        EnemyVolumeRepel repel = GetComponent<EnemyVolumeRepel>();
+        if (repel != null)
+        {
+            repel.HandleEnemyRepel();
+        }
     }
 
     protected Vector3 GetAdjustedTargetPosition()

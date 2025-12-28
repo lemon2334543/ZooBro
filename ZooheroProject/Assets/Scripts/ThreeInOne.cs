@@ -32,7 +32,6 @@ public class ThreeInOne : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-                
         _button.onClick.AddListener((() =>
         {
             if (this.NumberOfCardsWithTheSameName>=3)
@@ -72,7 +71,18 @@ public class ThreeInOne : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (NumberOfCardsWithTheSameName<3)
+        if(NumberOfCardsWithTheSameName==0)
+        {
+            transform.GetComponent<Image>().color = GameManager.Instance.color0;
+            transform.Find("text").GetComponent<TMP_Text>().text = "未购买";
+        }
+        else if(NumberOfCardsWithTheSameName==-1)
+        {
+            transform.GetComponent<Image>().color = GameManager.Instance.color0;
+            transform.Find("text").GetComponent<TMP_Text>().text = "魔法";
+        }
+
+        else if (NumberOfCardsWithTheSameName<3)
         {
             transform.GetComponent<Image>().color = GameManager.Instance.color0;
             transform.Find("text").GetComponent<TMP_Text>().text = "合成(3/" + this.NumberOfCardsWithTheSameName + ")";

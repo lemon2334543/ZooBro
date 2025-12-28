@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -80,7 +80,7 @@ public class WeaponSummon : WeaponBase
             yield break;
         }
 
-        summon.SetSummonData(_bonusSummonHp, _bonusSummonTime, _summonWeaponId,data.familyname);
+        summon.SetSummonData(_bonusSummonHp, _bonusSummonTime, _summonWeaponId, data.familyname);
         _activeSummons.Add(summon); // 新召唤物加到末尾，保证 FIFO 顺序
 
         StartCooldown();

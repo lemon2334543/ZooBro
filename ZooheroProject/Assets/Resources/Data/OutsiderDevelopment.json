@@ -1,0 +1,270 @@
+﻿[
+  {
+    "id": 1,
+    "title": "远程伤害",
+    "image": "Image/人物/小土狗",
+    "text": "增加远程攻击伙伴的伤害",
+    "enName": "AttackLong",
+    "color": "#FF0000FF",
+    "numberOfLevels": 5,
+    "Value": [
+      100,
+      103,
+      107,
+      111,
+      115,
+      120
+    ],
+    "price": [
+      10,
+      50,
+      100,
+      300,
+      500
+    ],
+    "currentLevel": 0,
+    "priceRecord": 0
+  },
+  {
+    "id": 2,
+    "title": "近战伤害",
+    "image": "Image/人物/小土狗",
+    "text": "增加近战攻击伙伴的伤害",
+    "enName": "AttackShort",
+    "color": "#00FF00FF",
+    "numberOfLevels": 5,
+    "Value": [
+      100,
+      103,
+      107,
+      111,
+      115,
+      120
+    ],
+    "price": [
+      10,
+      50,
+      100,
+      300,
+      500
+    ],
+    "currentLevel": 0,
+    "priceRecord": 0
+  },
+  {
+    "id": 3,
+    "title": "召唤伤害",
+    "image": "Image/人物/小土狗",
+    "text": "增加召唤物的攻击伤害",
+    "enName": "SummonAttack",
+    "color": "#0000FFFF",
+    "numberOfLevels": 5,
+    "Value": [
+      100,
+      103,
+      107,
+      111,
+      115,
+      120
+    ],
+    "price": [
+      20,
+      60,
+      120,
+      350,
+      550
+    ],
+    "currentLevel": 0,
+    "priceRecord": 0
+  },
+  {
+    "id": 4,
+    "title": "移动速度",
+    "image": "Image/人物/小土狗",
+    "text": "提升移动速度",
+    "enName": "MoveSpeed",
+    "color": "#FFFF00FF",
+    "numberOfLevels": 5,
+    "Value": [
+      100,
+      103,
+      107,
+      111,
+      115,
+      120
+    ],
+    "price": [
+      15,
+      55,
+      110,
+      320,
+      520
+    ],
+    "currentLevel": 0,
+    "priceRecord": 0
+  },
+  {
+    "id": 5,
+    "title": "初始金币",
+    "image": "Image/人物/小土狗",
+    "text": "增加开始时的初始金币数量",
+    "enName": "InitGold",
+    "color": "#FFD700FF",
+    "numberOfLevels": 5,
+    "Value": [
+      20,
+      26,
+      33,
+      39,
+      45,
+      50
+    ],
+    "price": [
+      25,
+      70,
+      150,
+      400,
+      600
+    ],
+    "currentLevel": 0,
+    "priceRecord": 0
+  },
+  {
+    "id": 6,
+    "title": "最大血量",
+    "image": "Image/人物/小土狗",
+    "text": "提升的最大生命值",
+    "enName": "MaxHp",
+    "color": "#FF69B4FF",
+    "numberOfLevels": 5,
+    "Value": [
+      10,
+      12,
+      14,
+      16,
+      18,
+      20
+    ],
+    "price": [
+      30,
+      80,
+      160,
+      450,
+      650
+    ],
+    "currentLevel": 0,
+    "priceRecord": 0
+  },
+  {
+    "id": 7,
+    "title": "免费刷新次数",
+    "image": "Image/人物/小土狗",
+    "text": "增加初始的商店免费刷新的次数",
+    "enName": "FreeRefreshCount",
+    "color": "#800080FF",
+    "numberOfLevels": 5,
+    "Value": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "price": [
+      40,
+      90,
+      180,
+      500,
+      700
+    ],
+    "currentLevel": 0,
+    "priceRecord": 0
+  },
+  {
+    "id": 8,
+    "title": "解锁复活",
+    "image": "Image/人物/小土狗",
+    "text": "解锁复活",
+    "enName": "UnlockResurrect",
+    "color": "#00FFFFFF",
+    "numberOfLevels": 1,
+    "Value": [
+      0,
+      1
+    ],
+    "price": [
+      700
+    ],
+    "currentLevel": 0,
+    "priceRecord": 0
+  },
+  {
+    "id": 9,
+    "title": "Not in Demo",
+    "image": "Image/人物/小土狗",
+    "text": "Not in Demo",
+    "enName": "NotInDemo",
+    "color": "#999999FF",
+    "numberOfLevels": -1,
+    "Value": [
+      0
+    ],
+    "price": [
+      0
+    ],
+    "currentLevel": 0,
+    "priceRecord": 0
+  },
+  {
+    "id": 10,
+    "title": "Not in Demo",
+    "image": "Image/人物/小土狗",
+    "text": "Not in Demo",
+    "enName": "NotInDemo",
+    "color": "#888888FF",
+    "numberOfLevels": -1,
+    "Value": [
+      0
+    ],
+    "price": [
+      0
+    ],
+    "currentLevel": 0,
+    "priceRecord": 0
+  },
+  {
+    "id": 11,
+    "title": "Not in Demo",
+    "image": "Image/人物/小土狗",
+    "text": "Not in Demo",
+    "enName": "NotInDemo",
+    "color": "#777777FF",
+    "numberOfLevels": -1,
+    "Value": [
+      0
+    ],
+    "price": [
+      0
+    ],
+    "currentLevel": 0,
+    "priceRecord": 0
+  },
+  {
+    "id": 12,
+    "title": "Not in Demo",
+    "image": "Image/人物/小土狗",
+    "text": "Not in Demo",
+    "enName": "NotInDemo",
+    "color": "#666666FF",
+    "numberOfLevels": -1,
+    "Value": [
+      0
+    ],
+    "price": [
+      0
+    ],
+    "currentLevel": 0,
+    "priceRecord": 0
+  }
+]

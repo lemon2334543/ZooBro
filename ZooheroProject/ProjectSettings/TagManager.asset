@@ -53,14 +53,14 @@ TagManager:
   - name: Enemy
     uniqueID: 3079797061
     locked: 0
-  - name: Effect
-    uniqueID: 2428551045
-    locked: 0
   - name: Items
     uniqueID: 3805252265
     locked: 0
   - name: UI
     uniqueID: 3981536559
+    locked: 0
+  - name: Effect
+    uniqueID: 2428551045
     locked: 0
   m_RenderingLayers:
   - Default
