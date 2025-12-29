@@ -4,6 +4,7 @@ using Enemy;
 
 public class SummonController : MonoBehaviour
 {
+    /*
     private int maxHp;
     private float lifetime;
     private int summonWeaponId;
@@ -252,4 +253,5 @@ public class SummonController : MonoBehaviour
             }
         }
     }
+    */
 }

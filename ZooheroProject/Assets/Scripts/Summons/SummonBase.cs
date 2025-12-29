@@ -3,6 +3,8 @@ using UnityEngine;
 
 public abstract class SummonBase : MonoBehaviour
 {
+    /*
+    #region
     // ========== 公共属性 ==========
     public int maxHp;
     public float lifetime;
@@ -215,4 +217,8 @@ public abstract class SummonBase : MonoBehaviour
             }
         }
     }
+    
+    
+    #endregion
+    */
 }

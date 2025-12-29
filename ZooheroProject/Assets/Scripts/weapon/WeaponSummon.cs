@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WeaponSummon : WeaponBase
 {
+    /*
     private List<SummonBase> _activeSummons = new List<SummonBase>();
 
     private int _bonusSummonHp;
@@ -86,4 +87,5 @@ public class WeaponSummon : WeaponBase
         StartCooldown();
         yield return null;
     }
+    */
 }

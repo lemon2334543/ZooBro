@@ -2,6 +2,7 @@
 
 public class SummonGuardian : SummonBase
 {
+    /*
     private float followRange = 2f;
     private float idleRadius = 1f;
 
@@ -82,4 +83,5 @@ public class SummonGuardian : SummonBase
             // 否则：静止不动（保持位置）
         }
     }
+    */
 }

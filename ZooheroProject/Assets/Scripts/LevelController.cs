@@ -106,6 +106,7 @@ public class LevelController : MonoBehaviour
 
     void Start()
     {
+        _eventTriggered = false;
         // ✅ 关键：确保新波次开始时敌人列表干净（防止单例跨场景残留）
         enemy_list.Clear();
 
@@ -160,13 +161,47 @@ public class LevelController : MonoBehaviour
 
     private void SetMap()
     {
-        if (_gameManager.MapData.enName == "Animal")
+        // 🔍 安全检查：确保 _gameManager 和 MapData 不为 null
+        if (_gameManager == null)
         {
-            _map.GetComponent<Image>().sprite = UnityEngine.Resources.Load<Sprite>("Image/地图/地图");
+            Debug.LogError("LevelController.SetMap(): _gameManager is null!");
+            return;
         }
-        else if (_gameManager.MapData.enName == "Machine")
+
+        if (_gameManager.MapData == null)
         {
-            _map.GetComponent<Image>().sprite = UnityEngine.Resources.Load<Sprite>("Image/地图/地图");
+            Debug.LogError("LevelController.SetMap(): _gameManager.MapData is null!");
+            return;
+        }
+
+        string mapName = _gameManager.MapData.enName;
+        if (mapName == "Animal" || mapName == "Machine")
+        {
+            var sprite = UnityEngine.Resources.Load<Sprite>("Image/地图/地图");
+            if (sprite == null)
+            {
+                Debug.LogWarning("LevelController.SetMap(): Sprite 'Image/地图/地图' not found!");
+            }
+            else if (_map != null)
+            {
+                Image image = _map.GetComponent<Image>();
+                if (image != null)
+                {
+                    image.sprite = sprite;
+                }
+                else
+                {
+                    Debug.LogError("LevelController.SetMap(): _map has no Image component!");
+                }
+            }
+            else
+            {
+                Debug.LogError("LevelController.SetMap(): _map is null!");
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"LevelController.SetMap(): Unknown map name '{mapName}'");
         }
     }
 
@@ -459,63 +494,80 @@ public class LevelController : MonoBehaviour
         }
     }
 
-    IEnumerator TriggerInGameEventAfterDelay(float delay)
+IEnumerator TriggerInGameEventAfterDelay(float delay)
+{
+    // 等待延迟时间
+    yield return new WaitForSeconds(delay);
+
+    // 检查是否满足触发条件
+    if (isBossWave || _eventTriggered || Player.Instance == null || Player.Instance.isDead)
     {
-        yield return new WaitForSeconds(delay);
+        Debug.Log($"【局内事件】跳过触发。Boss波: {isBossWave}, 已触发: {_eventTriggered}, 玩家空: {Player.Instance == null}, 玩家死亡: {Player.Instance?.isDead}");
+        yield break;
+    }
 
-        if (isBossWave || Player.Instance == null || Player.Instance.isDead || _eventTriggered)
-            yield break;
+    // 标记已触发（防止重复）
+    _eventTriggered = true;
 
-        _eventTriggered = true;
+    // 获取地图边界用于生成位置
+    var mapRenderer = _map?.GetComponent<SpriteRenderer>();
+    if (mapRenderer == null)
+    {
+        Debug.LogError("【局内事件】找不到 Map 的 SpriteRenderer！");
+        yield break;
+    }
 
-        var mapRenderer = _map?.GetComponent<SpriteRenderer>();
-        if (mapRenderer == null)
+    // 随机选一个事件
+    if (InGameEventPrefabPaths.Length == 0)
+    {
+        Debug.LogWarning("【局内事件】事件预制体列表为空！");
+        yield break;
+    }
+
+    int randomIndex = UnityEngine.Random.Range(0, InGameEventPrefabPaths.Length);
+    string prefabPath = InGameEventPrefabPaths[randomIndex];
+
+    GameObject prefab = UnityEngine.Resources.Load<GameObject>(prefabPath);
+    if (prefab == null)
+    {
+        Debug.LogError($"【局内事件】找不到预制体：{prefabPath}");
+        yield break;
+    }
+
+    // 生成位置：在地图范围内随机点偏移
+    Vector3 center = GetRandomPosition(mapRenderer.bounds);
+    Vector3 offset = new Vector3(
+        UnityEngine.Random.Range(-3f, 3f),
+        UnityEngine.Random.Range(-3f, 3f),
+        0f
+    );
+    Vector3 spawnPos = center + offset;
+
+    // 实例化事件
+    GameObject eventObj = Instantiate(prefab, spawnPos, Quaternion.identity);
+    var eventComponent = eventObj.GetComponent<InGameEventBase>();
+
+    if (eventComponent != null)
+    {
+        // 启动事件（由子类实现具体逻辑）
+        eventComponent.StartEvent();
+
+        // 设置箭头指向
+        if (_arrowIndicator != null)
         {
-            Debug.LogError("【局内事件】找不到 Map 的 SpriteRenderer！");
-            yield break;
+            _arrowIndicator.SetTarget(eventComponent);
         }
-
-        for (int i = 0; i < 1; i++)
+        else
         {
-            int randomIndex = UnityEngine.Random.Range(0, InGameEventPrefabPaths.Length);
-            string prefabPath = InGameEventPrefabPaths[randomIndex];
-
-            GameObject prefab = UnityEngine.Resources.Load<GameObject>(prefabPath);
-            if (prefab == null)
-            {
-                Debug.LogError($"【局内事件】找不到预制体：{prefabPath}");
-                continue;
-            }
-
-            Vector3 center = GetRandomPosition(mapRenderer.bounds);
-            Vector3 offset = new Vector3(
-                UnityEngine.Random.Range(-3f, 3f),
-                UnityEngine.Random.Range(-3f, 3f),
-                0f
-            );
-            Vector3 spawnPos = center + offset;
-
-            GameObject eventObj = Instantiate(prefab, spawnPos, Quaternion.identity);
-            var eventComponent = eventObj.GetComponent<InGameEventBase>();
-
-            if (eventComponent != null)
-            {
-                eventComponent.StartEvent();
-
-                // 👈 关键：设置箭头目标
-                if (_arrowIndicator != null)
-                {
-                    _arrowIndicator.SetTarget(eventComponent);
-                }
-            }
-            else
-            {
-                Debug.LogError($"【局内事件】预制体 {prefabPath} 缺少 InGameEventBase 组件！");
-            }
-
-            yield return new WaitForSeconds(0.1f);
+            Debug.LogWarning("【局内事件】未找到 ArrowIndicatorController，无法设置箭头");
         }
     }
+    else
+    {
+        Debug.LogError($"【局内事件】预制体 {prefabPath} 缺少 InGameEventBase 组件！");
+        Destroy(eventObj);
+    }
+}
 
     // ===== 暂停/恢复接口 =====
     public void PauseGame()

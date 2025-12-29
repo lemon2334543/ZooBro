@@ -170,7 +170,7 @@
   },
   {
   "id": 1001,
-  "name": "swing-long",
+  "name": "1-1",
   "avatar": "Image/抠图/小黑猪",
   "grade": 1,
   "price": 11,
@@ -196,7 +196,7 @@
   "affection": 1,
   "rank": 1,
   "familyname": "Animal",
-  "EnName": "swing-long",
+  "EnName": "1-1",
   "Type": [
 
   ]

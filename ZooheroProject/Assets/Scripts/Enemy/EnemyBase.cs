@@ -149,10 +149,13 @@ public class EnemyBase : MonoBehaviour
                 if (_contactSummons.Count > 0)
                 {
                     var first = _contactSummons[0];
+                    /*
                     if (first != null && first.IsAlive)
                         first.TakeDamage(damage);
+                        
                     else
                         _contactSummons.RemoveAt(0);
+                        */
                 }
                 break;
         }
@@ -173,10 +176,12 @@ public class EnemyBase : MonoBehaviour
             for (int i = _contactSummons.Count - 1; i >= 0; i--)
             {
                 var summon = _contactSummons[i];
+                /*
                 if (summon == null || !summon.IsAlive)
                     _contactSummons.RemoveAt(i);
                 else
                     summon.TakeDamage(damage * 0.3f);
+                    */
             }
         }
     }
@@ -274,7 +279,9 @@ public class EnemyBase : MonoBehaviour
         else if (other.CompareTag("Summon"))
         {
             var summon = other.GetComponent<SummonController>();
+            /*
             if (summon != null && summon.IsAlive && !_contactSummons.Contains(summon))
+            */
                 _contactSummons.Add(summon);
         }
     }

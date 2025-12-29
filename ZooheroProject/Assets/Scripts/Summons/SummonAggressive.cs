@@ -2,6 +2,7 @@
 
 public class SummonAggressive : SummonBase
 {
+    /*
     protected override void FindTarget()
     {
         _target = null;
@@ -27,4 +28,5 @@ public class SummonAggressive : SummonBase
         transform.Translate(dir * moveSpeed * Time.deltaTime);
         TurnAround(dir.x);
     }
+    */
 }

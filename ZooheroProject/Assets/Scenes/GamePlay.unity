@@ -8252,26 +8252,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2834823334855053820, guid: 61275b63a3e2e7b438f15826cc810d3c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 2834823334855053820, guid: 61275b63a3e2e7b438f15826cc810d3c, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.27
-      objectReference: {fileID: 0}
-    - target: {fileID: 2834823334855053820, guid: 61275b63a3e2e7b438f15826cc810d3c, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2834823334855053820, guid: 61275b63a3e2e7b438f15826cc810d3c, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2834823334855053820, guid: 61275b63a3e2e7b438f15826cc810d3c, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-
-    - target: {fileID: 2834823334855053820, guid: 61275b63a3e2e7b438f15826cc810d3c, type: 3}
-      propertyPath: m_LocalPosition.x
       value: 2.67
       objectReference: {fileID: 0}
     - target: {fileID: 2834823334855053820, guid: 61275b63a3e2e7b438f15826cc810d3c, type: 3}
@@ -9367,7 +9347,6 @@ SceneRoots:
   - {fileID: 443642292}
   - {fileID: 1326801278}
   - {fileID: 1186646652}
-  - {fileID: 1130771625}
   - {fileID: 7137901977629696017}
   - {fileID: 6742557840351049102}
   - {fileID: 3835407027293559452}

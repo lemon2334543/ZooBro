@@ -2,6 +2,7 @@
 
 public class SummonKiter : SummonBase
 {
+    /*
     [SerializeField] private float optimalRange = 4f;
     [SerializeField] private float retreatRange = 2f;
 
@@ -42,4 +43,5 @@ public class SummonKiter : SummonBase
 
         TurnAround(dir.x);
     }
+    */
 }
