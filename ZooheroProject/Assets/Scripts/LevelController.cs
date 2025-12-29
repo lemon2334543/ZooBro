@@ -161,13 +161,41 @@ public class LevelController : MonoBehaviour
 
     private void SetMap()
     {
-        if (_gameManager.MapData.enName == "Animal")
+        string mapName = _gameManager.MapData.enName;
+
+        // 根据地图类型确定资源路径
+        string spritePath;
+        if (mapName == "Animal")
         {
-            _map.GetComponent<Image>().sprite = UnityEngine.Resources.Load<Sprite>("Image/地图/地图");
+            spritePath = "Image/地图/森林";
         }
-        else if (_gameManager.MapData.enName == "Machine")
+        else if (mapName == "Machine")
         {
-            _map.GetComponent<Image>().sprite = UnityEngine.Resources.Load<Sprite>("Image/地图/地图");
+            spritePath = "Image/地图/岩石";
+        }
+        else
+        {
+            Debug.LogWarning($"LevelController.SetMap(): Unknown map name '{mapName}'");
+            return;
+        }
+
+        // 加载 Sprite
+        var sprite = UnityEngine.Resources.Load<Sprite>(spritePath);
+        if (sprite == null)
+        {
+            Debug.LogError($"LevelController.SetMap(): Failed to load sprite from path '{spritePath}'!");
+            return;
+        }
+
+        // 设置到 _map 的 SpriteRenderer
+        SpriteRenderer renderer = _map.GetComponent<SpriteRenderer>();
+        if (renderer != null)
+        {
+            renderer.sprite = sprite;
+        }
+        else
+        {
+            Debug.LogError("LevelController.SetMap(): _map has no SpriteRenderer component!");
         }
     }
 

@@ -354,24 +354,53 @@ public class ArrowIndicatorController : MonoBehaviour
         Vector3 arrowPos = _arrowRectTransform.anchoredPosition;
         float angle = _arrowRectTransform.eulerAngles.z;
 
-        // 假设箭头长度为 100px（根据实际调整）
+        // 箭头长度（单位：像素）
         float arrowLength = 100f;
+
+        // 计算箭头尾部位置（用于判断方向）
         float tailOffsetX = Mathf.Sin((angle - 90) * Mathf.Deg2Rad) * arrowLength;
         float tailOffsetY = Mathf.Cos((angle - 90) * Mathf.Deg2Rad) * arrowLength;
 
-        // 计算尾部在屏幕空间中的位置
         Vector3 tailScreenPos = new Vector3(
             arrowPos.x + tailOffsetX,
             arrowPos.y + tailOffsetY,
             0
         );
 
-        // 数字位置：略低于尾部
-        Vector3 digitPosition = tailScreenPos + new Vector3(0, -10f, 0);
+        // 判断箭头是否向右（即目标在右边）
+        bool isFacingRight = Mathf.Abs(angle - 0f) < 45f || Mathf.Abs(angle - 360f) < 45f; // 指向右方
+        bool isFacingLeft = Mathf.Abs(angle - 180f) < 45f; // 指向左方
 
-        // 设置数字容器的位置（必须是 UI 屏幕空间）
-        _digitContainer.transform.SetParent(transform, false); // 确保它是根 UI 子对象
+        // 设置数字的位置
+        Vector3 digitPosition;
+        if (isFacingRight)
+        {
+            // 当箭头指向右边时，把数字放到箭头左边（靠近玩家侧）
+            digitPosition = new Vector3(arrowPos.x - 60f, arrowPos.y - 10f, 0); // 左移并下移
+        }
+        else if (isFacingLeft)
+        {
+            // 当箭头指向左边时，把数字放到箭头右边（靠近玩家侧）
+            digitPosition = new Vector3(arrowPos.x + 60f, arrowPos.y - 10f, 0); // 右移并下移
+        }
+        else
+        {
+            // 上下方向，保持在尾部下方
+            digitPosition = tailScreenPos + new Vector3(0, -10f, 0);
+        }
+
+        // 确保数字不超出屏幕边界
+        float leftPadding = edgePadding;
+        float rightPadding = Screen.width - edgePadding;
+        float bottomPadding = edgePadding;
+        float topPadding = Screen.height - edgePadding;
+
+        digitPosition.x = Mathf.Clamp(digitPosition.x, leftPadding, rightPadding);
+        digitPosition.y = Mathf.Clamp(digitPosition.y, bottomPadding, topPadding);
+
+        // 设置数字容器位置
+        _digitContainer.transform.SetParent(transform, false);
         _digitContainer.transform.localPosition = digitPosition;
-        _digitContainer.SetActive(true); // 显示数字
+        _digitContainer.SetActive(true);
     }
 }

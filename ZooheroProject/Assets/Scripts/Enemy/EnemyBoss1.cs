@@ -11,6 +11,7 @@ namespace Enemy
 {
     public class EnemyBoss1 : EnemyBase
     {
+        
         // === 可配置参数（Inspector 可调）===
         [Header("疲劳阶段")]
         [SerializeField] private float fatigueDuration = 2.5f;
@@ -42,6 +43,8 @@ namespace Enemy
         private bool _isPreparingCharge = false;
         private bool _isFleeing = false;
         private bool _isDying = false;
+        private bool _killedByPlayer = false; 
+        private bool _hasFinishedDeath = false;
 
         // === 组件缓存 ===
         private SpriteRenderer _spriteRenderer;
@@ -468,6 +471,9 @@ namespace Enemy
 
         private void FinishDeath()
         {
+            if (_hasFinishedDeath) return; // 👈 防重入
+            _hasFinishedDeath = true;
+
             foreach (var minion in _spawnedMinions)
             {
                 if (minion != null && minion.gameObject.activeSelf)
@@ -475,22 +481,40 @@ namespace Enemy
             }
             _spawnedMinions.Clear();
 
+            // ✅ 开奖：只显示奖励面板
+            if (_killedByPlayer || !_isFleeing)
+            {
+                GameObject rewardPanel = UnityEngine.Resources.Load<GameObject>("Prefabs/RewardPanel");
+                if (rewardPanel != null)
+                {
+                    Instantiate(rewardPanel);
+                }
+                else
+                {
+                    Debug.LogError("找不到 RewardPanel 预制体！请确保放在 Resources/Prefabs/ 下");
+                }
+            }
+
+            StartCoroutine(EnterShopAfterDelay(3f));
+        }
+
+        // ✅ 新增：延迟进入商店
+        private IEnumerator EnterShopAfterDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+            // 原有结算逻辑：现在延迟执行
             if (LevelController.Instance != null)
             {
                 if (triggersVictoryOnDeath)
                     LevelController.Instance.GoodGame();
                 else
-                    LevelController.Instance.CompleteCurrentWave();
+                    LevelController.Instance.CompleteCurrentWave(); // 👈 这个方法应负责进入商店
             }
 
-            StartCoroutine(DestroyAfterDelay(0.1f));
-        }
-
-        private IEnumerator DestroyAfterDelay(float delay)
-        {
+            // 安全销毁自身
             var sr = GetComponent<SpriteRenderer>();
             if (sr != null) sr.enabled = false;
-            yield return new WaitForSeconds(delay);
             Destroy(gameObject);
         }
 
@@ -499,6 +523,7 @@ namespace Enemy
         {
             if (other.CompareTag("Player") && _isFleeing && ShouldFlee())
             {
+                _killedByPlayer = true;
                 StartDeathSequence();
             }
         }
