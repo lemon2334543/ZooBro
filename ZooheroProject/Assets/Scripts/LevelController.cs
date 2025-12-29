@@ -161,47 +161,13 @@ public class LevelController : MonoBehaviour
 
     private void SetMap()
     {
-        // 🔍 安全检查：确保 _gameManager 和 MapData 不为 null
-        if (_gameManager == null)
+        if (_gameManager.MapData.enName == "Animal")
         {
-            Debug.LogError("LevelController.SetMap(): _gameManager is null!");
-            return;
+            _map.GetComponent<Image>().sprite = UnityEngine.Resources.Load<Sprite>("Image/地图/地图");
         }
-
-        if (_gameManager.MapData == null)
+        else if (_gameManager.MapData.enName == "Machine")
         {
-            Debug.LogError("LevelController.SetMap(): _gameManager.MapData is null!");
-            return;
-        }
-
-        string mapName = _gameManager.MapData.enName;
-        if (mapName == "Animal" || mapName == "Machine")
-        {
-            var sprite = UnityEngine.Resources.Load<Sprite>("Image/地图/地图");
-            if (sprite == null)
-            {
-                Debug.LogWarning("LevelController.SetMap(): Sprite 'Image/地图/地图' not found!");
-            }
-            else if (_map != null)
-            {
-                Image image = _map.GetComponent<Image>();
-                if (image != null)
-                {
-                    image.sprite = sprite;
-                }
-                else
-                {
-                    Debug.LogError("LevelController.SetMap(): _map has no Image component!");
-                }
-            }
-            else
-            {
-                Debug.LogError("LevelController.SetMap(): _map is null!");
-            }
-        }
-        else
-        {
-            Debug.LogWarning($"LevelController.SetMap(): Unknown map name '{mapName}'");
+            _map.GetComponent<Image>().sprite = UnityEngine.Resources.Load<Sprite>("Image/地图/地图");
         }
     }
 
